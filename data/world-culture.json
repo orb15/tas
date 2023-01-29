@@ -1,0 +1,189 @@
+{
+  "cultures": [
+    {
+      "value": 0,
+      "type": "none",
+      "culture": "there is no notable cultural information"
+    },
+    {
+      "value": 11,
+      "type": "Sexist",
+      "culture": "one gender is considered subservient or inferior to the other"
+    },
+    {
+      "value": 12,
+      "type": "Religious",
+      "culture": "culture is heavily influenced by a religion or belief systems, possibly one unique to this world"
+    },
+    {
+      "value": 13,
+      "type": "Artistic",
+      "culture": "art and culture are highly prized.Aesthetic design is important in all artefacts produced on world"
+    },
+    {
+      "value": 14,
+      "type": "Ritualised",
+      "culture": "social interaction and trade is highly formalised.Politeness and adherence to traditional forms is considered very important"
+    },
+    {
+      "value": 15,
+      "type": "Conservative",
+      "culture": "the culture resists change and outside influences"
+    },
+    {
+      "value": 16,
+      "type": "Xenophobic",
+      "culture": "the culture distrusts outsiders and alien influences.Offworlders will face considerable prejudice"
+    },
+    {
+      "value": 21,
+      "type": "Taboo",
+      "culture": "a particular topic is forbidden and cannot be discussed.Travellers who unwittingly mention this topic will be ostracised"
+    },
+    {
+      "value": 22,
+      "type": "Deceptive",
+      "culture": "trickery and equivocation are considered acceptable.Honesty is a sign of weakness"
+    },
+    {
+      "value": 23,
+      "type": "Liberal",
+      "culture": "the culture welcomes change and offworld influence.Travellers who bring new and strange ideas will be welcomed"
+    },
+    {
+      "value": 24,
+      "type": "Honourable",
+      "culture": "one’s word is one’s bond in the culture.Lying is both rare and despised"
+    },
+    {
+      "value": 25,
+      "type": "Influenced",
+      "culture": "the culture is heavily influenced by another, neighbouring world.Roll again for a cultural quirk that has been inherited from the culture"
+    },
+    {
+      "value": 26,
+      "type": "Fusion",
+      "culture": "the culture is a merger of two distinct cultures.Roll again twice to determine the quirks inherited from these cultures.If the quirks are incompatible, then the culture is likely divided"
+    },
+    {
+      "value": 31,
+      "type": "Barbaric",
+      "culture": "physical strength and combat prowess are highly valued in the culture.Travellers may be challenged to a fight or dismissed if they seem incapable of defending themselves.Sports tend towards the bloody and violent"
+    },
+    {
+      "value": 32,
+      "type": "Remnant",
+      "culture": "the culture is a surviving remnant of a once-great and vibrant civilisation, clinging to its former glory.The world is filled with crumbling ruins and every story revolves around the good old days"
+    },
+    {
+      "value": 33,
+      "type": "Degenerate",
+      "culture": "the culture is falling apart and is on the brink of war or economic collapse.Violent protests are common and the social order is decaying"
+    },
+    {
+      "value": 34,
+      "type": "Progressive",
+      "culture": "the culture is expanding and vibrant.Fortunes are being made in trade; science is forging bravely ahead"
+    },
+    {
+      "value": 35,
+      "type": "Recovering",
+      "culture": "a recent trauma, such as a plague, war, disaster or despotic regime has left scars on the culture"
+    },
+    {
+      "value": 36,
+      "type": "Nexus",
+      "culture": "members of many different cultures and species visit here"
+    },
+    {
+      "value": 41,
+      "type": "Tourist Attraction",
+      "culture": "some aspect of the culture or the planet draws visitors from all over civilised space"
+    },
+    {
+      "value": 42,
+      "type": "Violent",
+      "culture": "physical conflict is common, taking the form of duels, brawls or other contests.Trial by combat is a part of their judicial system"
+    },
+    {
+      "value": 43,
+      "type": "Peaceful",
+      "culture": "physical conflict is almost unheardof.The culture produces few soldiers and diplomacy reigns supreme.Forceful Travellers will be ostracised"
+    },
+    {
+      "value": 44,
+      "type": "Obsessed",
+      "culture": "everyone is obsessed with or addicted to a substance, personality, act or item.This monomania pervades every aspect of the culture"
+    },
+    {
+      "value": 45,
+      "type": "Fashion",
+      "culture": "fine clothing and decoration are considered vitally important in the culture.Underdressed Travellers have no standing here"
+    },
+    {
+      "value": 46,
+      "type": "At war",
+      "culture": "the culture is at war, either with another planet or polity, or is troubled by terrorists or rebels"
+    },
+    {
+      "value": 51,
+      "type": "Unusual Custom: Offworlders",
+      "culture": "space travellers hold a unique position in the culture’s mythology or beliefs and travellers will be expected to live up to these myths"
+    },
+    {
+      "value": 52,
+      "type": "Unusual Custom: Starport",
+      "culture": "the planet’s starport is more than a commercial centre; it might be a religious temple or be seen as highly controversial and surrounded by protestors"
+    },
+    {
+      "value": 53,
+      "type": "Unusual Custom: Media",
+      "culture": "news agencies and telecommunications channels are especially strange here.Getting accurate information may be difficult"
+    },
+    {
+      "value": 54,
+      "type": "Unusual Customs: Technology",
+      "culture": "the culture interacts with technology in an unusual way.Telecommunications might be banned, robots might have civil rights or cyborgs might be property"
+    },
+    {
+      "value": 55,
+      "type": "Unusual Customs: Lifecycle",
+      "culture": "there might be a mandatory age of termination or anagathics might be widely used.Family units might be different, with children being raised by the state or banned in favour of cloning"
+    },
+    {
+      "value": 56,
+      "type": "Unusual Customs: Social Standings",
+      "culture": "the culture has a distinct caste system.Travellers of a low social standing who do not behave appropriately will face punishment"
+    },
+    {
+      "value": 61,
+      "type": "Unusual Customs: Trade",
+      "culture": "the culture has an odd attitude towards some aspect of commerce, which may interfere with trade at the spaceport.For example, merchants might expect a gift as part of a deal or some goods may only be handled by certain families"
+    },
+    {
+      "value": 62,
+      "type": "Unusual Customs: Nobility",
+      "culture": "those of high social standing have a strange custom associated with them; perhaps nobles are blinded, must live in gilded cages or only serve for a single year before being exiled"
+    },
+    {
+      "value": 63,
+      "type": "Unusual Customs: Sex",
+      "culture": "the culture has an unusual attitude towards intercourse and reproduction.Perhaps cloning is used instead or sex is used to seal commercial deals"
+    },
+    {
+      "value": 64,
+      "type": "Unusual Customs: Eating",
+      "culture": "food and drink occupies an unusual place in the culture.Perhaps eating is a private affair or banquets and formal dinners are seen as the highest form of politeness"
+    },
+    {
+      "value": 65,
+      "type": "Unusual Customs: Travel",
+      "culture": "Travellers may be distrusted or feted, or perhaps the culture frowns on those who leave their homes"
+    },
+    {
+      "value": 66,
+      "type": "Unusual Custom: Conspiracy",
+      "culture": "something strange is going on.The government is being subverted by another group or agency"
+    }
+  ]
+}

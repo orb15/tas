@@ -1,0 +1,74 @@
+{
+  "starports": [
+    {
+      "value": 2,
+      "code": "X",
+      "quality": "no starport",
+      "fuel": "none",
+      "facilities": "none"
+    },
+    {
+      "value": 3,
+      "code": "E",
+      "quality": "frontier",
+      "fuel": "none",
+      "facilities": "none"
+    },
+    {
+      "value": 4,
+      "code": "E",
+      "quality": "frontier",
+      "fuel": "none",
+      "facilities": "none"
+    },
+    {
+      "value": 5,
+      "code": "D",
+      "quality": "poor",
+      "fuel": "unrefined only",
+      "facilities": "limited repair"
+    },
+    {
+      "value": 6,
+      "code": "D",
+      "quality": "poor",
+      "fuel": "unrefined only",
+      "facilities": "limited repair"
+    },
+    {
+      "value": 7,
+      "code": "C",
+      "quality": "routine",
+      "fuel": "unrefined only",
+      "facilities": "shipyard (small craft), repair"
+    },
+    {
+      "value": 8,
+      "code": "C",
+      "quality": "routine",
+      "fuel": "unrefined only",
+      "facilities": "shipyard (small craft), repair"
+    },
+    {
+      "value": 9,
+      "code": "B",
+      "quality": "good",
+      "fuel": "Refined and unrefined",
+      "facilities": "shipyard (spacecraft), repair"
+    },
+    {
+      "value": 10,
+      "code": "B",
+      "quality": "good",
+      "fuel": "Refined and unrefined",
+      "facilities": "shipyard (spacecraft), repair"
+    },
+    {
+      "value": 11,
+      "code": "A",
+      "quality": "Excellent",
+      "fuel": "Refined and unrefined",
+      "facilities": "shipyard (all), repair"
+    }
+  ]
+}

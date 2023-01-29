@@ -1,0 +1,54 @@
+{
+  "laws": [
+    {
+      "value": 0,
+      "banned-weapons": "none",
+      "banned-armor": "none"
+    },
+    {
+      "value": 1,
+      "banned-weapons": "poison gas, explosives, undetectable weapons, WMD",
+      "banned-armor": "battle dress"
+    },
+    {
+      "value": 2,
+      "banned-weapons": "poison gas, explosives, undetectable weapons, WMD, portable energy and laser weapons",
+      "banned-armor": "battle dress, combat armor"
+    },
+    {
+      "value": 3,
+      "banned-weapons": "poison gas, explosives, undetectable weapons, WMD, portable energy and laser weapons, military weapons",
+      "banned-armor": "battle dress, combat armor, flak"
+    },
+    {
+      "value": 4,
+      "banned-weapons": "poison gas, explosives, undetectable weapons, WMD, portable energy and laser weapons, military weapons, light assault weapons and submachine guns",
+      "banned-armor": "battle dress, combat armor, flak, cloth"
+    },
+    {
+      "value": 5,
+      "banned-weapons": "poison gas, explosives, undetectable weapons, WMD, portable energy and laser weapons, military weapons, light assault weapons and submachine guns, personal concealable weapons",
+      "banned-armor": "battle dress, combat armor, flak, cloth, mesh"
+    },
+    {
+      "value": 6,
+      "banned-weapons": "all firearms except shotguns & stunners; carrying weapons discouraged",
+      "banned-armor": "none"
+    },
+    {
+      "value": 7,
+      "banned-weapons": "all firearms except stunners; carrying weapons strongly discouraged",
+      "banned-armor": "none"
+    },
+    {
+      "value": 8,
+      "banned-weapons": "all firearms of any kind, all bladed weapons, stunners",
+      "banned-armor": "all visible armor"
+    },
+    {
+      "value": 9,
+      "banned-weapons": "all weapons",
+      "banned-armor": "all armor"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "sizes": [
+    {
+      "value": 0,
+      "example": "asteroid, orbital complex",
+      "diameter": "less than 1000km",
+      "gravity": "negligible"
+    },
+    {
+      "value": 1,
+      "example": "Triton",
+      "diameter": "1600km",
+      "gravity": "0.05"
+    },
+    {
+      "value": 2,
+      "example": "Luna, Europa",
+      "diameter": "3200km",
+      "gravity": "0.15" 
+    },
+    {
+      "value": 3,
+      "example": "Mercury, Ganymede",
+      "diameter": "4800km",
+      "gravity": "0.25"
+    },
+    {
+      "value": 4,
+      "example": "Mars",
+      "diameter": "6400km",
+      "gravity": "0.35" 
+    },
+    {
+      "value": 5,
+      "example": "n/a",
+      "diameter": "8000km",
+      "gravity": ".45" 
+    },
+    {
+      "value": 6,
+      "example": "n/a",
+      "diameter": "9600km",
+      "gravity": "0.7" 
+    },
+    {
+      "value": 7,
+      "example": "n/a",
+      "diameter": "11200km",
+      "gravity": "0.9" 
+    },
+    {
+      "value": 8,
+      "example": "Earth",
+      "diameter": "12800km",
+      "gravity": "1.0" 
+    },
+    {
+      "value": 9,
+      "example": "n/a",
+      "diameter": "14400km",
+      "gravity": "1.25" 
+    },
+    {
+      "value": 10,
+      "example": "n/a",
+      "diameter": "16000km",
+      "gravity": "1.4" 
+    }
+  ]
+}

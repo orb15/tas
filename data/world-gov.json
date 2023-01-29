@@ -1,0 +1,116 @@
+{
+  "govs": [
+    {
+      "value": 0,
+      "type": "none",
+      "description": "No government structure. In many cases, family bonds predominate",
+      "example": "family, clan, anarchy",
+      "contraband": "none"
+    },
+    {
+      "value": 1,
+      "type": "company or coporation",
+      "description": "Ruling functions are assumed by a company managerial elite and most citizenry are company employees or dependants",
+      "example": "coporate outpost, asteroid mine, feudal domain",
+      "contraband": "weapons, drugs, travellers"
+    },
+    {
+      "value": 2,
+      "type": "participating democracy",
+      "description": "Ruling functions are reached by the advice and consent of the citizenry directly",
+      "example": "collective, tribal council, comm-linked consensus",
+      "contraband": "drugs"
+    },
+    {
+      "value": 3,
+      "type": "self-perpetuating oligarchy",
+      "description": "Ruling functions are performed by a restricted minority, with little or no input from the mass of citizenry",
+      "example": "plutocracy, hereditary ruling class",
+      "contraband": "technology, weapons, travellers"
+    },
+    {
+      "value": 4,
+      "type": "representitve democracy",
+      "description": "Ruling functions are performed by elected representatives",
+      "example": "republic, democracy",
+      "contraband": "drugs, weapons, psionics"
+    },
+    {
+      "value": 5,
+      "type": "feudal technocracy",
+      "description": "Ruling functions are performed by specific individuals for persons who agree to be ruled by them. Relationships are based on the performance of technical activities that are mutually beneficial",
+      "example": "those with access to advanced technology tend to have higher social status",
+      "contraband": "technology, weapons, computers"
+    },
+    {
+      "value": 6,
+      "type": "captive government",
+      "description": "Ruling functions are performed by an imposed leadership answerable to an outside group",
+      "example": "a colony or conquered area",
+      "contraband": "weapons, technology, travellers"
+    },
+    {
+      "value": 7,
+      "type": "balkanization",
+      "description": "No central authority exists; rival governments complete for control. Law level refers to the government nearest the starport",
+      "example": "multiple governments, civil war",
+      "contraband": "varies"
+    },
+    {
+      "value": 8,
+      "type": "civil serivce bureaucracy",
+      "description": "Ruling functions are performed by government agencies employing individuals selected for their expertise",
+      "example": "technocracy, communism",
+      "contraband": "drugs, weapons"
+    },
+    {
+      "value": 9,
+      "type": "impersonal bureaucracy",
+      "description": "Ruling functions are performed by agencies that have become insulated from the governed citizens",
+      "example": "entrenched castes of bureaucrats, decaying empire",
+      "contraband": "technology, wapons, drugs, travellers, psionics"
+    },
+    {
+      "value": 10,
+      "type": "charismatic dictator",
+      "description": "Ruling functions are performed by agencies directed by a single leader who enjoys the overwhelming confidence of the citizens",
+      "example": "revolutionary leader, messiah, emperor",
+      "contraband": "none"
+    },
+    {
+      "value": 11,
+      "type": "non-charismatic leader",
+      "description": "A previous charismatic dictator has been replaced by a leader through normal channels",
+      "example": "military dictatorship, hereditary kingship",
+      "contraband": "weapons, technology, computers"
+    },
+    {
+      "value": 12,
+      "type": "charismatic oligarchy",
+      "description": "Ruling functions are performed by a select group of members of an organisation or class that enjoys the overwhelming confidence of the citizenry",
+      "example": "junta, revolutionary council",
+      "contraband": "weapons"
+    },
+    {
+      "value": 13,
+      "type": "religious dictatorship",
+      "description": "Ruling functions are performed by a religious organisation without regard to the specific individual needs of the citizenry",
+      "example": "cult, trancendent philosophy, psionic group mind",
+      "contraband": "varies"
+    },
+    {
+      "value": 14,
+      "type": "religious autocracy",
+      "description": "Government by a single religious leader having absolute power over the citizenry",
+      "example": "messiah",
+      "contraband": "varies"
+    },
+    {
+      "value": 15,
+      "type": "totalitarian oligarchy",
+      "description": "Government by an all-powerful minority which maintains absolute control through widespread coercion and oppression",
+      "example": "world church, ruthless corporation",
+      "contraband": "varies"
+    }
+  ]
+}

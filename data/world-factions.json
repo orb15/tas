@@ -1,0 +1,48 @@
+{
+  "factions": [
+    {
+      "value": 2,
+      "relative-strength": "Obscure group - few have heard of them, no popular support"
+    },
+    {
+      "value": 3,
+      "relative-strength": "Obscure group - few have heard of them, no popular support"
+    },
+    {
+      "value": 4,
+      "relative-strength": "Fringe group - few supporters"
+    },
+    {
+      "value": 5,
+      "relative-strength": "Fringe group - few supporters"
+    },
+    {
+      "value": 6,
+      "relative-strength": "Minor group - some supporters"
+    },
+    {
+      "value": 7,
+      "relative-strength": "Minor group - some supporters"
+    },
+    {
+      "value": 8,
+      "relative-strength": "Notable group - significant supporters, well known"
+    },
+    {
+      "value": 9,
+      "relative-strength": "Notable group - significant supporter, well known"
+    },
+    {
+      "value": 10,
+      "relative-strength": "Significant - nearly as powerful as the government"
+    },
+    {
+      "value": 11,
+      "relative-strength": "Significant - nearly as powerful as the government"
+    },
+    {
+      "value": 12,
+      "relative-strength": "Overwhelming popular support - more powerful than government"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "atmos": [
+    {
+      "value": 0,
+      "composition": "none",
+      "pressure": "0.00",
+      "gear-required": "vacc suit"
+    },
+    {
+      "value": 1,
+      "composition": "trace",
+      "pressure": "0.001 - 0.09",
+      "gear-required": "vacc suit"
+    },
+    {
+      "value": 2,
+      "composition": "very thin, tainted",
+      "pressure": "0.1 - 0.42",
+      "gear-required": "respirator, filter"
+    },
+    {
+      "value": 3,
+      "composition": "very thin",
+      "pressure": "0.1 - 0.42",
+      "gear-required": "respirator"
+    },
+    {
+      "value": 4,
+      "composition": "thin, tainted",
+      "pressure": "0.43 - 0.7",
+      "gear-required": "filter"
+    },
+    {
+      "value": 5,
+      "composition": "thin",
+      "pressure": "0.43 - 0.7",
+      "gear-required": "none"
+    },
+    {
+      "value": 6,
+      "composition": "standard",
+      "pressure": "0.71 - 1.49",
+      "gear-required": "none"
+    },
+    {
+      "value": 7,
+      "composition": "standard, tainted",
+      "pressure": "0.71 - 1.49",
+      "gear-required": "filter"
+    },
+    {
+      "value": 8,
+      "composition": "dense",
+      "pressure": "1.5 - 2.49",
+      "gear-required": "none"
+    },
+    {
+      "value": 9,
+      "composition": "dense, tainted",
+      "pressure": "1.5 - 2.49",
+      "gear-required": "filter"
+    },
+    {
+      "value": 10,
+      "composition": "exotic",
+      "pressure": "varies",
+      "gear-required": "air supply or vacc suit"
+    },
+    {
+      "value": 11,
+      "composition": "corrosive",
+      "pressure": "varies",
+      "gear-required": "vacc suit"
+    },
+    {
+      "value": 12,
+      "composition": "insidious",
+      "pressure": "varies",
+      "gear-required": "vacc suit"
+    },
+    {
+      "value": 13,
+      "composition": "very dense",
+      "pressure": "2.5+",
+      "gear-required": "none"
+    },
+    {
+      "value": 14,
+      "composition": "low",
+      "pressure": "0.5 or less",
+      "gear-required": "none"
+    },
+    {
+      "value": 15,
+      "composition": "Unusual",
+      "pressure": "varies",
+      "gear-required": "varies"
+    }
+  ]
+}

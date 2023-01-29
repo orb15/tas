@@ -1,0 +1,84 @@
+{
+  "tech-levels" : [
+    {
+      "value": 0,
+      "description": "No technology. TL0 worlds have only discovered the simplest tools and principles and are on par with the Stone Age",
+      "catagory": "primative" 
+    },
+    {
+      "value": 1,
+      "description": "Roughly on par with Bronze or Iron Age technology. TL1 science is mostly superstition but there is the manufacture of weapons and working of metals",
+      "catagory": "primative"
+    },
+    {
+      "value": 2,
+      "description": "Renaissance technology. TL2 brings with it a greater understanding of chemistry, physics, biology and astronomy as well as the scientific method",
+      "catagory": "primative" 
+    },
+    {
+      "value": 3,
+      "description": "The advances of TL2 are now applied, bringing the germ of industrial revolution and steam power. Primitive firearms now dominate the battlefield. This is roughly comparable to the early 19th Century",
+      "catagory": "primative"
+    },
+    {
+      "value": 4,
+      "description": "The transition to industrial revolution is complete,bringing plastics, radio and other such inventions. Roughly comparable to the late 19th/early 20th Century",
+      "catagory": "industrial"
+    },
+    {
+      "value": 5,
+      "description": "TL5 brings widespread electrification, telecommunications and internal combustion. At the high end of the TL, atomics and primitive computing appear. Roughly on a par with the mid-20th Century",
+      "catagory": "industrial"
+    },
+    {
+      "value": 6,
+      "description": "TL6 brings the development of fission power and more advanced computing. Advances in materials technology and rocketry bring about the dawn of the space age",
+      "catagory": "industrial" 
+    },
+    {
+      "value": 7,
+      "description": "A pre-stellar society can reach orbit reliably and  has telecommunications satellites. Computers and integrated circuits become ubiquitous. At the time of writing, Earth is currently somewhere between TL7 and TL8",
+      "catagory": "pre-stellar"
+    },
+    {
+      "value": 8,
+      "description": "At TL8, it is possible to reach other worlds in the same star system, although terraforming or full colonisation are not within the culture's capacity. Permanent space habitats become possible. Fusion power becomes commercially viable",
+      "catagory": "pre-stellar"
+    },
+    {
+      "value": 9,
+      "description": "The defining element of TL9 is the development of gravity manipulation, which makes space travel vastly safer and faster. This research leads to development of the jump drive, which occurs near the end of this Tech Level. TL9 cultures can colonise other worlds, although travelling to a colony is often a one-way trip",
+      "catagory": "pre-stellar"
+    },
+    {
+      "value": 10,
+      "description": "With the advent of commonly available jump drives, nearby systems are opened up. Orbital habitats and factories become common. Interstellar travel and trade lead to an economic boom. Colonies become much more viable",
+      "catagory": "early stellar"
+    },
+    {
+      "value": 11,
+      "description": "The first true artificial intelligences become possible, as computers are able to model synaptic networks. Gravsupported structures reach to the heavens. Jump-2 travel becomes possible, allowing easier travel beyond the one jump stellar mains",
+      "catagory": "early stellar"
+    },
+    {
+      "value": 12,
+      "description": "Planetwide weather control revolutionises terraforming and agriculture. Portable plasma weapons and carriermounted fusion guns make the battlefield untenable for unarmoured combatants. Jump-3 travel is developed",
+      "catagory": "average stellar"
+    },
+    {
+      "value": 13,
+      "description": "Battle dress appears on the battlefield in response to new weapons, heralding the pinnacle of personal armour and making infantry the equivalent of less advanced armoured vehicles. Cloning of body parts becomes easy. Jump-4 travel appears",
+      "catagory": "average stellar"
+    },
+    {
+      "value": 14,
+      "description": "Fusion weapons become portable. Flying cities appear. Jump-5 drives are built",
+      "catagory": "average stellar"
+    },
+    {
+      "value": 15,
+      "description": "Black globe generators suggest a new direction for defensive technologies, while the development of synthetic anagathics means that human lifespan is now vastly increased",
+      "catagory": "high stellar"
+    }
+  ]
+}

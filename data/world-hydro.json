@@ -1,0 +1,59 @@
+{
+  "hydros": [
+    {
+      "value": 0,
+      "percentage": "0% - 5%",
+      "description": "desert world"
+    },
+    {
+      "value": 1,
+      "percentage": "6% - 15%",
+      "description": "dry world"
+    },
+    {
+      "value": 2,
+      "percentage": "16% - 25%",
+      "description": "a few small seas"
+    },
+    {
+      "value": 3,
+      "percentage": "26% - 35%",
+      "description": "small seas and oceans"
+    },
+    {
+      "value": 4,
+      "percentage": "36% - 45%",
+      "description": "wet world"
+    },
+    {
+      "value": 5,
+      "percentage": "46% - 55%",
+      "description": "a large ocean"
+    },
+    {
+      "value": 6,
+      "percentage": "56% - 65%",
+      "description": "lage oceans"
+    },
+    {
+      "value": 7,
+      "percentage": "66% - 75%",
+      "description": "Earth-like world"
+    },
+    {
+      "value": 8,
+      "percentage": "76% - 85%",
+      "description": "only a few islands or archipeligos"
+    },
+    {
+      "value": 9,
+      "percentage": "86% - 95%",
+      "description": "almost entirely water"
+    },
+    {
+      "value": 10,
+      "percentage": "96% - 100%",
+      "description": "water world"
+    }
+  ]
+}

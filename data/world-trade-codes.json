@@ -1,0 +1,76 @@
+{
+  "codes": [
+    {
+      "name": "agricultural",
+      "abbreviation": "Ag"
+    },
+    {
+      "name": "asteroid",
+      "abbreviation": "As"
+    },
+    {
+      "name": "barren",
+      "abbreviation": "Ba"
+    },
+    {
+      "name": "desert",
+      "abbreviation": "De"
+    },
+    {
+      "name": "fluid oceans",
+      "abbreviation": "Fl"
+    },
+    {
+      "name": "garden",
+      "abbreviation": "Ga"
+    },
+    {
+      "name": "high population",
+      "abbreviation": "Hi"
+    },
+    {
+      "name": "high tech",
+      "abbreviation": "Ht"
+    },
+    {
+      "name": "ice-capped",
+      "abbreviation": "Ic"
+    },
+    {
+      "name": "industrial",
+      "abbreviation": "In"
+    },
+    {
+      "name": "low population",
+      "abbreviation": "Lo"
+    },
+    {
+      "name": "low tech",
+      "abbreviation": "Lt"
+    },
+    {
+      "name": "non-agricultural",
+      "abbreviation": "Na"
+    },
+    {
+      "name": "non-industrial",
+      "abbreviation": "Ni"
+    },
+    {
+      "name": "poor",
+      "abbreviation": "Po"
+    },
+    {
+      "name": "rich",
+      "abbreviation": "Ri"
+    },
+    {
+      "name": "vacuum",
+      "abbreviation": "Va"
+    },
+    {
+      "name": "waterworld",
+      "abbreviation": "Wa"
+    }
+  ]
+}

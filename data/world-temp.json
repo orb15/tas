@@ -1,0 +1,76 @@
+{
+  "temps": [
+    {
+      "value": -1,
+      "type": "swing",
+      "avg-temp": "varies",
+      "description": "Alternates between freezing cold and boiling hot based on day/night cycle"
+    },
+    {
+      "value": 2,
+      "type": "frozen",
+      "avg-temp": "-51C or less",
+      "description": "Frozen world. No liquid water, very dry atmosphere"
+    },
+    {
+      "value": 3,
+      "type": "cold",
+      "avg-temp": "-51C to 0C",
+      "description": "Icy world. Little liquid water, extensive ice caps, few clouds"
+    },
+    {
+      "value": 4,
+      "type": "cold",
+      "avg-temp": "-51C to 0C",
+      "description": "Icy world. Little liquid water, extensive ice caps, few clouds"
+    },
+    {
+      "value": 5,
+      "type": "temperate",
+      "avg-temp": "0C to 30C",
+      "description": "Temperate, Earth-like world. Liquid and vaporized water are common, moderate ice caps"
+    },
+    {
+      "value": 6,
+      "type": "temperate",
+      "avg-temp": "0C to 30C",
+      "description": "Temperate, Earth-like world. Liquid and vaporized water are common, moderate ice caps"
+    },
+    {
+      "value": 7,
+      "type": "temperate",
+      "avg-temp": "0C to 30C",
+      "description": "Temperate, Earth-like world. Liquid and vaporized water are common, moderate ice caps"
+    },
+    {
+      "value": 8,
+      "type": "temperate",
+      "avg-temp": "0C to 30C",
+      "description": "Temperate, Earth-like world. Liquid and vaporized water are common, moderate ice caps"
+    },
+    {
+      "value": 9,
+      "type": "temperate",
+      "avg-temp": "0C to 30C",
+      "description": "Temperate, Earth-like world. Liquid and vaporized water are common, moderate ice caps"
+    },
+    {
+      "value": 10,
+      "type": "hot",
+      "avg-temp": "31C to 80C",
+      "description": "Hot world. Small or no ice caps, little liquid water. Most water in the form of clouds"
+    },
+    {
+      "value": 11,
+      "type": "hot",
+      "avg-temp": "31C to 80C",
+      "description": "Hot world. Small or no ice caps, little liquid water. Most water in the form of clouds"
+    },
+    {
+      "value": 12,
+      "type": "boiling",
+      "avg-temp": "81C or higher",
+      "description": "Boiling world.No ice caps, little liquid water"
+    }
+  ]
+}

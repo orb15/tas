@@ -1,0 +1,28 @@
+{
+  "bases": [
+    {
+      "name": "corsair",
+      "description": "Corsair bases do not have the full range of facilities as naval bases but provide enough to refuel and maintain corsair ships. A corsair base is often the main staging point from which raids are conducted"
+    },
+    {
+      "name": "depot",
+      "description": "Used by the Imperium's sector fleets, a depot is a massive naval base, often consuming an entire star system. It can support a sizeable fraction of a sector fleet's ships at once, offering building, repairing, rearming and experimental facilities. As well as servicing ships, depots also have command and control facilities, academies and mothballed ships"
+    },
+    {
+      "name": "military",
+      "description": "These are planetary facilities for the support, maintenance, repair and refit of ground vehicles and troops"
+    },
+    {
+      "name": "naval",
+      "description": "A naval base is a supply depot, refuelling station, repair yard or fortress of either the Imperial Navy or the local sector navy. Naval vessels can obtain refined fuel and supplies here. Naval bases are always guarded by armed vessels and fixed defence. Ex-Naval Travellers may meet Contacts or Allies here and mercenary Travellers can try to pick up work. Naval bases also have an advanced hospital, although it is normally available only to naval personnel. Travellers may also be able to purchase navy-surplus weapons here"
+    },
+    {
+      "name": "scout",
+      "description": "A scout base offers refined fuel and supplies to scout ships (including retired scout ships obtained by retired scouts). They are also an excellent place to pick up rumours and news"
+    },
+    {
+      "name": "way station",
+      "description": "A large Imperial Interstellar Scout Service installation dedicated to the x-boat communication network and servicing scout ships"
+    }
+  ]
+}

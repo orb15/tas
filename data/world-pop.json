@@ -1,0 +1,56 @@
+{
+  "pops": [
+    {
+      "Value": 0,
+      "inhabitants": "none"
+    },
+    {
+      "Value": 1,
+      "inhabitants": "few"
+    },
+    {
+      "Value": 2,
+      "inhabitants": "hundreds"
+    },
+    {
+      "Value": 3,
+      "inhabitants": "thousands"
+    },
+    {
+      "Value": 4,
+      "inhabitants": "tens of thousands"
+    },
+    {
+      "Value": 5,
+      "inhabitants": "hundreds of thousands"
+    },
+    {
+      "Value": 6,
+      "inhabitants": "millions"
+    },
+    {
+      "Value": 7,
+      "inhabitants": "tens of millions"
+    },
+    {
+      "Value": 8,
+      "inhabitants": "hundreds of millions"
+    },
+    {
+      "Value": 9,
+      "inhabitants": "billions"
+    },
+    {
+      "Value": 10,
+      "inhabitants": "tens of billions"
+    },
+    {
+      "Value": 11,
+      "inhabitants": "hundreds of billions"
+    },
+    {
+      "Value": 12,
+      "inhabitants": "trillions"
+    }
+  ]
+}
