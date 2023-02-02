@@ -1,6 +1,7 @@
 package world
 
 import (
+	h "tas/internal/cmd/helpers"
 	"tas/internal/model"
 	"tas/internal/util"
 )
@@ -48,22 +49,11 @@ func generateTemperature(ctx *util.TASContext, def *model.WorldDefinition) {
 		def.HabitabilityZone = "standard"
 	} else {
 		atmoMod := 0
-		switch def.Atmosphere {
-		case 2, 3:
-			atmoMod = -2
-		case 4, 5, 14:
-			atmoMod = -1
-		case 6, 7:
-			atmoMod = 0
-		case 8, 9:
-			atmoMod = 1
-		case 10, 13, 15:
-			atmoMod = 2
-		case 11, 12:
-			atmoMod = 6
-		default:
-			log.Warn().Int("atmosphere", def.Atmosphere).Msg("Atmosphere out of range when determining temperature!")
-		}
+		atmoMod = h.AdjustDM(ctx, atmoMod, -2, def.Atmosphere, h.INR, 2, 3)
+		atmoMod = h.AdjustDM(ctx, atmoMod, -1, def.Atmosphere, h.IS, 4, 5, 14)
+		atmoMod = h.AdjustDM(ctx, atmoMod, 1, def.Atmosphere, h.INR, 8, 9)
+		atmoMod = h.AdjustDM(ctx, atmoMod, 6, def.Atmosphere, h.INR, 11, 12)
+		atmoMod = h.AdjustDM(ctx, atmoMod, 2, def.Atmosphere, h.IS, 10, 13, 15)
 
 		//this is optional, but I am adding a random location within the "habital zone"
 		//in a star system. This is optional per pg 251
@@ -107,18 +97,12 @@ func generateHydrographics(ctx *util.TASContext, def *model.WorldDefinition) {
 	} else {
 
 		atmoMod := 0
-		if def.Atmosphere <= 1 || def.Atmosphere >= 10 {
-			atmoMod = -4
-		}
+		atmoMod = h.AdjustDM(ctx, atmoMod, -4, def.Atmosphere, h.IS, 0, 1, 10, 11, 12, 13, 14, 15)
 
 		tempMod := 0
 		if def.Atmosphere != 13 && def.Atmosphere != 15 {
-			switch def.Temperature {
-			case 10, 11:
-				tempMod = -2
-			case 12:
-				tempMod = -6
-			}
+			tempMod = h.AdjustDM(ctx, tempMod, -2, def.Temperature, h.INR, 10, 11)
+			tempMod = h.AdjustDM(ctx, tempMod, -6, def.Temperature, h.EQ, 12)
 		}
 
 		hydro := dice.Sum(2, -7, def.Atmosphere, atmoMod, tempMod)
@@ -171,12 +155,9 @@ func generateFactions(ctx *util.TASContext, def *model.WorldDefinition) {
 	var factionsList []*model.WorldFaction
 	if def.Population > 0 {
 		fmod := 0
-		if def.Government == 0 || def.Government == 7 {
-			fmod = 1
-		}
-		if def.Government >= 10 {
-			fmod = -1
-		}
+		fmod = h.AdjustDM(ctx, fmod, 1, def.Government, h.IS, 0, 7)
+		fmod = h.AdjustDM(ctx, fmod, -1, def.Government, h.GE, 10)
+
 		numberOfFactions := dice.D3(fmod)
 		factionsList = make([]*model.WorldFaction, 0, numberOfFactions)
 		for i := 0; i < numberOfFactions; i++ {
@@ -239,16 +220,11 @@ func generateStarport(ctx *util.TASContext, def *model.WorldDefinition) {
 	dice := ctx.Dice()
 
 	popMod := 0
-	switch def.Population {
-	case 8, 9:
-		popMod = 1
-	case 10, 11, 12, 13, 14, 15:
-		popMod = 2
-	case 3, 4:
-		popMod = -1
-	case 0, 1, 2:
-		popMod = -2
-	}
+	popMod = h.AdjustDM(ctx, popMod, 1, def.Population, h.INR, 8, 9)
+	popMod = h.AdjustDM(ctx, popMod, 2, def.Population, h.GE, 10)
+	popMod = h.AdjustDM(ctx, popMod, -1, def.Population, h.INR, 3, 4)
+	popMod = h.AdjustDM(ctx, popMod, -2, def.Population, h.LE, 2)
+
 	star := dice.Sum(2, popMod)
 	star = util.BoundTo(star, starMin, starMax)
 	starport := &model.WorldStarportInfo{}
@@ -287,61 +263,37 @@ func generateTechLevel(ctx *util.TASContext, def *model.WorldDefinition) {
 
 		//starport modifier
 		starMod := 0
-		switch def.Starport.Value {
-		case 2:
-			starMod = -4
-		case 7, 8:
-			starMod = 2
-		case 9, 10:
-			starMod = 4
-		case 11:
-			starMod = 6
-		}
+		starMod = h.AdjustDM(ctx, starMod, -4, def.Starport.Value, h.EQ, 2)
+		starMod = h.AdjustDM(ctx, starMod, 2, def.Starport.Value, h.INR, 7, 8)
+		starMod = h.AdjustDM(ctx, starMod, 4, def.Starport.Value, h.INR, 9, 10)
+		starMod = h.AdjustDM(ctx, starMod, 6, def.Starport.Value, h.EQ, 11)
 
 		//size modifier
 		sizeMod := 0
-		switch def.Size {
-		case 0, 1:
-			sizeMod = 2
-		case 2, 3, 4:
-			sizeMod = 1
-		}
+		sizeMod = h.AdjustDM(ctx, sizeMod, 2, def.Size, h.LE, 1)
+		sizeMod = h.AdjustDM(ctx, sizeMod, 1, def.Size, h.INR, 2, 4)
 
 		//atmosphere mod
 		atmoMod := 0
-		if def.Atmosphere < 3 || def.Atmosphere > 10 {
-			atmoMod = 1
-		}
+		atmoMod = h.AdjustDM(ctx, atmoMod, 1, def.Atmosphere, h.LE, 3)
+		atmoMod = h.AdjustDM(ctx, atmoMod, 1, def.Atmosphere, h.GE, 10)
 
 		//hydrographics mod
 		hydroMod := 0
-		switch def.Hydrographics {
-		case 0, 9:
-			hydroMod = 1
-		case 10:
-			hydroMod = 2
-		}
+		hydroMod = h.AdjustDM(ctx, hydroMod, 1, def.Hydrographics, h.IS, 0, 9)
+		hydroMod = h.AdjustDM(ctx, hydroMod, 2, def.Hydrographics, h.EQ, 10)
 
 		//population modifier
 		popMod := 0
-		switch def.Population {
-		case 1, 2, 3, 4, 5, 8:
-			popMod = 1
-		case 9:
-			popMod = 2
-		case 10:
-			popMod = 4
-		}
+		popMod = h.AdjustDM(ctx, popMod, 1, def.Population, h.IS, 1, 2, 3, 4, 5, 8)
+		popMod = h.AdjustDM(ctx, popMod, 2, def.Population, h.EQ, 9)
+		popMod = h.AdjustDM(ctx, popMod, 4, def.Population, h.EQ, 10)
 
+		//government
 		govMod := 0
-		switch def.Government {
-		case 0, 4:
-			govMod = 1
-		case 7:
-			govMod = 2
-		case 13, 14:
-			govMod = -2
-		}
+		govMod = h.AdjustDM(ctx, govMod, 1, def.Government, h.IS, 0, 4)
+		govMod = h.AdjustDM(ctx, govMod, 2, def.Government, h.EQ, 7)
+		govMod = h.AdjustDM(ctx, govMod, -2, def.Government, h.INR, 13, 14)
 
 		techMods := starMod + sizeMod + atmoMod + hydroMod + popMod + govMod
 
@@ -400,20 +352,13 @@ func generateHighport(ctx *util.TASContext, def *model.WorldDefinition) {
 	}
 
 	hpTechMod := 0
-	if def.TechLevel >= 9 && def.TechLevel <= 11 {
-		hpTechMod = 1
-	}
-	if def.TechLevel >= 12 {
-		hpTechMod = 2
-	}
+	hpTechMod = h.AdjustDM(ctx, hpTechMod, 1, def.TechLevel, h.INR, 9, 11)
+	hpTechMod = h.AdjustDM(ctx, hpTechMod, 2, def.TechLevel, h.GE, 12)
 
 	hpPopMod := 0
-	if def.Population <= 6 {
-		hpPopMod = -1
-	}
-	if def.Population >= 9 {
-		hpPopMod = 1
-	}
+	hpPopMod = h.AdjustDM(ctx, hpPopMod, 1, def.Population, h.GE, 9)
+	hpPopMod = h.AdjustDM(ctx, hpPopMod, -1, def.Population, h.LE, 6)
+
 	def.Starport.HasHighport = dice.Sum(2, hpTechMod, hpPopMod) >= highportTarget
 }
 
@@ -427,12 +372,8 @@ func generateBases(ctx *util.TASContext, def *model.WorldDefinition) {
 	dice := ctx.Dice()
 
 	corsairLawMod := 0
-	if def.LawLevel == 0 {
-		corsairLawMod = 2
-	}
-	if def.LawLevel >= 2 {
-		corsairLawMod = -2
-	}
+	corsairLawMod = h.AdjustDM(ctx, corsairLawMod, 2, def.LawLevel, h.EQ, 0)
+	corsairLawMod = h.AdjustDM(ctx, corsairLawMod, -2, def.LawLevel, h.GE, 2)
 
 	switch def.Starport.Value {
 	case 2, 3, 4:

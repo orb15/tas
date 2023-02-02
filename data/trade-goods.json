@@ -1,0 +1,1038 @@
+{
+  "common-goods": [
+    {
+      "value": 11,
+      "type": "common electronics",
+      "tons-dice": 2,
+      "tons-multi": 10,
+      "base-price": 20000,
+      "examples": "simple elctronics including computers to TL 10",
+      "availability" : ["all"],
+      "purchase-dms": [
+        {
+          "code": "IN",
+          "mod": 3
+        },
+        {
+          "code": "HT",
+          "mod": 3
+        },
+        {
+          "code": "RI",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "NI",
+          "mod": 2
+        },
+        {
+          "code": "LT",
+          "mod": 1
+        },
+        {
+          "code": "PO",
+          "mod": 1
+        }       
+      ]
+    },
+    {
+      "value": 12,
+      "type": "common industrial goods",
+      "tons-dice": 2,
+      "tons-multi": 10,
+      "base-price": 10000,
+      "examples": "machine components for spare parts and common machinery",
+      "availability" : ["all"],
+      "purchase-dms": [
+        {
+          "code": "NA",
+          "mod": 2
+        },
+        {
+          "code": "IN",
+          "mod": 5
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "NI",
+          "mod": 3
+        },
+        {
+          "code": "AG",
+          "mod": 2
+        }       
+      ]
+    },
+    {
+      "value": 13,
+      "type": "common manufactured goods",
+      "tons-dice": 2,
+      "tons-multi": 10,
+      "base-price": 20000,
+      "examples": "household appliances, clothing",
+      "availability" : ["all"],
+      "purchase-dms": [
+        {
+          "code": "NA",
+          "mod": 2
+        },
+        {
+          "code": "IN",
+          "mod": 5
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "NI",
+          "mod": 3
+        },
+        {
+          "code": "HI",
+          "mod": 2
+        }       
+      ]
+    },
+    {
+      "value": 14,
+      "type": "common raw materials",
+      "tons-dice": 2,
+      "tons-multi": 20,
+      "base-price": 5000,
+      "examples": "metals, plastics, chemiscals and other basic materials",
+      "availability" : ["all"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 3
+        },
+        {
+          "code": "GA",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "NI",
+          "mod": 2
+        },
+        {
+          "code": "PO",
+          "mod": 2
+        }       
+      ]
+    },
+    {
+      "value": 15,
+      "type": "common consumables",
+      "tons-dice": 2,
+      "tons-multi": 20,
+      "base-price": 500,
+      "examples": "food, drink and other agricultural products",
+      "availability" : ["all"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 3
+        },
+        {
+          "code": "WA",
+          "mod": 2
+        },
+        {
+          "code": "GA",
+          "mod": 1
+        },
+        {
+          "code": "AS",
+          "mod": 4
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "AS",
+          "mod": 1
+        },
+        {
+          "code": "FL",
+          "mod": 1
+        },
+        {
+          "code": "IC",
+          "mod": 1
+        },
+        {
+          "code": "HP",
+          "mod": 1
+        }       
+      ]
+    },
+    {
+      "value": 16,
+      "type": "common ore",
+      "tons-dice": 2,
+      "tons-multi": 20,
+      "base-price": 1000,
+      "examples": "ore bearing stone, common metals",
+      "availability" : ["all"],
+      "purchase-dms": [
+        {
+          "code": "AS",
+          "mod": 4
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 3
+        },
+        {
+          "code": "NI",
+          "mod": 1
+        }       
+      ]
+    }
+  ],
+  "advanced-goods": [
+    {
+      "value": 21,
+      "type": "advanced electronics",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 100000,
+      "examples": "advanced sensors, computers and other electronics up to TL15",
+      "availability" : ["IN", "HT"],
+      "purchase-dms": [
+        {
+          "code": "IN",
+          "mod": 2
+        },
+        {
+          "code": "HT",
+          "mod": 3
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "NI",
+          "mod": 1
+        },
+        {
+          "code": "RI",
+          "mod": 2
+        },
+        {
+          "code": "AS",
+          "mod": 3
+        }       
+      ]
+    },
+    {
+      "value": 22,
+      "type": "advanced machine parts",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 75000,
+      "examples": "machine components and spare parts, including gravitic components",
+      "availability" : ["IN", "HT"],
+      "purchase-dms": [
+        {
+          "code": "IN",
+          "mod": 2
+        },
+        {
+          "code": "HT",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "AS",
+          "mod": 2
+        },
+        {
+          "code": "NI",
+          "mod": 1
+        }       
+      ]
+    },
+    {
+      "value": 23,
+      "type": "advanced manufactured goods",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 100000,
+      "examples": "devices and clothing incorporating advanced technologies",
+      "availability" : ["IN", "HT"],
+      "purchase-dms": [
+        {
+          "code": "IN",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "HI",
+          "mod": 1
+        },
+        {
+          "code": "RI",
+          "mod": 2
+        }       
+      ]
+    },
+    {
+      "value": 24,
+      "type": "advanced weapons",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 150000,
+      "examples": "firearms, explosives, ammunition, artillary and other military-grade weapons",
+      "availability" : ["IN", "HT"],
+      "purchase-dms": [
+        {
+          "code": "HT",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "PO",
+          "mod": 1
+        },
+        {
+          "code": "Amber Zone",
+          "mod": 2
+        },
+        {
+          "code": "Red Zone",
+          "mod": 4
+        }         
+      ]
+    },
+    {
+      "value": 25,
+      "type": "advanced vehicles",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 180000,
+      "examples": "air/rafts, spacecraft, grav tanks and other vehicles up to TL15",
+      "availability" : ["IN", "HT"],
+      "purchase-dms": [
+        {
+          "code": "HT",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "AS",
+          "mod": 2
+        },
+        {
+          "code": "RI",
+          "mod": 2
+        }       
+      ]
+    },
+    {
+      "value": 26,
+      "type": "biochemicals",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 50000,
+      "examples": "biofuels, organic chemicals, extracts",
+      "availability" : ["AG", "WA"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 1
+        },
+        {
+          "code": "WA",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 2
+        }     
+      ]
+    },
+    {
+      "value": 31,
+      "type": "crystals and gems",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 20000,
+      "examples": "diamonds, synthetic or natural gemstones",
+      "availability" : ["AS", "DE", "IC"],
+      "purchase-dms": [
+        {
+          "code": "AS",
+          "mod": 2
+        },
+        {
+          "code": "DE",
+          "mod": 1
+        },
+        {
+          "code": "IC",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 3
+        },
+        {
+          "code": "RI",
+          "mod": 2
+        }      
+      ]
+    },
+    {
+      "value": 32,
+      "type": "cybernetics",
+      "tons-dice": 1,
+      "tons-multi": 1,
+      "base-price": 250000,
+      "examples": "cybernetic components, replacement limbs",
+      "availability" : ["HT"],
+      "purchase-dms": [
+        {
+          "code": "HT",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "AS",
+          "mod": 1
+        },
+        {
+          "code": "IC",
+          "mod": 1
+        },
+        {
+          "code": "RI",
+          "mod": 2
+        }       
+      ]
+    },
+    {
+      "value": 33,
+      "type": "live animals",
+      "tons-dice": 1,
+      "tons-multi": 10,
+      "base-price": 10000,
+      "examples": "riding animals, beasts of burden, exotic pets",
+      "availability" : ["AG", "GA"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "LO",
+          "mod": 3
+        }      
+      ]
+    },
+    {
+      "value": 34,
+      "type": "luxury consumables",
+      "tons-dice": 1,
+      "tons-multi": 10,
+      "base-price": 20000,
+      "examples": "rare foods, fine liquors",
+      "availability" : ["AG", "GA", "WA"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 2
+        },
+        {
+          "code": "WA",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "RI",
+          "mod": 2
+        },
+        {
+          "code": "HI",
+          "mod": 2
+        }      
+      ]
+    },
+    {
+      "value": 35,
+      "type": "luxury goods",
+      "tons-dice": 1,
+      "tons-multi": 1,
+      "base-price": 200000,
+      "examples": "rare or extremely high-quality manufactured goods",
+      "availability" : ["HI"],
+      "purchase-dms": [
+        {
+          "code": "HI",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "RI",
+          "mod": 4
+        }     
+      ]
+    },
+    {
+      "value": 36,
+      "type": "medical supplies",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 50000,
+      "examples": "diagnostic equipment, basic drugs, cloning technology",
+      "availability" : ["HT", "HI"],
+      "purchase-dms": [
+        {
+          "code": "HT",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 2
+        },
+        {
+          "code": "PO",
+          "mod": 1
+        },
+        {
+          "code": "RI",
+          "mod": 1
+        }
+      ]
+    },
+    {
+      "value": 41,
+      "type": "petrochemicals",
+      "tons-dice": 1,
+      "tons-multi": 10,
+      "base-price": 10000,
+      "examples": "oil, liquid fuels",
+      "availability" : ["DE", "FL", "IC", "WA"],
+      "purchase-dms": [
+        {
+          "code": "DE",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 2
+        },
+        {
+          "code": "AG",
+          "mod": 1
+        },
+        {
+          "code": "LT",
+          "mod": 2
+        }
+      ]
+    },
+    {
+      "value": 42,
+      "type": "pharmaceuticals",
+      "tons-dice": 1,
+      "tons-multi": 1,
+      "base-price": 100000,
+      "examples": "drugs, medical supplies, anagathics, fast or slow drugs",
+      "availability" : ["AS", "DE", "HI", "WA"],
+      "purchase-dms": [
+        {
+          "code": "AS",
+          "mod": 2
+        },
+        {
+          "code": "HI",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "RI",
+          "mod": 2
+        },
+        {
+          "code": "LT",
+          "mod": 1
+        }
+      ]
+    },
+    {
+      "value": 43,
+      "type": "polymers",
+      "tons-dice": 1,
+      "tons-multi": 10,
+      "base-price": 7000,
+      "examples": "plastics and other synthetics",
+      "availability" : ["IN"],
+      "purchase-dms": [
+        {
+          "code": "IN",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "RI",
+          "mod": 2
+        },
+        {
+          "code": "NI",
+          "mod": 1
+        }
+      ]
+    },
+    {
+      "value": 44,
+      "type": "precious metals",
+      "tons-dice": 1,
+      "tons-multi": 1,
+      "base-price": 50000,
+      "examples": "gold, silver, platinum, rare elements",
+      "availability" : ["AS", "DE", "IC", "FL"],
+      "purchase-dms": [
+        {
+          "code": "AS",
+          "mod": 3
+        },
+        {
+          "code": "DE",
+          "mod": 1
+        },
+        {
+          "code": "IC",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "RI",
+          "mod": 3
+        },
+        {
+          "code": "IN",
+          "mod": 2
+        },
+        {
+          "code": "HT",
+          "mod": 1
+        }
+      ]
+    },
+    {
+      "value": 45,
+      "type": "radioactives",
+      "tons-dice": 1,
+      "tons-multi": 1,
+      "base-price": 1000000,
+      "examples": "uranium, plutonium, unobtainium, rare elements",
+      "availability" : ["AS", "DE", "LO"],
+      "purchase-dms": [
+        {
+          "code": "AS",
+          "mod": 2
+        },
+        {
+          "code": "LO",
+          "mod":2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 3
+        },
+        {
+          "code": "HT",
+          "mod": 1
+        },
+        {
+          "code": "NI",
+          "mod": -2
+        },
+        {
+          "code": "AG",
+          "mod": -3
+        }
+      ]
+    },
+    {
+      "value": 46,
+      "type": "robots",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 400000,
+      "examples": "industrial and personal robots, drones",
+      "availability" : ["IN"],
+      "purchase-dms": [
+        {
+          "code": "IN",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "AG",
+          "mod": 2
+        },
+        {
+          "code": "HT",
+          "mod": 1
+        }
+      ]
+    },
+    {
+      "value": 51,
+      "type": "spices",
+      "tons-dice": 1,
+      "tons-multi": 10,
+      "base-price": 6000,
+      "examples": "preservatives, luxury food additives, natural drugs",
+      "availability" : ["GA", "DE", "WA"],
+      "purchase-dms": [
+        {
+          "code": "DE",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "HI",
+          "mod": 2
+        },
+        {
+          "code": "RI",
+          "mod": 3
+        },
+        {
+          "code": "PO",
+          "mod": 3
+        }
+      ]
+    },
+    {
+      "value": 52,
+      "type": "textiles",
+      "tons-dice": 1,
+      "tons-multi": 20,
+      "base-price": 3000,
+      "examples": "clothing and fabrics",
+      "availability" : ["AG", "NI"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 7
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "HI",
+          "mod": 3
+        },
+        {
+          "code": "NA",
+          "mod": 2
+        }
+      ]
+    },
+    {
+      "value": 53,
+      "type": "uncommon ore",
+      "tons-dice": 1,
+      "tons-multi": 20,
+      "base-price": 5000,
+      "examples": "ore containing precious or valuable metals",
+      "availability" : ["AS", "IC"],
+      "purchase-dms": [
+        {
+          "code": "AS",
+          "mod": 4
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 3
+        },
+        {
+          "code": "NI",
+          "mod": 1
+        }
+      ]
+    },
+    {
+      "value": 54,
+      "type": "uncommon raw materials",
+      "tons-dice": 1,
+      "tons-multi": 10,
+      "base-price": 20000,
+      "examples": "valuable metals like titanium, unobtainium, rare elements",
+      "availability" : ["AG", "DE", "WA"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 2
+        },
+        {
+          "code": "WA",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 2
+        },
+        {
+          "code": "HT",
+          "mod": 1
+        }
+      ]
+    },
+    {
+      "value": 55,
+      "type": "wood",
+      "tons-dice": 1,
+      "tons-multi": 20,
+      "base-price": 1000,
+      "examples": "hard or beautiful woods, plant extracts",
+      "availability" : ["AG", "GA"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 6
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "RI",
+          "mod": 2
+        },
+        {
+          "code": "IN",
+          "mod": 1
+        }
+      ]
+    },
+    {
+      "value": 56,
+      "type": "vehicles",
+      "tons-dice": 1,
+      "tons-multi": 10,
+      "base-price": 15000,
+      "examples": "wheeled, tracked and other vehicles from TL10 and lower",
+      "availability" : ["IN", "HT"],
+      "purchase-dms": [
+        {
+          "code": "IN",
+          "mod": 2
+        },
+        {
+          "code": "HT",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "NI",
+          "mod": 2
+        },
+        {
+          "code": "HI",
+          "mod": 1
+        }
+      ]
+    }      
+  ],
+  "illegal-goods": [
+    {
+      "value": 61,
+      "type": "illegal biochemicals",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 50000,
+      "examples": "dangerous chemicals, extracts from endangered species",
+      "availability" : ["AG", "WA"],
+      "purchase-dms": [
+        {
+          "code": "WA",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "IN",
+          "mod": 6
+        }       
+      ]
+    },
+    {
+      "value": 62,
+      "type": "illegal cybernetics",
+      "tons-dice": 1,
+      "tons-multi": 1,
+      "base-price": 250000,
+      "examples": "combat cybernetics, illegal enhancements",
+      "availability" : ["HT"],
+      "purchase-dms": [
+        {
+          "code": "HI",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "AS",
+          "mod": 4
+        },
+        {
+          "code": "IC",
+          "mod": 4
+        },
+        {
+          "code": "RI",
+          "mod": 8
+        },
+        {
+          "code": "Amber Zone",
+          "mod": 6
+        },
+        {
+          "code": "Red Zone",
+          "mod": 6
+        }        
+      ]
+    },
+    {
+      "value": 63,
+      "type": "illegal drugs",
+      "tons-dice": 1,
+      "tons-multi": 1,
+      "base-price": 100000,
+      "examples": "addictive drugs, combat drugs",
+      "availability" : ["AS", "DE", "HI", "WA", "GA"],
+      "purchase-dms": [
+        {
+          "code": "AS",
+          "mod": 1
+        },
+        {
+          "code": "DE",
+          "mod": 1
+        },
+        {
+          "code": "GA",
+          "mod": 1
+        },
+        {
+          "code": "WA",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "RI",
+          "mod": 6
+        },
+        {
+          "code": "HI",
+          "mod": 6
+        }           
+      ]
+    },
+    {
+      "value": 64,
+      "type": "illegal luxuries",
+      "tons-dice": 1,
+      "tons-multi": 1,
+      "base-price": 50000,
+      "examples": "addictive drugs, combat drugs",
+      "availability" : ["AG", "GA", "WA"],
+      "purchase-dms": [
+        {
+          "code": "AG",
+          "mod": 2
+        },
+        {
+          "code": "WA",
+          "mod": 1
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "RI",
+          "mod": 6
+        },
+        {
+          "code": "HI",
+          "mod": 4
+        }           
+      ]
+    },
+    {
+      "value": 65,
+      "type": "illegal weapons",
+      "tons-dice": 1,
+      "tons-multi": 5,
+      "base-price": 150000,
+      "examples": "weapons of mass destruction, naval weapons",
+      "availability" : ["IN", "HT"],
+      "purchase-dms": [
+        {
+          "code": "HT",
+          "mod": 2
+        }
+      ],
+      "sale-dms": [
+        {
+          "code": "PO",
+          "mod": 6
+        },
+        {
+          "code": "Amber Zone",
+          "mod": 8
+        },
+        {
+          "code": "Red Zone",
+          "mod": 10
+        }          
+      ]
+    },
+    {
+      "value": 66,
+      "type": "exotics",
+      "tons-dice": 0,
+      "tons-multi": 0,
+      "base-price": 0,
+      "examples": "alien artifacts, unique items. Such goods are adventure seeds not trade goods",
+      "availability" : [],
+      "purchase-dms": [],
+      "sale-dms": []
+    }
+  ]
+}

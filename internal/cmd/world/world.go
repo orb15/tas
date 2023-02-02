@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"tas/internal/cmd/helpers"
+	h "tas/internal/cmd/helpers"
 	"tas/internal/model"
 	"tas/internal/util"
 
@@ -18,6 +18,8 @@ const (
 	//name of flag that holds worldgen info
 	WorldGenSchemeFlagName = "scheme"
 	LongformOutputFlagName = "long"
+
+	maxNumberOfWorldsToGenerate = 1000
 
 	//file-specific constants
 	techLevelFile      = "techlevel.json"
@@ -35,12 +37,8 @@ const (
 	worldTempFile      = "world-temp.json"
 
 	//default world generation data
-	defaultWorldName    = "UNK"
-	defaultHexLocation  = "0000"
-	creditsAbbreviation = "CR"
-	nl                  = "\n"
-	tab                 = "\t"
-	sp                  = " "
+	defaultWorldName   = "UNK"
+	defaultHexLocation = "0000"
 
 	//special one-off temp values to indicate special circumstances on a table
 	specialTempCodeForNoAtmo   = -1 //indicates that temperature is boiling/freezing at day/night
@@ -70,12 +68,15 @@ const (
 var WorldCmdConfig = &cobra.Command{
 
 	Use:   "world",
-	Short: "creates a single World",
+	Short: "creates and displays Worlds",
+	Run:   worldCmd,
+
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) > 1 {
 			return fmt.Errorf("too many arguments")
 		}
 
+		//number of worlds to generate
 		if len(args) == 1 {
 			_, err := strconv.ParseUint(args[0], 10, 16)
 			if err != nil {
@@ -85,8 +86,6 @@ var WorldCmdConfig = &cobra.Command{
 
 		return nil
 	},
-
-	Run: worldCmd,
 }
 
 func worldCmd(cmd *cobra.Command, args []string) {
@@ -133,12 +132,12 @@ func worldCmd(cmd *cobra.Command, args []string) {
 	//determine number of worlds required. Ignore error here as it was validated by cobra
 	numberOfWorldsToGenerate := uint64(1)
 	if len(args) > 0 {
-		numberOfWorldsToGenerate, _ = strconv.ParseUint(args[0], 10, 16)
+		numberOfWorldsToGenerate, _ = strconv.ParseUint(args[0], 10, 16) // <- note 16-bit limit on this param!
 		if numberOfWorldsToGenerate == 0 {
 			numberOfWorldsToGenerate = 1
 		}
-		if numberOfWorldsToGenerate > 1000 {
-			numberOfWorldsToGenerate = 1000
+		if numberOfWorldsToGenerate > maxNumberOfWorldsToGenerate {
+			numberOfWorldsToGenerate = maxNumberOfWorldsToGenerate
 		}
 	}
 
@@ -212,7 +211,7 @@ func GenerateWorldSummary(ctx *util.TASContext, def *model.WorldDefinition, src 
 		Fuel:         src.WorldStarport[def.Starport.Value].Fuel,
 		Facilities:   src.WorldStarport[def.Starport.Value].Facilities,
 		HasHighport:  "no",
-		BerthingCost: strconv.Itoa(def.Starport.BerthingCost) + creditsAbbreviation,
+		BerthingCost: strconv.Itoa(def.Starport.BerthingCost) + h.CreditsAbbreviation,
 	}
 	if def.Starport.HasHighport {
 		esd.HasHighport = "yes"
@@ -306,7 +305,7 @@ func LoadWorldSourceData(ctx *util.TASContext) (*model.WorldSource, error) {
 		worldTempFile,
 		worldTradeCodeFile}
 
-	fileData := util.IngestFiles(sourceFiles)
+	fileData := util.IngestFiles("data/", sourceFiles)
 	if !util.AllFilesReadOk(fileData) {
 		log.Error().Msg("one or more files failed to load as expected")
 		for _, f := range fileData {
@@ -314,7 +313,7 @@ func LoadWorldSourceData(ctx *util.TASContext) (*model.WorldSource, error) {
 				log.Error().Err(f.Err).Str("filename", f.Name).Send()
 			}
 		}
-		return nil, errors.New(helpers.UnableToContinueBecauseOfErrors)
+		return nil, errors.New(h.UnableToContinueBecauseOfErrors)
 	}
 	log.Info().Msg("source data files load complete")
 
@@ -434,85 +433,86 @@ func buildLongDescription(ctx *util.TASContext, def *model.WorldDefinition, src 
 	default:
 		tzone = "Green"
 	}
-	sb.WriteString("Starport")
-	sb.WriteString(nl + tab + "Classification:" + sp + summary.ExtendedData.StarportSummary.Starport)
-	sb.WriteString(nl + tab + "Quality:" + sp + summary.ExtendedData.StarportSummary.Quality)
-	sb.WriteString(nl + tab + "Berthing Cost:" + sp + summary.ExtendedData.StarportSummary.BerthingCost)
-	sb.WriteString(nl + tab + "Fuel Available:" + sp + summary.ExtendedData.StarportSummary.Fuel)
-	sb.WriteString(nl + tab + "Facilities Available:" + sp + summary.ExtendedData.StarportSummary.Facilities)
-	sb.WriteString(nl + tab + "Has Highport:" + sp + summary.ExtendedData.StarportSummary.HasHighport)
-	sb.WriteString(nl + tab + "Travel Zone:" + sp + tzone)
+	sb.WriteString("UWP:" + h.SP + summary.ToUWP())
+	sb.WriteString(h.NL + "Starport")
+	sb.WriteString(h.NL + h.TAB + "Classification:" + h.SP + summary.ExtendedData.StarportSummary.Starport)
+	sb.WriteString(h.NL + h.TAB + "Quality:" + h.SP + summary.ExtendedData.StarportSummary.Quality)
+	sb.WriteString(h.NL + h.TAB + "Berthing Cost:" + h.SP + summary.ExtendedData.StarportSummary.BerthingCost)
+	sb.WriteString(h.NL + h.TAB + "Fuel Available:" + h.SP + summary.ExtendedData.StarportSummary.Fuel)
+	sb.WriteString(h.NL + h.TAB + "Facilities Available:" + h.SP + summary.ExtendedData.StarportSummary.Facilities)
+	sb.WriteString(h.NL + h.TAB + "Has Highport:" + h.SP + summary.ExtendedData.StarportSummary.HasHighport)
+	sb.WriteString(h.NL + h.TAB + "Travel Zone:" + h.SP + tzone)
 	if len(summary.Bases) > 0 {
-		sb.WriteString(nl + tab + "There are" + sp + toHex(ctx, len(summary.Bases)) + sp + "military bases in addition to the starport")
+		sb.WriteString(h.NL + h.TAB + "There are" + h.SP + toHex(ctx, len(summary.Bases)) + h.SP + "military bases in addition to the starport")
 		for i := 0; i < len(def.Bases); i++ {
-			sb.WriteString(nl + tab + tab + "Base" + sp + toHex(ctx, i+1))
+			sb.WriteString(h.NL + h.TAB + h.TAB + "Base" + h.SP + toHex(ctx, i+1))
 			baseType := def.Bases[i]
-			sb.WriteString(nl + tab + tab + tab + "Type:" + sp + baseType)
-			sb.WriteString(nl + tab + tab + tab + "Description:" + sp + src.WorldBases[baseType].Description)
+			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Type:" + h.SP + baseType)
+			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Description:" + h.SP + src.WorldBases[baseType].Description)
 		}
 	}
 
-	sb.WriteString(nl)
-	sb.WriteString(nl + "Size:" + sp + summary.Size)
-	sb.WriteString(nl + tab + "Diameter:" + sp + src.WorldSize[def.Size].Diameter)
-	sb.WriteString(nl + tab + "Gravity:" + sp + src.WorldSize[def.Size].Gravity)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + "Size:" + h.SP + summary.Size)
+	sb.WriteString(h.NL + h.TAB + "Diameter:" + h.SP + src.WorldSize[def.Size].Diameter)
+	sb.WriteString(h.NL + h.TAB + "Gravity:" + h.SP + src.WorldSize[def.Size].Gravity)
 
-	sb.WriteString(nl)
-	sb.WriteString(nl + "Atmosphere:" + sp + summary.Atmosphere)
-	sb.WriteString(nl + tab + "Details:" + sp + src.WorldAtmo[def.Atmosphere].Composition)
-	sb.WriteString(nl + tab + "Pressure Range (PSI):" + sp + src.WorldAtmo[def.Atmosphere].Pressure)
-	sb.WriteString(nl + tab + "Required Gear:" + sp + src.WorldAtmo[def.Atmosphere].GearRequired)
-	sb.WriteString(nl + tab + "Temperature Zone:" + sp + summary.ExtendedData.TemperatureSummary.Classification)
-	sb.WriteString(nl + tab + "Temperature Descrpition:" + sp + summary.ExtendedData.TemperatureSummary.Description)
-	sb.WriteString(nl + tab + "Average Temperature:" + sp + summary.ExtendedData.TemperatureSummary.AverageTemperature)
-	sb.WriteString(nl + tab + "Position within star's habitability zone:" + sp + summary.ExtendedData.TemperatureSummary.HabitabilityZone)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + "Atmosphere:" + h.SP + summary.Atmosphere)
+	sb.WriteString(h.NL + h.TAB + "Details:" + h.SP + src.WorldAtmo[def.Atmosphere].Composition)
+	sb.WriteString(h.NL + h.TAB + "Pressure Range (PSI):" + h.SP + src.WorldAtmo[def.Atmosphere].Pressure)
+	sb.WriteString(h.NL + h.TAB + "Required Gear:" + h.SP + src.WorldAtmo[def.Atmosphere].GearRequired)
+	sb.WriteString(h.NL + h.TAB + "Temperature Zone:" + h.SP + summary.ExtendedData.TemperatureSummary.Classification)
+	sb.WriteString(h.NL + h.TAB + "Temperature Descrpition:" + h.SP + summary.ExtendedData.TemperatureSummary.Description)
+	sb.WriteString(h.NL + h.TAB + "Average Temperature:" + h.SP + summary.ExtendedData.TemperatureSummary.AverageTemperature)
+	sb.WriteString(h.NL + h.TAB + "Position within star's habitability zone:" + h.SP + summary.ExtendedData.TemperatureSummary.HabitabilityZone)
 
-	sb.WriteString(nl)
-	sb.WriteString(nl + "Hydrographics:" + sp + summary.Hydrographics)
-	sb.WriteString(nl + tab + "Description:" + sp + src.WorldHydro[def.Hydrographics].Description)
-	sb.WriteString(nl + tab + "Hydrographic percentage (liquid, solid and/or gas):" + sp + src.WorldHydro[def.Hydrographics].Percentage)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + "Hydrographics:" + h.SP + summary.Hydrographics)
+	sb.WriteString(h.NL + h.TAB + "Description:" + h.SP + src.WorldHydro[def.Hydrographics].Description)
+	sb.WriteString(h.NL + h.TAB + "Hydrographic percentage (liquid, solid and/or gas):" + h.SP + src.WorldHydro[def.Hydrographics].Percentage)
 
-	sb.WriteString(nl)
-	sb.WriteString(nl + "Population:" + sp + summary.Population)
-	sb.WriteString(nl + tab + "Population is in the:" + sp + src.WorldPop[def.Population].Inhabitants)
-	sb.WriteString(nl + tab + "Cultural aspect influencing society:" + sp + summary.ExtendedData.CulturDetail.Type)
-	sb.WriteString(nl + tab + "How this cultural aspect influences day-to-day or business life:" + sp + summary.ExtendedData.CulturDetail.Description)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + "Population:" + h.SP + summary.Population)
+	sb.WriteString(h.NL + h.TAB + "Population is in the:" + h.SP + src.WorldPop[def.Population].Inhabitants)
+	sb.WriteString(h.NL + h.TAB + "Cultural aspect influencing society:" + h.SP + summary.ExtendedData.CulturDetail.Type)
+	sb.WriteString(h.NL + h.TAB + "How this cultural aspect influences day-to-day or business life:" + h.SP + summary.ExtendedData.CulturDetail.Description)
 
-	sb.WriteString(nl)
-	sb.WriteString(nl + "Government:" + sp + summary.Government)
-	sb.WriteString(nl + tab + "Type:" + sp + src.WorldGov[def.Government].Type)
-	sb.WriteString(nl + tab + "Description:" + sp + src.WorldGov[def.Government].Description)
-	sb.WriteString(nl + tab + "Examples of this form of government:" + sp + src.WorldGov[def.Government].Example)
-	sb.WriteString(nl + tab + "Items usually considered contraband by this government:" + sp + src.WorldGov[def.Government].Contraband)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + "Government:" + h.SP + summary.Government)
+	sb.WriteString(h.NL + h.TAB + "Type:" + h.SP + src.WorldGov[def.Government].Type)
+	sb.WriteString(h.NL + h.TAB + "Description:" + h.SP + src.WorldGov[def.Government].Description)
+	sb.WriteString(h.NL + h.TAB + "Examples of this form of government:" + h.SP + src.WorldGov[def.Government].Example)
+	sb.WriteString(h.NL + h.TAB + "Items usually considered contraband by this government:" + h.SP + src.WorldGov[def.Government].Contraband)
 	if len(summary.ExtendedData.FactionsSummary) > 0 {
-		sb.WriteString(nl + tab + "There are" + sp + toHex(ctx, len(summary.ExtendedData.FactionsSummary)) + sp + "Factions opposing the Government")
+		sb.WriteString(h.NL + h.TAB + "There are" + h.SP + toHex(ctx, len(summary.ExtendedData.FactionsSummary)) + h.SP + "Factions opposing the Government")
 
 		for i := range summary.ExtendedData.FactionsSummary {
 			desiredGovValue := def.Factions[i].GovernmentStyle
-			sb.WriteString(nl + tab + tab + "Faction" + sp + toHex(ctx, i+1))
-			sb.WriteString(nl + tab + tab + tab + "Desired Government:" + sp + summary.ExtendedData.FactionsSummary[i].Government)
-			sb.WriteString(nl + tab + tab + tab + "Type:" + sp + src.WorldGov[desiredGovValue].Type)
-			sb.WriteString(nl + tab + tab + tab + "Description:" + sp + src.WorldGov[desiredGovValue].Description)
-			sb.WriteString(nl + tab + tab + tab + "Examples of this form of government:" + sp + src.WorldGov[desiredGovValue].Example)
-			sb.WriteString(nl + tab + tab + tab + "Items usually considered contraband by this government:" + sp + src.WorldGov[desiredGovValue].Contraband)
-			sb.WriteString(nl + tab + tab + tab + "Influence or power relative to primary government:" + sp + summary.ExtendedData.FactionsSummary[i].RelativeStrength)
+			sb.WriteString(h.NL + h.TAB + h.TAB + "Faction" + h.SP + toHex(ctx, i+1))
+			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Desired Government:" + h.SP + summary.ExtendedData.FactionsSummary[i].Government)
+			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Type:" + h.SP + src.WorldGov[desiredGovValue].Type)
+			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Description:" + h.SP + src.WorldGov[desiredGovValue].Description)
+			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Examples of this form of government:" + h.SP + src.WorldGov[desiredGovValue].Example)
+			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Items usually considered contraband by this government:" + h.SP + src.WorldGov[desiredGovValue].Contraband)
+			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Influence or power relative to primary government:" + h.SP + summary.ExtendedData.FactionsSummary[i].RelativeStrength)
 		}
 	}
 
-	sb.WriteString(nl)
-	sb.WriteString(nl + "Law Level:" + sp + summary.LawLevel)
-	sb.WriteString(nl + tab + "Banned Weapons:" + sp + src.WorldLaw[def.LawLevel].BannedWeapons)
-	sb.WriteString(nl + tab + "Banned Armor:" + sp + src.WorldLaw[def.LawLevel].BannedArmor)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + "Law Level:" + h.SP + summary.LawLevel)
+	sb.WriteString(h.NL + h.TAB + "Banned Weapons:" + h.SP + src.WorldLaw[def.LawLevel].BannedWeapons)
+	sb.WriteString(h.NL + h.TAB + "Banned Armor:" + h.SP + src.WorldLaw[def.LawLevel].BannedArmor)
 
-	sb.WriteString(nl)
-	sb.WriteString(nl + "Tech Level:" + sp + summary.TechLevel)
-	sb.WriteString(nl + tab + "Classification:" + sp + src.TechLevel[def.TechLevel].Catagory)
-	sb.WriteString(nl + tab + "Description:" + sp + src.TechLevel[def.TechLevel].Description)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + "Tech Level:" + h.SP + summary.TechLevel)
+	sb.WriteString(h.NL + h.TAB + "Classification:" + h.SP + src.TechLevel[def.TechLevel].Catagory)
+	sb.WriteString(h.NL + h.TAB + "Description:" + h.SP + src.TechLevel[def.TechLevel].Description)
 
 	if len(summary.TradeCodes) > 0 {
 		codes := strings.Join(def.TradeCodes, ",")
-		sb.WriteString(nl)
-		sb.WriteString(nl + "Trade Codes:" + sp + codes)
+		sb.WriteString(h.NL)
+		sb.WriteString(h.NL + "Trade Codes:" + h.SP + codes)
 	}
 
 	summary.ExtendedData.LongDescription = sb.String()

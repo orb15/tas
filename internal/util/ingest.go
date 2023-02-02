@@ -24,13 +24,13 @@ func AllFilesReadOk(data map[string]*IngestResult) bool {
 	return true
 }
 
-func IngestFiles(filesToRead []string) map[string]*IngestResult {
+func IngestFiles(folder string, filesToRead []string) map[string]*IngestResult {
 
 	results := make(map[string]*IngestResult)
 
 	for _, f := range filesToRead {
 
-		path := fmt.Sprintf("data/%s", f)
+		path := fmt.Sprintf("%s%s", folder, f)
 
 		ir := &IngestResult{
 			Name: f,

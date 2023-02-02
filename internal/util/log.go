@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	LogLevelError    = "error"
+	LogLevelWarn     = "warn"
 	LogLevelFlagName = "loglevel"
 )
 

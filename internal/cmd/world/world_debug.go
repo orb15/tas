@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	h "tas/internal/cmd/helpers"
 	"tas/internal/model"
 	"tas/internal/util"
 
@@ -28,13 +29,15 @@ The UWP is thus C55655557-6 AG LT NI (ignoring bases)
 */
 
 const (
-	testLoopsToRun = 10000
-	maxTestLoops   = 100000 //do NOT exceed this numer!
+	MaxLoopSizeFlagName = "max"
+
+	subsectorLoopsToRun = 40
+	maxTestLoops        = 10000 //do NOT exceed this numer!
 )
 
 var WorldDebugCmdConfig = &cobra.Command{
 
-	Use:   "world-debug",
+	Use:   "debug",
 	Short: "calcs world generation stats for debugging purposes",
 	Run:   debugWorldGeneration,
 }
@@ -42,13 +45,6 @@ var WorldDebugCmdConfig = &cobra.Command{
 // The approach here is to generate many worlds and see if there is meaningful derivation from the
 // above UWP average
 func debugWorldGeneration(cmd *cobra.Command, args []string) {
-
-	//prep data store to hold the randomized worlds
-	numberOfWorldsToGenerate := testLoopsToRun
-	if numberOfWorldsToGenerate > maxTestLoops {
-		numberOfWorldsToGenerate = maxTestLoops
-	}
-	dataStore := make([]*model.WorldDefinition, 0, numberOfWorldsToGenerate)
 
 	//create a config to hold all data passed into this call
 	cfg, err := util.NewTASConfig().
@@ -81,6 +77,21 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 		return
 	}
 
+	//prep data store to hold the randomized worlds
+	numberOfWorldsToGenerate := subsectorLoopsToRun
+	useMax, _ := cfg.Flags.GetBool(MaxLoopSizeFlagName)
+	if err != nil {
+		panic(1)
+	}
+	if useMax {
+		numberOfWorldsToGenerate = maxTestLoops
+	}
+
+	if numberOfWorldsToGenerate > maxTestLoops {
+		numberOfWorldsToGenerate = maxTestLoops
+	}
+	dataStore := make([]*model.WorldDefinition, 0, numberOfWorldsToGenerate)
+
 	//generate the planets
 	for i := 0; i < numberOfWorldsToGenerate; i++ {
 		def := GenerateWorld(ctx, schemeName)
@@ -88,82 +99,102 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 	}
 
 	//get averages
-	sizeAvg := calcAverageForAttribute("Si", dataStore)
-	atmoAvg := calcAverageForAttribute("At", dataStore)
-	tempAvg := calcAverageForAttribute("Te", dataStore)
-	hydroAvg := calcAverageForAttribute("Hy", dataStore)
-	popAvg := calcAverageForAttribute("Po", dataStore)
-	govAvg := calcAverageForAttribute("Go", dataStore)
-	lawAvg := calcAverageForAttribute("Ll", dataStore)
-	starAvg := calcAverageForAttribute("Sp", dataStore)
-	techAvg := calcAverageForAttribute("Tl", dataStore)
+	sizeAvg, sizeMin, sizeMax := calcStatsForAttribute("Si", dataStore)
+	atmoAvg, atmoMin, atmoMax := calcStatsForAttribute("At", dataStore)
+	tempAvg, tempMin, tempMax := calcStatsForAttribute("Te", dataStore)
+	hydroAvg, hydroMin, hydroMax := calcStatsForAttribute("Hy", dataStore)
+	popAvg, popMin, popMax := calcStatsForAttribute("Po", dataStore)
+	govAvg, govMin, govMax := calcStatsForAttribute("Go", dataStore)
+	lawAvg, lawMin, lawMax := calcStatsForAttribute("Ll", dataStore)
+	starAvg, starMin, starMax := calcStatsForAttribute("Sp", dataStore)
+	techAvg, techMin, techMax := calcStatsForAttribute("Tl", dataStore)
 
 	var sb strings.Builder
-	sb.WriteString(nl)
-	sb.WriteString(nl)
-	sb.WriteString("Stats for" + sp + fmt.Sprintf("%d debug runs", numberOfWorldsToGenerate) + sp + "using scheme:" + sp + generatorFlagVal)
-	sb.WriteString(nl)
-	sb.WriteString(nl + "Average Size" + tab + tab + tab + fmt.Sprintf("%f", sizeAvg))
-	sb.WriteString(nl + "Average Atmosphere" + tab + tab + fmt.Sprintf("%f", atmoAvg))
-	sb.WriteString(nl + "Average Temperature" + tab + tab + fmt.Sprintf("%f", tempAvg))
-	sb.WriteString(nl + "Average Hydrographics" + tab + tab + fmt.Sprintf("%f", hydroAvg))
-	sb.WriteString(nl + "Average Population" + tab + tab + fmt.Sprintf("%f", popAvg))
-	sb.WriteString(nl + "Average Government" + tab + tab + fmt.Sprintf("%f", govAvg))
-	sb.WriteString(nl + "Average Law Level" + tab + tab + fmt.Sprintf("%f", lawAvg))
-	sb.WriteString(nl + "Average Starport" + tab + tab + fmt.Sprintf("%f", starAvg))
-	sb.WriteString(nl + "Average Tech Level" + tab + tab + fmt.Sprintf("%f", techAvg))
-	sb.WriteString(nl)
-	sb.WriteString(nl)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL)
+	sb.WriteString("Average, Min and Max Stats for" + h.SP + fmt.Sprintf("%d debug runs", numberOfWorldsToGenerate) + h.SP + "using scheme:" + h.SP + generatorFlagVal)
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + "Size" + h.TAB + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", sizeAvg, sizeMin, sizeMax))
+	sb.WriteString(h.NL + "Atmosphere" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", atmoAvg, atmoMin, atmoMax))
+	sb.WriteString(h.NL + "Temperature" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", tempAvg, tempMin, tempMax))
+	sb.WriteString(h.NL + "Hydrographics" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", hydroAvg, hydroMin, hydroMax))
+	sb.WriteString(h.NL + "Population" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", popAvg, popMin, popMax))
+	sb.WriteString(h.NL + "Government" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", govAvg, govMin, govMax))
+	sb.WriteString(h.NL + "Law Level" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", lawAvg, lawMin, lawMax))
+	sb.WriteString(h.NL + "Starport" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", starAvg, starMin, starMax))
+	sb.WriteString(h.NL + "Tech Level" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", techAvg, techMin, techMax))
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL)
 
 	fmt.Println(sb.String())
 
 }
 
-func calcAverageForAttribute(attrib string, defs []*model.WorldDefinition) float32 {
+func calcStatsForAttribute(attrib string, defs []*model.WorldDefinition) (float32, int, int) {
 
 	sum := 0
 	var avg float32
+	min := 15
+	max := 0
 
 	switch attrib {
 	case "Si":
 		for _, d := range defs {
+			min = h.MinInt(min, d.Size)
+			max = h.MaxInt(max, d.Size)
 			sum += d.Size
 		}
 	case "At":
 		for _, d := range defs {
+			min = h.MinInt(min, d.Atmosphere)
+			max = h.MaxInt(max, d.Atmosphere)
 			sum += d.Atmosphere
 		}
 	case "Te":
 		for _, d := range defs {
+			min = h.MinInt(min, d.Temperature)
+			max = h.MaxInt(max, d.Temperature)
 			sum += d.Temperature
 		}
 	case "Hy":
 		for _, d := range defs {
+			min = h.MinInt(min, d.Hydrographics)
+			max = h.MaxInt(max, d.Hydrographics)
 			sum += d.Hydrographics
 		}
 	case "Po":
 		for _, d := range defs {
+			min = h.MinInt(min, d.Population)
+			max = h.MaxInt(max, d.Population)
 			sum += d.Population
 		}
 	case "Go":
 		for _, d := range defs {
+			min = h.MinInt(min, d.Government)
+			max = h.MaxInt(max, d.Government)
 			sum += d.Government
 		}
 	case "Ll":
 		for _, d := range defs {
+			min = h.MinInt(min, d.LawLevel)
+			max = h.MaxInt(max, d.LawLevel)
 			sum += d.LawLevel
 		}
 	case "Sp":
 		for _, d := range defs {
+			min = h.MinInt(min, d.Starport.Value)
+			max = h.MaxInt(max, d.Starport.Value)
 			sum += d.Starport.Value
 		}
 	case "Tl":
 		for _, d := range defs {
+			min = h.MinInt(min, d.TechLevel)
+			max = h.MaxInt(max, d.TechLevel)
 			sum += d.TechLevel
 		}
 	}
 
 	avg = float32(sum) / float32(len(defs))
 
-	return avg
+	return avg, min, max
 }

@@ -1,0 +1,22 @@
+{
+  "character-data": {
+    "highest-steward-skill": 0,
+    "highest-scout-naval-rank": 0,
+    "highest-soc-skill-dm": 0,
+    "ship-is-armed": false
+  },
+  "world-data": [
+    {
+      "name": "foo",
+      "uwp": "X555366-7 NSCM RI HT A"
+    }, 
+    {
+      "name": "bar",
+      "uwp": "AA70B49-C"
+    },
+    {
+      "name": "baz",
+      "uwp": "B000655-E AS VA"
+    }
+  ]
+}

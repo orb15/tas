@@ -1,6 +1,7 @@
 package world
 
 import (
+	h "tas/internal/cmd/helpers"
 	"tas/internal/model"
 	"tas/internal/util"
 )
@@ -10,23 +11,17 @@ func customHydrographics_FixAirlessWaterWorlds(ctx *util.TASContext, def *model.
 	log := ctx.Logger()
 	dice := ctx.Dice()
 
-	if def.Size <= 1 || def.Atmosphere <= 1 {
+	if def.Size <= 1 || def.Atmosphere == 0 {
 		def.Hydrographics = 0
 	} else {
 
 		atmoMod := 0
-		if def.Atmosphere >= 10 {
-			atmoMod = -4
-		}
+		atmoMod = h.AdjustDM(ctx, atmoMod, -4, def.Atmosphere, h.IS, 1, 10, 11, 12, 13, 14, 15)
 
 		tempMod := 0
 		if def.Atmosphere != 13 && def.Atmosphere != 15 {
-			switch def.Temperature {
-			case 10, 11:
-				tempMod = -2
-			case 12:
-				tempMod = -6
-			}
+			tempMod = h.AdjustDM(ctx, tempMod, -2, def.Temperature, h.INR, 10, 11)
+			tempMod = h.AdjustDM(ctx, tempMod, -6, def.Temperature, h.EQ, 12)
 		}
 
 		hydro := dice.Sum(2, -7, def.Atmosphere, atmoMod, tempMod)
@@ -108,17 +103,20 @@ func customTechLevel_FixLowTechValues(ctx *util.TASContext, def *model.WorldDefi
 	case 9, 10: //class B
 		techLevel = util.BoundTo(techLevel, 11, techMax) //need this level of AI and other tech to build starships
 	case 11: //class A
-		techLevel = util.BoundTo(techLevel, 12, techMax) //like;lihood of bases and highport pushes tech up higher than Class B
+		techLevel = util.BoundTo(techLevel, 12, techMax) //likelihood of bases and highport pushes tech up higher than Class B
 	}
 
-	//at this point we have a floor established, add a bit of randomness
-	//tech makes lives either and is ubiqutous, so error on bumping tech a bit
+	//at this point we have a baseline established, add a bit of randomness
+	//allow tech to drift downward (indicating infrastrucural decay or remoteness)
+	//or increase a bit for whatever reason
 	adj := dice.Roll()
 	switch adj {
-	case 1: //something is causing the tech to be a bit lower than expected
+	case 1:
+		techLevel += -2
+	case 2:
 		techLevel += -1
 	case 6:
-		techLevel += 1 //tech wants to spread
+		techLevel += 1
 	}
 
 	//edge case no population means no tech under almost all circumstances
