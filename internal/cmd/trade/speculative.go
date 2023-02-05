@@ -81,6 +81,7 @@ func specTradeCmd(cmd *cobra.Command, args []string) {
 	log.Debug().Bool("isBuying", isBuying).Str("world", localWorldName).Send()
 
 	summary := GenerateSpeculativeTrade(ctx, localData, tradeGoodsMap, isBuying)
+	summary.WorldName = localWorldName
 	writeSpeculativeOutput(ctx, summary, isBuying)
 }
 
@@ -117,8 +118,10 @@ func GenerateSpeculativeTrade(ctx *util.TASContext, localData *model.WorldTradeI
 
 	//if we are buying, we need to generate goods available on this planet
 	if isBuying {
+		summary.TransactionType = "buy"
 		summary.TradeLots = generateTradeLots(ctx, localData, tradeGoodsMap, isBuying)
 	} else { //we are selling, so we don't need to generate goods, just list all DMs for any type of good that _might_ be sold - which is all of them!
+		summary.TransactionType = "sell"
 		summary.TradeLots = buildSellersDMs(ctx, localData, tradeGoodsMap)
 	}
 
@@ -165,6 +168,12 @@ func writeSpeculativeOutput(ctx *util.TASContext, summary model.SpeculativeTrade
 	}
 
 	fmt.Println(sb.String())
+
+	//also write to file if requested
+	writeToFile, _ := ctx.Config().Flags.GetBool(util.ToFileFlagName)
+	if writeToFile {
+		h.WrappedJSONFileWriter(ctx, summary, summary.ToFileName())
+	}
 }
 
 func generateTradeLots(ctx *util.TASContext, localData *model.WorldTradeInfo, tradeGoodsMap model.TradeGoodsMap, isBuying bool) []model.SpeculativeTradeLot {

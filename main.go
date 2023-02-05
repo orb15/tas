@@ -13,7 +13,9 @@ func main() {
 	//root command and flags
 	var rootCmd = &cobra.Command{}
 	var LogLevel string
+	var ToFile bool
 	rootCmd.PersistentFlags().StringVar(&LogLevel, util.LogLevelFlagName, util.LogLevelWarn, "logging level (debug, info, warn, error or off")
+	rootCmd.PersistentFlags().BoolVar(&ToFile, util.ToFileFlagName, false, "set to also write output to an output file")
 
 	//world command
 	var GenScheme string

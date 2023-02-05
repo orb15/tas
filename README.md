@@ -5,8 +5,13 @@ This software presents a collection of command line tools to simplify working wi
 # Command Directory
 The sections below detail the various commands and their options.
 You can always get help by executing `> tas -h` or `tas <command> -h` for help on a specific command.
-For all commands, the `--loglevel <debug|info|warn|error|fatal>` flag can be used to set log level.
-The default logging level is 'warn'
+
+### Gloabl Flags
+These flags are available to every command  
+`--loglevel <debug|info|warn|error|fatal>` flag can be used to set log level.
+The default logging level is 'warn'  
+`--tofile` when set, writes the output to a local output folder.
+Output is in JSON, but is indented to make it easy to read
 
 ## world
 The `world` command generates details of one or more worlds as expressed on pages 246 - 261 of the core rulebook.
@@ -46,6 +51,8 @@ The 'custom' option utilizes a slightly different algorithm to generate more bel
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`--max`
 If this flag is included, 10,000 worlds are used to generate stats rather than 40 (the averge number of worlds in a typical subsector). The differences between these are usually slight
 
+Note: this command ignores the global `--tofile` flag!
+
 ## trade
 The `trade` command calculates the Die Modifiers for the standard types of trade, including Passengers, Freight and Mail.
 The entire process is not modelled (determining price, number of passengers etc.) because these depend on character skills and rolls.
@@ -81,7 +88,7 @@ Players can use these DM's to determine the Offered Purchase Price some NPC agen
 In both cases, the DM's provided are not the final DM's; player skill level, the use of a local broker (or underworld fixer in the case of  Illegal Goods) or in-universe reasons may adjust this DM before it is used to determine price information.
 
 Note that while Illegal Goods are likely to show up as an available Trade Lot, they are not actually made available to the players without roleplay or use of a local 'fixer' or underworld broker to provide access to these goods. Finally, note that some goods that are generally considered legal on a generic world (e.g. Weapons) may be illegal on a given world based on Law Level or other in-universe reasons.
-The referee will need to determine if the goods are just not avaiolable at all, or if they are available, but heavily controlled to ensure their immediate export off world.
+The referee will need to determine if the goods are just not available at all, or if they are available but heavily controlled to ensure their immediate export off world.
 
 Usage: `> tas trade spec <current-world> <buy|sell> [flags]` where  
 &nbsp;&nbsp;&nbsp;&nbsp;current-world is required and is the name of the world the player's are currently on  

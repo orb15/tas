@@ -31,43 +31,11 @@ import (
 const (
 	sp = " "
 	ds = "-"
+	us = "_"
 )
 
-type ExtendedStarportSummary struct {
-	Starport     string `json:"staport"`
-	Quality      string `json:"quality"`
-	Fuel         string `json:"fuel"`
-	Facilities   string `json:"facilities"`
-	HasHighport  string `json:"has-highport"`
-	BerthingCost string `json:"berthing-cost"`
-}
-
-type ExtendedTemperatureSummary struct {
-	Classification     string `json:"classification"`
-	AverageTemperature string `json:"avg-temperature"`
-	Description        string `json:"description"`
-	HabitabilityZone   string `json:"habitability-zone"`
-}
-
-type ExtendedFactionsSummary struct {
-	Government       string `json:"government"`
-	RelativeStrength string `json:"relative-strength"`
-}
-
-type ExtendedCultureSummary struct {
-	Type        string `json:"type"`
-	Description string `json:"description"`
-}
-
-type ExtendedWorldSummary struct {
-	StarportSummary    ExtendedStarportSummary    `json:"starport"`
-	TemperatureSummary ExtendedTemperatureSummary `json:"temperature"`
-	FactionsSummary    []ExtendedFactionsSummary  `json:"factions"`
-	CulturDetail       ExtendedCultureSummary     `json:"cultural-detail"`
-	LongDescription    string                     `json:"long-description"`
-}
-
 type WorldSummary struct {
+	UWP           string   `json:"uwp"`
 	Name          string   `json:"name"`
 	HexLocation   string   `json:"hex-location"`
 	Starport      string   `json:"staport"`
@@ -117,7 +85,103 @@ func (w WorldSummary) ToUWP() string {
 	return uwp.String()
 }
 
+func (w WorldSummary) ToFileName() string {
+	var sb strings.Builder
+
+	sb.WriteString(w.Starport)
+	sb.WriteString(w.Size)
+	sb.WriteString(w.Atmosphere)
+	sb.WriteString(w.Hydrographics)
+	sb.WriteString(w.Population)
+	sb.WriteString(w.Government)
+	sb.WriteString(w.LawLevel)
+	sb.WriteString(ds + w.TechLevel)
+	sb.WriteString(".json")
+
+	return sb.String()
+}
+
 func (w WorldSummary) MarshalZerologObject(e *zerolog.Event) {
 	val := w.ToUWP()
 	e.Str("UWP", val)
+}
+
+type ExtendedStarportSummary struct {
+	Quality      string `json:"quality"`
+	Fuel         string `json:"fuel"`
+	Facilities   string `json:"facilities"`
+	HasHighport  string `json:"has-highport"`
+	BerthingCost string `json:"berthing-cost"`
+}
+
+type ExtendedSizeSummary struct {
+	Diameter string `json:"diameter"`
+	Gravity  string `json:"gravity"`
+}
+
+type ExetendedAtmosphereSummary struct {
+	Composition               string `json:"composition"`
+	Pressure                  string `json:"pressure"`
+	GearRequired              string `json:"gear-required"`
+	TemperatureClassification string `json:"temp-classification"`
+	AverageTemperature        string `json:"avg-temperature"`
+	TemperatureDescription    string `json:"temp-description"`
+	HabitabilityZone          string `json:"habitability-zone"`
+}
+
+type ExtendedHydrographicsSummary struct {
+	Percentage  string `json:"percent-water"`
+	Description string `json:"description"`
+}
+
+type ExtendedPopulationSummary struct {
+	Inhabitants string `json:"inhabitants"`
+}
+
+type ExtendedGovernmentSummary struct {
+	Type        string `json:"type"`
+	Description string `json:"description"`
+	Example     string `json:"example"`
+	Contraband  string `json:"contraband"`
+}
+
+type ExtendedFactionsSummary struct {
+	Government        string                    `json:"government"`
+	RelativeStrength  string                    `json:"relative-strength"`
+	GovernmentDetails ExtendedGovernmentSummary `json:"gov-details"`
+}
+
+type ExtendedCultureSummary struct {
+	Type        string `json:"type"`
+	Description string `json:"description"`
+}
+
+type ExtendedLawSummary struct {
+	BannedWeapons string `json:"banned-weapons"`
+	BannedArmor   string `json:"banned-armor"`
+}
+
+type ExtendedTechLevelSummary struct {
+	Catagory    string `json:"catagpory"`
+	Description string `json:"description"`
+}
+
+type ExtendedBaseSummary struct {
+	Type        string `json:"type"`
+	Description string `json:"description"`
+}
+
+type ExtendedWorldSummary struct {
+	StarportDetails      ExtendedStarportSummary      `json:"starport"`
+	SizeDetails          ExtendedSizeSummary          `json:"size"`
+	AtmosphereDetails    ExetendedAtmosphereSummary   `json:"atmosphere"`
+	HydrographicsDetails ExtendedHydrographicsSummary `json:"hydrographics"`
+	PopulationDetails    ExtendedPopulationSummary    `json:"population"`
+	GovernmentDetails    ExtendedGovernmentSummary    `json:"government"`
+	FactionDetails       []ExtendedFactionsSummary    `json:"factions"`
+	CulturDetails        ExtendedCultureSummary       `json:"culture"`
+	LawDetails           ExtendedLawSummary           `json:"law-level"`
+	TechDetails          ExtendedTechLevelSummary     `json:"tech-level"`
+	BaseDetails          []ExtendedBaseSummary        `json:"bases"`
+	LongDescription      string                       `json:"long-description"`
 }

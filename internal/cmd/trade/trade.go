@@ -93,6 +93,8 @@ func GenerateStandardTrade(ctx *util.TASContext, from string, to string, tradeFa
 	}
 
 	alltrade := &model.StandardTradeModifiers{
+		From:           from,
+		To:             to,
 		PassengerTrade: generatePassengers(ctx, fromData, toData, tradeFacts),
 	}
 
@@ -145,6 +147,12 @@ func writeStandardOutput(ctx *util.TASContext, summary *model.StandardTradeModif
 	}
 
 	fmt.Println(sb.String())
+
+	//also write to file if requested
+	writeToFile, _ := ctx.Config().Flags.GetBool(util.ToFileFlagName)
+	if writeToFile {
+		h.WrappedJSONFileWriter(ctx, summary, summary.ToFileName())
+	}
 }
 
 func generateMail(ctx *util.TASContext, fromData *model.WorldTradeInfo, coreFreightDM int, tradeFacts *model.TradeFacts) model.MailTradeSummary {
@@ -172,7 +180,7 @@ func generateMail(ctx *util.TASContext, fromData *model.WorldTradeInfo, coreFrei
 		"Roll 2D + mail DM. On 12+, mail is entrusted to the ship and crew.",
 		"Each lot is 5T and all lots must be taken or none.",
 		"Each lot is paid ar Cr25000 on delivery.",
-		"There is no price adjustment for ditance",
+		"There is no price adjustment for distance",
 	}
 
 	summary := model.MailTradeSummary{
