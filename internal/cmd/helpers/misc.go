@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"tas/internal/util"
@@ -19,6 +20,13 @@ const (
 	outputDirectoryName = "output"
 )
 
+type SchemeType string
+
+const (
+	StandardGeneratorScheme SchemeType = "standard"
+	CustomGeneratorScheme   SchemeType = "custom"
+)
+
 func MaxInt(i int, j int) int {
 	if i >= j {
 		return i
@@ -33,10 +41,27 @@ func MinInt(i int, j int) int {
 	return j
 }
 
-func WrappedJSONFileWriter(ctx *util.TASContext, s any, filename string) {
+// s is the struct to be marshalled to JSON, filename is the name of the file to hold that JSON
+// subtree is either nil or has 1 element - the name of a folder in the output directory where
+// the file should be placed. If nil, the file is placed under the ./output folder. If not nil,
+// the file is placed in a subfolder of the output folder.  Sub-subfolders are not permitted
+func WrappedJSONFileWriter(ctx *util.TASContext, s any, filename string, subtree ...string) {
 
 	log := ctx.Logger()
-	dirpath := filepath.Join(".", outputDirectoryName)
+
+	//handle optional creation of deeper output dirs
+	var dirpath string
+	switch len(subtree) {
+	case 0:
+		dirpath = filepath.Join(".", outputDirectoryName)
+	case 1:
+		dirpath = filepath.Join(".", outputDirectoryName, subtree[0])
+	default:
+		err := fmt.Errorf("nested directories deeper than 1 level are not supported")
+		log.Error().Err(err).Msg("unable to create requested output file path")
+		return
+	}
+
 	err := os.MkdirAll(dirpath, os.ModePerm)
 	if err != nil {
 		log.Error().Err(err).Msg("unable to make directory")
@@ -73,4 +98,22 @@ func WrappedJSONFileWriter(ctx *util.TASContext, s any, filename string) {
 		return
 	}
 
+}
+
+func DetermineWorldGenerationSchemeFromFlagValue(fv string) (string, SchemeType, error) {
+	var schemeName string
+	var schemeType SchemeType
+	switch fv {
+	case "", "standard":
+		schemeName = "standard" //allows for nice logging below
+		schemeType = StandardGeneratorScheme
+	case "custom":
+		schemeName = "custom"
+		schemeType = CustomGeneratorScheme
+	default:
+		err := fmt.Errorf("world generation scheme: %s is invalid", fv)
+		return "", "", err
+	}
+
+	return schemeName, schemeType, nil
 }

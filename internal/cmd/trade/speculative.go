@@ -176,7 +176,7 @@ func writeSpeculativeOutput(ctx *util.TASContext, summary model.SpeculativeTrade
 	}
 }
 
-func generateTradeLots(ctx *util.TASContext, localData *model.WorldTradeInfo, tradeGoodsMap model.TradeGoodsMap, isBuying bool) []model.SpeculativeTradeLot {
+func generateTradeLots(ctx *util.TASContext, localData *model.WorldTradeInfo, tradeGoodsMap model.TradeGoodsMap, isBuying bool) []*model.SpeculativeTradeLot {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
@@ -236,11 +236,11 @@ func generateTradeLots(ctx *util.TASContext, localData *model.WorldTradeInfo, tr
 	return consolidatedLots
 }
 
-func combineTradeLots(ctx *util.TASContext, rawLots []model.SpeculativeTradeLot) []model.SpeculativeTradeLot {
+func combineTradeLots(ctx *util.TASContext, rawLots []model.SpeculativeTradeLot) []*model.SpeculativeTradeLot {
 
 	log := ctx.Logger()
 	log.Debug().Msg("combining trade lots")
-	combinedLots := make([]model.SpeculativeTradeLot, 0, len(rawLots))
+	combinedLots := make([]*model.SpeculativeTradeLot, 0, len(rawLots))
 
 	log.Debug().Int("raw-lot-count", len(rawLots)).Msg("lots before consolidation")
 
@@ -259,7 +259,8 @@ func combineTradeLots(ctx *util.TASContext, rawLots []model.SpeculativeTradeLot)
 	}
 
 	for _, lot := range lotMap {
-		combinedLots = append(combinedLots, lot)
+		lotref := lot
+		combinedLots = append(combinedLots, &lotref)
 	}
 
 	//sort these by lot id
@@ -381,14 +382,14 @@ func calculatePriceDM(localData *model.WorldTradeInfo, dataRow *model.TradeGood,
 	return priceDM
 }
 
-func buildSellersDMs(ctx *util.TASContext, localData *model.WorldTradeInfo, tradeGoodsMap model.TradeGoodsMap) []model.SpeculativeTradeLot {
+func buildSellersDMs(ctx *util.TASContext, localData *model.WorldTradeInfo, tradeGoodsMap model.TradeGoodsMap) []*model.SpeculativeTradeLot {
 
-	purchaseDMs := make([]model.SpeculativeTradeLot, 0)
+	purchaseDMs := make([]*model.SpeculativeTradeLot, 0)
 
 	//calculate a DM for every row in the trade table on page 244 & 245. We don't know what goods the seller has, so give them a DM for every possible
 	//good they can be carrying. We don;t need to concern ourselves with availability or "appropriateness"
 	for _, dataRow := range tradeGoodsMap {
-		lot := model.SpeculativeTradeLot{
+		lot := &model.SpeculativeTradeLot{
 			LotId:        dataRow.Value, //we don;t really care about lot Ids, so use d66 value to make it easy to match results
 			Type:         dataRow.Type,
 			BasePrice:    dataRow.BasePrice,
@@ -403,7 +404,7 @@ func buildSellersDMs(ctx *util.TASContext, localData *model.WorldTradeInfo, trad
 	return purchaseDMs
 }
 
-func sortLotsByLotId(tradeLots []model.SpeculativeTradeLot) {
+func sortLotsByLotId(tradeLots []*model.SpeculativeTradeLot) {
 	sort.Slice(tradeLots, func(i, j int) bool {
 		return tradeLots[i].LotId <= tradeLots[j].LotId
 	})

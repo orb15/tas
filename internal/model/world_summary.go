@@ -101,6 +101,24 @@ func (w WorldSummary) ToFileName() string {
 	return sb.String()
 }
 
+func (w WorldSummary) ToLongFileName() string {
+	var sb strings.Builder
+
+	sb.WriteString(w.HexLocation)
+	sb.WriteString(sp + w.Name)
+	sb.WriteString(sp + w.Starport)
+	sb.WriteString(w.Size)
+	sb.WriteString(w.Atmosphere)
+	sb.WriteString(w.Hydrographics)
+	sb.WriteString(w.Population)
+	sb.WriteString(w.Government)
+	sb.WriteString(w.LawLevel)
+	sb.WriteString(ds + w.TechLevel)
+	sb.WriteString(".json")
+
+	return sb.String()
+}
+
 func (w WorldSummary) MarshalZerologObject(e *zerolog.Event) {
 	val := w.ToUWP()
 	e.Str("UWP", val)

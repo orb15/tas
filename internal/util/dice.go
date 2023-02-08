@@ -15,6 +15,7 @@ type Dice interface {
 	Sum(n int, mods ...int) int
 	D66() int
 	D3(mods ...int) int
+	Dx(sides int) int
 }
 
 type dice struct {
@@ -59,5 +60,10 @@ func (d *dice) D3(mods ...int) int {
 		r += m
 	}
 
+	return r
+}
+
+func (d *dice) Dx(sides int) int {
+	r := d.randgen.Intn(sides) + 1
 	return r
 }

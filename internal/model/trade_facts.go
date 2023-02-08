@@ -35,8 +35,8 @@ type WorldTradeInfo struct {
 }
 
 type TradeFacts struct {
-	CharacterData     CharacterDataType    `json:"character-data"`
-	RawWorldTradeInfo []WorldTradeInfoType `json:"world-data"`
+	CharacterData     *CharacterDataType    `json:"character-data"`
+	RawWorldTradeInfo []*WorldTradeInfoType `json:"world-data"`
 	WorldInfoMap      map[string]*WorldTradeInfo
 	isValidated       bool
 }

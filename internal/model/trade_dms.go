@@ -15,14 +15,14 @@ type SpeculativeTradeLot struct {
 }
 
 type SpeculativeTradeSummary struct {
-	WorldName              string                `json:"world"`
-	TransactionType        string                `json:"transaction-type"`
-	FindSupplierOrBrokerDM int                   `json:"find-supplier-broker"`
-	TradeLots              []SpeculativeTradeLot `json:"trade-lots"`
-	TradeNotes             []string              `json:"notes"`
+	WorldName              string                 `json:"world"`
+	TransactionType        string                 `json:"transaction-type"`
+	FindSupplierOrBrokerDM int                    `json:"find-supplier-broker"`
+	TradeLots              []*SpeculativeTradeLot `json:"trade-lots"`
+	TradeNotes             []string               `json:"notes"`
 }
 
-func (s SpeculativeTradeSummary) ToFileName() string {
+func (s *SpeculativeTradeSummary) ToFileName() string {
 	var sb strings.Builder
 
 	now := time.Now()
@@ -43,8 +43,8 @@ type PassengerDM struct {
 }
 
 type PassengerTradeSummary struct {
-	PassengerDMs   []PassengerDM `json:"dms"`
-	PassengerNotes []string      `json:"notes"`
+	PassengerDMs   []*PassengerDM `json:"dms"`
+	PassengerNotes []string       `json:"notes"`
 }
 
 type FreightDM struct {
@@ -53,8 +53,8 @@ type FreightDM struct {
 }
 
 type FreightTradeSummary struct {
-	FreightDMs   []FreightDM `json:"dms"`
-	FreightNotes []string    `json:"notes"`
+	FreightDMs   []*FreightDM `json:"dms"`
+	FreightNotes []string     `json:"notes"`
 }
 
 type MailTradeSummary struct {
@@ -64,14 +64,14 @@ type MailTradeSummary struct {
 }
 
 type StandardTradeModifiers struct {
-	From           string                `json:"from-world"`
-	To             string                `json:"to-world"`
-	PassengerTrade PassengerTradeSummary `json:"passenger-trade"`
-	FreightTrade   FreightTradeSummary   `json:"freight-trade"`
-	MailTrade      MailTradeSummary      `json:"mail-trade"`
+	From           string                 `json:"from-world"`
+	To             string                 `json:"to-world"`
+	PassengerTrade *PassengerTradeSummary `json:"passenger-trade"`
+	FreightTrade   *FreightTradeSummary   `json:"freight-trade"`
+	MailTrade      *MailTradeSummary      `json:"mail-trade"`
 }
 
-func (s StandardTradeModifiers) ToFileName() string {
+func (s *StandardTradeModifiers) ToFileName() string {
 	var sb strings.Builder
 
 	now := time.Now()

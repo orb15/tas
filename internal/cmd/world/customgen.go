@@ -6,6 +6,15 @@ import (
 	"tas/internal/util"
 )
 
+const (
+	//we shouldnt see many wrolds below this baseline level unless they have really regressed
+	//the planet would have to be low-pop and offer no real challenges technology would be
+	//needed to overcome.  Interestingly, this is the 'high-average' roll on a 1d6, which
+	//when using the standard tech level generator, sets the tech baseline /  base tech level
+	// in that algorithm.
+	baseTechLevelAyInhabitedWorld = 4
+)
+
 func customHydrographics_FixAirlessWaterWorlds(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
@@ -36,15 +45,24 @@ func customTechLevel_FixLowTechValues(ctx *util.TASContext, def *model.WorldDefi
 	log := ctx.Logger()
 	dice := ctx.Dice()
 
-	//base tech should be 7 - first of the pre-stellar techs
-	techLevel := 7
+	//base tech - we shouldnt see many wrolds below this baseline level unless they have really regressed
+	techLevel := baseTechLevelAyInhabitedWorld
 
 	//adjust tech for extremes - if people live in a place, tech needs to be there to support them
 	//unless there are special circumstances.
 	//the approach below moves the floor tech value upward to account for the solution of problems that would arise under extrme conditions.
-	//You can't live on an airless, melting asteroid without tech.
+	//You can't live on an airless, melting asteroid without tech. It is true that a bunch of backward/unsophisticated people may live in some
+	//domed paradise well beyond their comprehension and capability to fix but this should not be the norm. A "harsh world" will require tech
+	//that is sustained if the population is to survive.  I think these situations should fall to GM fiat, where they can choose a higher-tech
+	//world generated out of this process and intentionally make it a backward low-tech yet domed utopia rather than have all planets in that
+	//position be backward, low-tech domed utopias, which is what the standard algorithm would have us believe.
 
-	//the final tech will be the lowest level fo techneeded to plausibly solve the most difficult issue
+	//Also, the tech level generated here is not indicative of the highest (or lowest) tech on the planet.  It represents the tech that is
+	//available wherever people are the most-dense.  The Australian outback is decidedly low tech, but no one would call Australia a low tech or
+	//3rd world country.  The tech is where the people are - no people, no tech. Likewise, a few independent, insular communities living on the far side of
+	//a planet might well have a lower available tech than the class A starport located around the globe from their position.
+
+	//Anyway - the final tech will be the lowest level of tech needed to plausibly solve the most difficult issue faced by those living on the world
 
 	//size
 	switch def.Size {

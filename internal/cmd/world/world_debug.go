@@ -65,17 +65,13 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 		WithConfig(cfg)
 
 	//determine which worldgen scheme to use
-	generatorFlagVal, _ := cfg.Flags.GetString(WorldGenSchemeFlagName)
-	schemeName := StandardGeneratorScheme
-	switch generatorFlagVal {
-	case "", "standard":
-		generatorFlagVal = "standard" //allows for nice printing below
-	case "custom":
-		schemeName = CustomGenoratorScheme
-	default:
-		log.Error().Str("scheme", generatorFlagVal).Msg("invalid generator scheme name")
+	flagVal, _ := cfg.Flags.GetString(WorldGenSchemeFlagName)
+	schemeAsString, schemeType, err := h.DetermineWorldGenerationSchemeFromFlagValue(flagVal)
+	if err != nil {
+		log.Error().Err(err).Msg("invalid flag value for world generation scheme")
 		return
 	}
+	log.Info().Str("scheme", schemeAsString).Msg("scheme used for world generation")
 
 	//prep data store to hold the randomized worlds
 	numberOfWorldsToGenerate := subsectorLoopsToRun
@@ -94,7 +90,7 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 
 	//generate the planets
 	for i := 0; i < numberOfWorldsToGenerate; i++ {
-		def := GenerateWorld(ctx, schemeName)
+		def := GenerateWorld(ctx, schemeType)
 		dataStore = append(dataStore, def)
 	}
 
@@ -112,7 +108,7 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 	var sb strings.Builder
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL)
-	sb.WriteString("Average, Min and Max Stats for" + h.SP + fmt.Sprintf("%d debug runs", numberOfWorldsToGenerate) + h.SP + "using scheme:" + h.SP + generatorFlagVal)
+	sb.WriteString("Average, Min and Max Stats for" + h.SP + fmt.Sprintf("%d debug runs", numberOfWorldsToGenerate) + h.SP + "using scheme:" + h.SP + schemeAsString)
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL + "Size" + h.TAB + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", sizeAvg, sizeMin, sizeMax))
 	sb.WriteString(h.NL + "Atmosphere" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", atmoAvg, atmoMin, atmoMax))

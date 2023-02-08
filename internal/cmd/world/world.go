@@ -16,7 +16,7 @@ import (
 const (
 
 	//name of flag that holds worldgen info
-	WorldGenSchemeFlagName = "scheme"
+	WorldGenSchemeFlagName = "worldscheme"
 	LongformOutputFlagName = "long"
 
 	maxNumberOfWorldsToGenerate = 1000
@@ -110,18 +110,13 @@ func worldCmd(cmd *cobra.Command, args []string) {
 		WithConfig(cfg)
 
 	//determine if we want standard (as written) worldgen or want to use the custom generator
-	generatorFlagVal, _ := cfg.Flags.GetString(WorldGenSchemeFlagName)
-	schemeName := StandardGeneratorScheme
-	switch generatorFlagVal {
-	case "", "standard":
-		generatorFlagVal = "standard" //allows for nice logging below
-	case "custom":
-		schemeName = CustomGenoratorScheme
-	default:
-		log.Error().Str("scheme", generatorFlagVal).Msg("invalid generator scheme name")
+	flagVal, _ := cfg.Flags.GetString(WorldGenSchemeFlagName)
+	schemeAsString, schemeType, err := h.DetermineWorldGenerationSchemeFromFlagValue(flagVal)
+	if err != nil {
+		log.Error().Err(err).Msg("invalid flag value for world generation scheme")
 		return
 	}
-	log.Info().Str("scheme", generatorFlagVal).Msg("scheme used for world generation")
+	log.Info().Str("scheme", schemeAsString).Msg("scheme used for world generation")
 
 	//load the data we need to interpret & output a world
 	src, err := LoadWorldSourceData(ctx)
@@ -144,7 +139,7 @@ func worldCmd(cmd *cobra.Command, args []string) {
 	for i := 0; uint64(i) < numberOfWorldsToGenerate; i++ {
 
 		//generate the world
-		def := GenerateWorld(ctx, schemeName)
+		def := GenerateWorld(ctx, schemeType)
 
 		//summarize the world in a JSON-ready object
 		summary, err := GenerateWorldSummary(ctx, def, src)
@@ -153,13 +148,16 @@ func worldCmd(cmd *cobra.Command, args []string) {
 			return
 		}
 
+		//add the long description to the summary
+		BuildLongDescription(ctx, summary)
+
 		log.Debug().Object("UWP", summary).Send()
 		writeOutput(ctx, summary)
 	}
 
 }
 
-func GenerateWorld(ctx *util.TASContext, schemeName SchemeType) *model.WorldDefinition {
+func GenerateWorld(ctx *util.TASContext, schemeName h.SchemeType) *model.WorldDefinition {
 	def := &model.WorldDefinition{}
 
 	log := ctx.Logger()
@@ -342,8 +340,6 @@ func GenerateWorldSummary(ctx *util.TASContext, def *model.WorldDefinition, src 
 	}
 	summary.ExtendedData.BaseDetails = baseDetails
 
-	buildLongDescription(ctx, summary)
-
 	log.Info().Msg("world summary complete")
 
 	return summary, nil
@@ -487,7 +483,7 @@ func LoadWorldSourceData(ctx *util.TASContext) (*model.WorldSource, error) {
 	return source, nil
 }
 
-func buildLongDescription(ctx *util.TASContext, summary *model.WorldSummary) {
+func BuildLongDescription(ctx *util.TASContext, summary *model.WorldSummary) {
 	var sb strings.Builder
 
 	var tzone string

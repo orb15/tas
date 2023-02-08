@@ -1,16 +1,12 @@
 package world
 
 import (
+	h "tas/internal/cmd/helpers"
 	"tas/internal/model"
 	"tas/internal/util"
 )
 
-type SchemeType string
-
 const (
-	StandardGeneratorScheme SchemeType = "standard"
-	CustomGenoratorScheme   SchemeType = "custom"
-
 	sizeFunc          = "size"
 	atmosphereFunc    = "atmo"
 	temperatureFunc   = "temp"
@@ -36,7 +32,7 @@ type generatorScheme map[string]generatorFunction
 // the as-written rules are used, but these can be customized to have other generator
 // functions overwrite one or more of the standard functions with a (hopefully) better
 // function that generates better results
-func generatorSchemeForName(scheme SchemeType) generatorScheme {
+func generatorSchemeForName(scheme h.SchemeType) generatorScheme {
 
 	genSchema := make(generatorScheme)
 
@@ -59,7 +55,7 @@ func generatorSchemeForName(scheme SchemeType) generatorScheme {
 
 	//allow override baseline if desired
 	switch scheme {
-	case CustomGenoratorScheme:
+	case h.CustomGeneratorScheme:
 		genSchema[hydrographicsFunc] = customHydrographics_FixAirlessWaterWorlds
 		genSchema[techLevelFunc] = customTechLevel_FixLowTechValues
 

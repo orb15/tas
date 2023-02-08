@@ -1,6 +1,8 @@
 package main
 
 import (
+	"tas/internal/cmd/polish"
+	"tas/internal/cmd/sector"
 	"tas/internal/cmd/trade"
 	"tas/internal/cmd/world"
 	"tas/internal/util"
@@ -20,7 +22,7 @@ func main() {
 	//world command
 	var GenScheme string
 	var Longform bool
-	world.WorldCmdConfig.PersistentFlags().StringVar(&GenScheme, world.WorldGenSchemeFlagName, "standard", "name of generator scheme (standard, custom)")
+	world.WorldCmdConfig.PersistentFlags().StringVar(&GenScheme, world.WorldGenSchemeFlagName, "standard", "name of world generator scheme (standard, custom)")
 	world.WorldCmdConfig.PersistentFlags().BoolVar(&Longform, world.LongformOutputFlagName, false, "set to display detailed world information rather than UWP)")
 	rootCmd.AddCommand(world.WorldCmdConfig)
 
@@ -37,6 +39,14 @@ func main() {
 
 	//speculative trade command (trade sub command)
 	trade.TradeCmdConfig.AddCommand(trade.SpecTradeCmdConfig)
+
+	//sector command
+	var WorldGenScheme string
+	sector.SectorCmdConfig.PersistentFlags().StringVar(&WorldGenScheme, world.WorldGenSchemeFlagName, "standard", "name of world generator scheme (standard, custom)")
+	rootCmd.AddCommand(sector.SectorCmdConfig)
+
+	//polish command
+	rootCmd.AddCommand(polish.PolishCmdConfig)
 
 	rootCmd.Execute()
 }

@@ -1,8 +1,14 @@
 package util
 
 import (
+	"bufio"
 	"fmt"
 	"os"
+	"strings"
+)
+
+const (
+	defaultExpectedFileSize = 250
 )
 
 type IngestResult struct {
@@ -49,4 +55,35 @@ func IngestFiles(folder string, filesToRead []string) map[string]*IngestResult {
 	}
 
 	return results
+}
+
+func ReadWorldNamesFromFile(fname string) ([]string, error) {
+
+	rawLines := make([]string, 0, defaultExpectedFileSize)
+
+	//open the file
+	wnf, err := os.Open(fname)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		wnf.Close()
+	}()
+
+	scanner := bufio.NewScanner(wnf)
+	for scanner.Scan() {
+		text := scanner.Text()
+		text = strings.TrimSpace(text)
+		if len(text) == 0 {
+			continue
+		}
+		rawLines = append(rawLines, text)
+	}
+
+	//ensure no errors when reading file
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return rawLines, nil
 }

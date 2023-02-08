@@ -155,7 +155,7 @@ func writeStandardOutput(ctx *util.TASContext, summary *model.StandardTradeModif
 	}
 }
 
-func generateMail(ctx *util.TASContext, fromData *model.WorldTradeInfo, coreFreightDM int, tradeFacts *model.TradeFacts) model.MailTradeSummary {
+func generateMail(ctx *util.TASContext, fromData *model.WorldTradeInfo, coreFreightDM int, tradeFacts *model.TradeFacts) *model.MailTradeSummary {
 	log := ctx.Logger()
 	dice := ctx.Dice()
 
@@ -183,7 +183,7 @@ func generateMail(ctx *util.TASContext, fromData *model.WorldTradeInfo, coreFrei
 		"There is no price adjustment for distance",
 	}
 
-	summary := model.MailTradeSummary{
+	summary := &model.MailTradeSummary{
 		MailDM:    mailDM,
 		LotsAvail: dice.Roll(),
 		MailNotes: notes,
@@ -193,10 +193,10 @@ func generateMail(ctx *util.TASContext, fromData *model.WorldTradeInfo, coreFrei
 	return summary
 }
 
-func generateFreight(ctx *util.TASContext, fromData *model.WorldTradeInfo, toData *model.WorldTradeInfo, tradeFacts *model.TradeFacts) (int, model.FreightTradeSummary) {
+func generateFreight(ctx *util.TASContext, fromData *model.WorldTradeInfo, toData *model.WorldTradeInfo, tradeFacts *model.TradeFacts) (int, *model.FreightTradeSummary) {
 	log := ctx.Logger()
 
-	freights := make([]model.FreightDM, 0, 3) //3 -> major, minor, incidental
+	freights := make([]*model.FreightDM, 0, 3) //3 -> major, minor, incidental
 
 	log.Info().Msg("Beginning freight generation...")
 
@@ -234,21 +234,21 @@ func generateFreight(ctx *util.TASContext, fromData *model.WorldTradeInfo, toDat
 	coreDM = h.AdjustDM(ctx, coreDM, 2, toData.TechLevel, h.GE, 9)
 
 	//major cargo
-	f := model.FreightDM{
+	f := &model.FreightDM{
 		LotType: "major",
 		DM:      coreDM - 4,
 	}
 	freights = append(freights, f)
 
 	//minor cargo
-	f = model.FreightDM{
+	f = &model.FreightDM{
 		LotType: "minor",
 		DM:      coreDM,
 	}
 	freights = append(freights, f)
 
 	//incidental cargo
-	f = model.FreightDM{
+	f = &model.FreightDM{
 		LotType: "incidental",
 		DM:      coreDM + 2,
 	}
@@ -261,7 +261,7 @@ func generateFreight(ctx *util.TASContext, fromData *model.WorldTradeInfo, toDat
 		"There is a penalty for late arrival.",
 		"Freight is almost worthless in terms of its value, so absconding with Freight and not delivering it is worth less than delivering it!"}
 
-	summary := model.FreightTradeSummary{
+	summary := &model.FreightTradeSummary{
 		FreightDMs:   freights,
 		FreightNotes: notes,
 	}
@@ -270,11 +270,11 @@ func generateFreight(ctx *util.TASContext, fromData *model.WorldTradeInfo, toDat
 	return coreDM, summary
 }
 
-func generatePassengers(ctx *util.TASContext, fromData *model.WorldTradeInfo, toData *model.WorldTradeInfo, tradeFacts *model.TradeFacts) model.PassengerTradeSummary {
+func generatePassengers(ctx *util.TASContext, fromData *model.WorldTradeInfo, toData *model.WorldTradeInfo, tradeFacts *model.TradeFacts) *model.PassengerTradeSummary {
 
 	log := ctx.Logger()
 
-	passengers := make([]model.PassengerDM, 0, 4) //4 -> high, middle, basic, low
+	passengers := make([]*model.PassengerDM, 0, 4) //4 -> high, middle, basic, low
 
 	log.Info().Msg("Beginning passenger generation...")
 
@@ -305,7 +305,7 @@ func generatePassengers(ctx *util.TASContext, fromData *model.WorldTradeInfo, to
 	coreDM = h.AdjustDM(ctx, coreDM, 3, toData.Population, h.GE, 8)
 
 	//High Passengers
-	p := model.PassengerDM{
+	p := &model.PassengerDM{
 		PassageType:  "high",
 		DM:           coreDM - 4,
 		Requirements: "Per passenger: 1 stateroom and 1T cargo space. 1 dedicated steward per 10 passengers (round up)",
@@ -313,7 +313,7 @@ func generatePassengers(ctx *util.TASContext, fromData *model.WorldTradeInfo, to
 	passengers = append(passengers, p)
 
 	//Middle Passengers
-	p = model.PassengerDM{
+	p = &model.PassengerDM{
 		PassageType:  "middle",
 		DM:           coreDM,
 		Requirements: "Per passenger: 1 stateroom and 100kg cargo space. 1 dedicated steward per 100 passengers (round up)",
@@ -321,7 +321,7 @@ func generatePassengers(ctx *util.TASContext, fromData *model.WorldTradeInfo, to
 	passengers = append(passengers, p)
 
 	//Basic Passengers
-	p = model.PassengerDM{
+	p = &model.PassengerDM{
 		PassageType:  "basic",
 		DM:           coreDM,
 		Requirements: "Per passenger: 0.5 stateroom and 10kg cargo space. Also requires 2T free space for misc care, feeding and recreation of all basic passengers",
@@ -329,7 +329,7 @@ func generatePassengers(ctx *util.TASContext, fromData *model.WorldTradeInfo, to
 	passengers = append(passengers, p)
 
 	//Low Passengers
-	p = model.PassengerDM{
+	p = &model.PassengerDM{
 		PassageType:  "low",
 		DM:           coreDM + 1,
 		Requirements: "Per passenger: 1 low berth and 10kg storage space",
@@ -343,7 +343,7 @@ func generatePassengers(ctx *util.TASContext, fromData *model.WorldTradeInfo, to
 		"Then roll on Passenger Traffic table using the calculated DM to determine number of available passengers at each berth level",
 	}
 
-	summary := model.PassengerTradeSummary{
+	summary := &model.PassengerTradeSummary{
 		PassengerDMs:   passengers,
 		PassengerNotes: notes,
 	}
