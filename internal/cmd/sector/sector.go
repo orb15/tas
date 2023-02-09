@@ -126,7 +126,7 @@ func buildSubSector(ctx *util.TASContext, worldGenScheme h.SchemeType, worldSour
 
 			sw := &model.SectorWorld{
 				WorldSummaryData: worldSummary,
-				HasGasGiant:      dice.Roll() < gasGiantThreshold,
+				HasGasGiant:      dice.Sum(2) < gasGiantThreshold,
 			}
 
 			sector.Worlds = append(sector.Worlds, sw)
