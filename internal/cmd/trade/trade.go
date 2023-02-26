@@ -57,6 +57,7 @@ func tradeCmd(cmd *cobra.Command, args []string) {
 	//load the data we need to build standard trade data
 	tradeFacts, err := LoadStandardTradeFacts(ctx)
 	if err != nil {
+		log.Error().Err(err).Msg("unable to open trade facts file")
 		return
 	}
 
@@ -412,10 +413,13 @@ func LoadStandardTradeFacts(ctx *util.TASContext) (*model.TradeFacts, error) {
 			log.Error().Err(e).Send()
 		}
 		return nil, errors.New(h.UnableToContinueBecauseOfErrors)
-	} else { //Parse data did not truiely have errors but did have warnings we need to tell the user about
-		log.Warn().Msg("parse of the UWP's succeeded but some assumptions were made about the data. The following lines provide more info, please check them carefully")
-		for _, e := range errs {
-			log.Warn().Err(e).Send()
+	} else { //Parse data did not truly have errors but did have warnings we need to tell the user about
+
+		if len(errs) > 0 {
+			log.Warn().Msg("parse of the UWP's succeeded but some assumptions were made about the data. The following lines provide more info, please check them carefully")
+			for _, e := range errs {
+				log.Warn().Err(e).Send()
+			}
 		}
 	}
 	log.Info().Msg("parsing trade data files complete")

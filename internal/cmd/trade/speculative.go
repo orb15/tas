@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	assumedOpposingBrokerSkill        = 2
+	assumedOpposingBrokerSkill        = -2 //negative here means broker is good, forcing lower rolls on Buy table, raising cost per lot
 	impossiblyLowModifierForTradeCode = -10
 )
 
@@ -362,7 +362,7 @@ func calculatePriceDM(localData *model.WorldTradeInfo, dataRow *model.TradeGood,
 
 	//determine highest sale price DM for world trade code. -10 here allows for the highest offset to be lower than 0
 	highestSaleDM := impossiblyLowModifierForTradeCode
-	for _, ptc := range dataRow.PurchaseDMs {
+	for _, ptc := range dataRow.SaleDMs {
 		if _, listed := worldTradeCodes[ptc.Code]; listed {
 			highestSaleDM = h.MaxInt(highestSaleDM, ptc.Mod)
 		}
@@ -390,8 +390,9 @@ func buildSellersDMs(ctx *util.TASContext, localData *model.WorldTradeInfo, trad
 	//good they can be carrying. We don;t need to concern ourselves with availability or "appropriateness"
 	for _, dataRow := range tradeGoodsMap {
 		lot := &model.SpeculativeTradeLot{
-			LotId:        dataRow.Value, //we don;t really care about lot Ids, so use d66 value to make it easy to match results
+			LotId:        dataRow.Value, //we don't really care about lot Ids, so use d66 value to make it easy to match results
 			Type:         dataRow.Type,
+			Example:      dataRow.Examples,
 			BasePrice:    dataRow.BasePrice,
 			OfferPriceDM: calculatePriceDM(localData, dataRow, false),
 		}

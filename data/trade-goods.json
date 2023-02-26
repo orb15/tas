@@ -101,7 +101,7 @@
       "tons-dice": 2,
       "tons-multi": 20,
       "base-price": 5000,
-      "examples": "metals, plastics, chemiscals and other basic materials",
+      "examples": "metals, plastics, chemicals and other basic materials",
       "availability" : ["all"],
       "purchase-dms": [
         {
@@ -115,7 +115,7 @@
       ],
       "sale-dms": [
         {
-          "code": "NI",
+          "code": "IN",
           "mod": 2
         },
         {

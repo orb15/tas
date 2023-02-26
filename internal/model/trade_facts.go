@@ -166,9 +166,14 @@ func (t *TradeFacts) Parse() (bool, []error) {
 						errs = append(errs, fmt.Errorf("world: %s has invalid value in UWP travel zone: %s", raw.Name, thisElement))
 						return true, errs
 					}
-				} else { //we found a len 1 string not at last location - this should not happen
-					errs = append(errs, fmt.Errorf("world: %s has invalid value in UWP: %s", raw.Name, thisElement))
-					return true, errs
+				} else { //we found a len 1 string not at last location - could be a base
+					switch thisElement {
+					case "S", "C", "N", "M", "D", "W": //this is a base designation, ok to ignore
+						break
+					default: //found an unexpected code not at the last element
+						errs = append(errs, fmt.Errorf("world: %s has invalid value in UWP: %s", raw.Name, thisElement))
+						return true, errs
+					}
 				}
 
 			case 3, 4, 5, 6: //this must be a set of base codes, at least, we are going to treat them as that
