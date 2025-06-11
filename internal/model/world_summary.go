@@ -180,7 +180,7 @@ type ExtendedLawSummary struct {
 }
 
 type ExtendedTechLevelSummary struct {
-	Catagory    string `json:"catagpory"`
+	Catagory    string `json:"catagory"`
 	Description string `json:"description"`
 }
 

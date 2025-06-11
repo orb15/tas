@@ -23,7 +23,7 @@ var sectorMapIDStrings = map[int]string{1: "01", 2: "02", 3: "03", 4: "04", 5: "
 var SectorCmdConfig = &cobra.Command{
 
 	Use:   "sector",
-	Short: "determines trade modifiers and other trade-related information",
+	Short: "builds an 8x10 subsector in detail",
 	Run:   sectorCmd,
 
 	Args: func(cmd *cobra.Command, args []string) error {
@@ -83,7 +83,7 @@ func sectorCmd(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	//fetch the argument - thisis the secotr name
+	//fetch the argument - this is the (sub)sector name
 	sectorName := args[0]
 	sector.Name = sectorName
 
@@ -105,6 +105,12 @@ func buildSubSector(ctx *util.TASContext, worldGenScheme h.SchemeType, worldSour
 	//j: position/'row' in the ith column
 	for col := 1; col <= 8; col++ {
 		for row := 1; row <= 10; row++ {
+
+			// handle case where odd number columns have 10 rows but
+			// even number columns have only 9
+			if row == 10 && col%2 == 0 {
+				continue
+			}
 
 			//per rule on pg 246
 			if dice.Roll() < shouldCreateWorldThreshold {
