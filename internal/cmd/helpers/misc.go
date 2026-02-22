@@ -25,6 +25,7 @@ type SchemeType string
 const (
 	StandardGeneratorScheme SchemeType = "standard"
 	CustomGeneratorScheme   SchemeType = "custom"
+	RimGeneratorScheme      SchemeType = "rim"
 )
 
 func MaxInt(i int, j int) int {
@@ -110,6 +111,9 @@ func DetermineWorldGenerationSchemeFromFlagValue(fv string) (string, SchemeType,
 	case "custom":
 		schemeName = "custom"
 		schemeType = CustomGeneratorScheme
+	case "rim":
+		schemeName = "rim"
+		schemeType = RimGeneratorScheme
 	default:
 		err := fmt.Errorf("world generation scheme: %s is invalid", fv)
 		return "", "", err

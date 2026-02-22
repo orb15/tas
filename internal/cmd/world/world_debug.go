@@ -15,14 +15,14 @@ import (
 
 What is an "average" UWP when doing RAW?
 
-Size is 2D-2 											5		8000km, gravity .45 (bigger than mars, much smaller than earth)
-Atmosphere 2D-7 + Size						5		Thin
-Temperature	2D + Atmo mods				6		Temperate
-Hydrographics 2D-7 + Atmo					5		Roughly 50% water
-Population 2D-2										5		100,000's
-Government 2D-7 + Pop							5		Feudal Technocracy
-Law Level 2D-7 + Gov							5		Military weapons, machine guns and concealables prohibited. Only Jack + laser armor allowed
-Starport 2D + Pop mods						7		Class C
+Size is 2D-2 						5		8000km, gravity .45 (bigger than mars, much smaller than earth)
+Atmosphere 2D-7 + Size				5		Thin
+Temperature	2D + Atmo mods			6		Temperate
+Hydrographics 2D-7 + Atmo			5		Roughly 50% water
+Population 2D-2						5		100,000's
+Government 2D-7 + Pop				5		Feudal Technocracy
+Law Level 2D-7 + Gov				5		Military weapons, machine guns and concealables prohibited. Only Jack + laser armor allowed
+Starport 2D + Pop mods				7		Class C
 Tech Level 1D + mods (round up)		6		Industrial: Fission power, early rocketry (1960's-ish)
 
 The UWP is thus C55655557-6 AG LT NI (ignoring bases)

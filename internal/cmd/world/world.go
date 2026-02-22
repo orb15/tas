@@ -42,7 +42,7 @@ const (
 
 	//special one-off temp values to indicate special circumstances on a table
 	specialTempCodeForNoAtmo   = -1 //indicates that temperature is boiling/freezing at day/night
-	specialCultureCodeForNoPop = 0  //there is no populatiobn, so there is no culture
+	specialCultureCodeForNoPop = 0  //there is no population, so there is no culture
 
 	//table min/max bounds
 	sizeMin  = 0

@@ -58,9 +58,18 @@ func generatorSchemeForName(scheme h.SchemeType) generatorScheme {
 	case h.CustomGeneratorScheme:
 		genSchema[hydrographicsFunc] = customHydrographics_FixAirlessWaterWorlds
 		genSchema[techLevelFunc] = customTechLevel_FixLowTechValues
-
+	case h.RimGeneratorScheme:
+		genSchema[populationFunc] = rimPopulation_noPopulation
+		genSchema[governmentFunc] = rimGovernment_noGovernment
+		genSchema[factionsFunc] = rimFactions_noFactionst
+		genSchema[cultureFunc] = rimCulture_noCulture
+		genSchema[lawFunc] = rimLawLevel_noLaws
+		genSchema[starportFunc] = rimStarport_noStarport
+		genSchema[techLevelFunc] = rimTechLevel_noTechLevel
+		genSchema[highportFunc] = rimHighport_noHighport
+		genSchema[tradeFunc] = rimTradeCode_noTradeCodes
+		genSchema[basesFunc] = rimBases_noBases
+		genSchema[travelFunc] = rimTravelZone_noTravelZone
 	}
-
 	return genSchema
-
 }

@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	//we shouldnt see many wrolds below this baseline level unless they have really regressed
+	//we shouldnt see many worlds below this baseline level unless they have really regressed
 	//the planet would have to be low-pop and offer no real challenges technology would be
 	//needed to overcome.  Interestingly, this is the 'high-average' roll on a 1d6, which
 	//when using the standard tech level generator, sets the tech baseline /  base tech level
