@@ -43,10 +43,26 @@ func rimBases_noBases(_ *util.TASContext, def *model.WorldDefinition) {
 	def.Bases = nil
 }
 
-func rimTradeCode_noTradeCodes(_ *util.TASContext, def *model.WorldDefinition) {
-	def.TradeCodes = nil
+func rimTradeCode_removeObviousTradeCodes(ctx *util.TASContext, def *model.WorldDefinition) {
+	// generate the basic trade codes
+	generateTradeCodes(ctx, def)
+
+	// filter out low-tech and barren, which always appear
+	newCodes := make([]string, 0)
+	for _, c := range def.TradeCodes {
+		if c == "barren" || c == "low population" {
+			continue
+		}
+		newCodes = append(newCodes, c)
+	}
+	def.TradeCodes = newCodes
 }
 
-func rimTravelZone_noTravelZone(_ *util.TASContext, def *model.WorldDefinition) {
-	def.TravelZone = "Undefined"
+func rimTravelZone_atmoAmberOnly(_ *util.TASContext, def *model.WorldDefinition) {
+	// only mark a world Amber if the atmosphere warrants it
+	if def.Atmosphere >= 10 {
+		def.TravelZone = "Amber"
+		return
+	}
+	def.TravelZone = "Green"
 }

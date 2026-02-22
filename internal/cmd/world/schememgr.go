@@ -67,9 +67,9 @@ func generatorSchemeForName(scheme h.SchemeType) generatorScheme {
 		genSchema[starportFunc] = rimStarport_noStarport
 		genSchema[techLevelFunc] = rimTechLevel_noTechLevel
 		genSchema[highportFunc] = rimHighport_noHighport
-		genSchema[tradeFunc] = rimTradeCode_noTradeCodes
+		genSchema[tradeFunc] = rimTradeCode_removeObviousTradeCodes
 		genSchema[basesFunc] = rimBases_noBases
-		genSchema[travelFunc] = rimTravelZone_noTravelZone
+		genSchema[travelFunc] = rimTravelZone_atmoAmberOnly
 	}
 	return genSchema
 }
