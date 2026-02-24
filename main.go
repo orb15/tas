@@ -28,7 +28,7 @@ func main() {
 
 	//world debug command (world sub command)
 	var MaxIterations bool
-	world.WorldDebugCmdConfig.PersistentFlags().StringVar(&GenScheme, world.WorldGenSchemeFlagName, "standard", "name of generator scheme (standard, custom)")
+	world.WorldDebugCmdConfig.PersistentFlags().StringVar(&GenScheme, world.WorldGenSchemeFlagName, "standard", "name of generator scheme (standard, pristine, uptech)")
 	world.WorldDebugCmdConfig.PersistentFlags().BoolVar(&MaxIterations, world.MaxLoopSizeFlagName, false, "set to generate max number of worlds rather than just a rough subsector count)")
 	world.WorldCmdConfig.AddCommand(world.WorldDebugCmdConfig)
 
@@ -42,7 +42,7 @@ func main() {
 
 	//sector command
 	var WorldGenScheme string
-	sector.SectorCmdConfig.PersistentFlags().StringVar(&WorldGenScheme, world.WorldGenSchemeFlagName, "standard", "name of world generator scheme (standard, custom)")
+	sector.SectorCmdConfig.PersistentFlags().StringVar(&WorldGenScheme, world.WorldGenSchemeFlagName, "standard", "name of world generator scheme (standard, pristine, uptech)")
 	rootCmd.AddCommand(sector.SectorCmdConfig)
 
 	//polish command
