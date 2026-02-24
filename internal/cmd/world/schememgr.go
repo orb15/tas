@@ -61,7 +61,7 @@ func generatorSchemeForName(scheme h.SchemeType) generatorScheme {
 	case h.PristineGeneratorScheme:
 		genSchema[populationFunc] = pristinePopulation_noPopulation
 		genSchema[governmentFunc] = pristineGovernment_noGovernment
-		genSchema[factionsFunc] = pristineFactions_noFactionst
+		genSchema[factionsFunc] = pristineFactions_noFactions
 		genSchema[cultureFunc] = pristineCulture_noCulture
 		genSchema[lawFunc] = pristineLawLevel_noLaws
 		genSchema[starportFunc] = pristineStarport_noStarport
@@ -70,6 +70,14 @@ func generatorSchemeForName(scheme h.SchemeType) generatorScheme {
 		genSchema[tradeFunc] = pristineTradeCode_removeObviousTradeCodes
 		genSchema[basesFunc] = pristineBases_noBases
 		genSchema[travelFunc] = pristineTravelZone_atmoAmberOnly
+	case h.RimGeneratorScheme:
+		genSchema[populationFunc] = rimPopulation_lowPopulation
+		genSchema[governmentFunc] = rimGovernment_limitGovTypes
+		genSchema[factionsFunc] = rimFactions_noFactions
+		genSchema[lawFunc] = rimLawLevel_noLaws
+		genSchema[starportFunc] = rimStarport_maxCStarport
+		genSchema[basesFunc] = rimBases_noBases
+		genSchema[travelFunc] = rimTravelZone_atmoAmberOnly
 	}
 	return genSchema
 }

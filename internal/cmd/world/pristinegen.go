@@ -15,7 +15,7 @@ func pristinePopulation_noPopulation(_ *util.TASContext, def *model.WorldDefinit
 func pristineGovernment_noGovernment(_ *util.TASContext, def *model.WorldDefinition) {
 	def.Government = 0
 }
-func pristineFactions_noFactionst(_ *util.TASContext, def *model.WorldDefinition) {
+func pristineFactions_noFactions(_ *util.TASContext, def *model.WorldDefinition) {
 	def.Factions = nil
 }
 
