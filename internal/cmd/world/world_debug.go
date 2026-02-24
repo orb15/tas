@@ -75,7 +75,7 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 
 	//prep data store to hold the randomized worlds
 	numberOfWorldsToGenerate := subsectorLoopsToRun
-	useMax, _ := cfg.Flags.GetBool(MaxLoopSizeFlagName)
+	useMax, err := cfg.Flags.GetBool(MaxLoopSizeFlagName)
 	if err != nil {
 		panic(1)
 	}

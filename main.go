@@ -22,7 +22,7 @@ func main() {
 	//world command
 	var GenScheme string
 	var Longform bool
-	world.WorldCmdConfig.PersistentFlags().StringVar(&GenScheme, world.WorldGenSchemeFlagName, "standard", "name of world generator scheme (standard, custom)")
+	world.WorldCmdConfig.PersistentFlags().StringVar(&GenScheme, world.WorldGenSchemeFlagName, "standard", "name of world generator scheme (standard, pristine, uptech)")
 	world.WorldCmdConfig.PersistentFlags().BoolVar(&Longform, world.LongformOutputFlagName, false, "set to display detailed world information rather than UWP)")
 	rootCmd.AddCommand(world.WorldCmdConfig)
 

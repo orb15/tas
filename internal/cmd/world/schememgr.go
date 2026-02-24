@@ -55,21 +55,21 @@ func generatorSchemeForName(scheme h.SchemeType) generatorScheme {
 
 	//allow override baseline if desired
 	switch scheme {
-	case h.CustomGeneratorScheme:
-		genSchema[hydrographicsFunc] = customHydrographics_FixAirlessWaterWorlds
-		genSchema[techLevelFunc] = customTechLevel_FixLowTechValues
-	case h.RimGeneratorScheme:
-		genSchema[populationFunc] = rimPopulation_noPopulation
-		genSchema[governmentFunc] = rimGovernment_noGovernment
-		genSchema[factionsFunc] = rimFactions_noFactionst
-		genSchema[cultureFunc] = rimCulture_noCulture
-		genSchema[lawFunc] = rimLawLevel_noLaws
-		genSchema[starportFunc] = rimStarport_noStarport
-		genSchema[techLevelFunc] = rimTechLevel_noTechLevel
-		genSchema[highportFunc] = rimHighport_noHighport
-		genSchema[tradeFunc] = rimTradeCode_removeObviousTradeCodes
-		genSchema[basesFunc] = rimBases_noBases
-		genSchema[travelFunc] = rimTravelZone_atmoAmberOnly
+	case h.UpTechmGeneratorScheme:
+		genSchema[hydrographicsFunc] = upTechHydrographics_FixAirlessWaterWorlds
+		genSchema[techLevelFunc] = upTechTechLevel_FixLowTechValues
+	case h.PristineGeneratorScheme:
+		genSchema[populationFunc] = pristinePopulation_noPopulation
+		genSchema[governmentFunc] = pristineGovernment_noGovernment
+		genSchema[factionsFunc] = pristineFactions_noFactionst
+		genSchema[cultureFunc] = pristineCulture_noCulture
+		genSchema[lawFunc] = pristineLawLevel_noLaws
+		genSchema[starportFunc] = pristineStarport_noStarport
+		genSchema[techLevelFunc] = pristineTechLevel_noTechLevel
+		genSchema[highportFunc] = pristineHighport_noHighport
+		genSchema[tradeFunc] = pristineTradeCode_removeObviousTradeCodes
+		genSchema[basesFunc] = pristineBases_noBases
+		genSchema[travelFunc] = pristineTravelZone_atmoAmberOnly
 	}
 	return genSchema
 }

@@ -24,8 +24,9 @@ type SchemeType string
 
 const (
 	StandardGeneratorScheme SchemeType = "standard"
-	CustomGeneratorScheme   SchemeType = "custom"
+	UpTechmGeneratorScheme  SchemeType = "uptech"
 	RimGeneratorScheme      SchemeType = "rim"
+	PristineGeneratorScheme SchemeType = "pristine"
 )
 
 func MaxInt(i int, j int) int {
@@ -108,12 +109,15 @@ func DetermineWorldGenerationSchemeFromFlagValue(fv string) (string, SchemeType,
 	case "", "standard":
 		schemeName = "standard" //allows for nice logging below
 		schemeType = StandardGeneratorScheme
-	case "custom":
-		schemeName = "custom"
-		schemeType = CustomGeneratorScheme
+	case "uptech":
+		schemeName = "uptech"
+		schemeType = UpTechmGeneratorScheme
 	case "rim":
 		schemeName = "rim"
 		schemeType = RimGeneratorScheme
+	case "pristine":
+		schemeName = "pristine"
+		schemeType = PristineGeneratorScheme
 	default:
 		err := fmt.Errorf("world generation scheme: %s is invalid", fv)
 		return "", "", err

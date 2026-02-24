@@ -6,6 +6,11 @@ import (
 	"tas/internal/util"
 )
 
+// the purpose of this generator is to raise the tech level to address weird situations like a 10M
+// population asteroid with no food or water and a low tech level, or other impossible things
+// the tables allow. While it might be cool to once in a while have a 'regressed world' where the
+// tech evel is low and the environment hazardous, this is far too often the norm for my liking.
+
 const (
 	//we shouldnt see many worlds below this baseline level unless they have really regressed
 	//the planet would have to be low-pop and offer no real challenges technology would be
@@ -15,7 +20,7 @@ const (
 	baseTechLevelAyInhabitedWorld = 4
 )
 
-func customHydrographics_FixAirlessWaterWorlds(ctx *util.TASContext, def *model.WorldDefinition) {
+func upTechHydrographics_FixAirlessWaterWorlds(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
@@ -40,7 +45,7 @@ func customHydrographics_FixAirlessWaterWorlds(ctx *util.TASContext, def *model.
 	log.Debug().Str("custom", "customHydrographics_FixAirlessWaterWorlds").Int("hydro", def.Hydrographics).Send()
 }
 
-func customTechLevel_FixLowTechValues(ctx *util.TASContext, def *model.WorldDefinition) {
+func upTechTechLevel_FixLowTechValues(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
