@@ -10,14 +10,12 @@ import (
 
 const (
 	UnableToContinueBecauseOfErrors = "errors prevent further execution"
-
-	CreditsAbbreviation = "CR"
-	NL                  = "\n"
-	TAB                 = "\t"
-	SP                  = " "
-
-	easyAccessFileMode  = 0755
-	outputDirectoryName = "output"
+	OutputDirectoryName             = "output"
+	EasyAccessFileMode              = 0755
+	CreditsAbbreviation             = "CR"
+	NL                              = "\n"
+	TAB                             = "\t"
+	SP                              = " "
 )
 
 type SchemeType string
@@ -55,9 +53,9 @@ func WrappedJSONFileWriter(ctx *util.TASContext, s any, filename string, subtree
 	var dirpath string
 	switch len(subtree) {
 	case 0:
-		dirpath = filepath.Join(".", outputDirectoryName)
+		dirpath = filepath.Join(".", OutputDirectoryName)
 	case 1:
-		dirpath = filepath.Join(".", outputDirectoryName, subtree[0])
+		dirpath = filepath.Join(".", OutputDirectoryName, subtree[0])
 	default:
 		err := fmt.Errorf("nested directories deeper than 1 level are not supported")
 		log.Error().Err(err).Msg("unable to create requested output file path")
@@ -77,7 +75,7 @@ func WrappedJSONFileWriter(ctx *util.TASContext, s any, filename string, subtree
 
 	//using this approach prevents a file from being created that will overwrite an existing file
 	filePath := filepath.Join(dirpath, filename)
-	f, err := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, easyAccessFileMode)
+	f, err := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, EasyAccessFileMode)
 	if err != nil {
 		log.Error().Err(err).Str("filename", filename).Msg("unable to open file")
 		return

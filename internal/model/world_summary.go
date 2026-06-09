@@ -53,6 +53,20 @@ type WorldSummary struct {
 	ExtendedData ExtendedWorldSummary `json:"extended-data"`
 }
 
+func (w WorldSummary) ToBareUWP() string {
+	var uwp strings.Builder
+
+	uwp.WriteString(w.Starport)
+	uwp.WriteString(w.Size)
+	uwp.WriteString(w.Atmosphere)
+	uwp.WriteString(w.Hydrographics)
+	uwp.WriteString(w.Population)
+	uwp.WriteString(w.Government)
+	uwp.WriteString(w.LawLevel)
+	uwp.WriteString(ds + w.TechLevel)
+	return uwp.String()
+}
+
 func (w WorldSummary) ToUWP() string {
 	var uwp strings.Builder
 

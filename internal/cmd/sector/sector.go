@@ -1,7 +1,10 @@
 package sector
 
 import (
+	"encoding/csv"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 
 	h "tas/internal/cmd/helpers"
@@ -164,6 +167,79 @@ func writeSector(ctx *util.TASContext, sector *model.Sector) {
 		for _, w := range sector.Worlds {
 			h.WrappedJSONFileWriter(ctx, w, w.WorldSummaryData.ToLongFileName(), sectorName)
 		}
+
+		// furthermore, create a sector csv file
+		writeSectorCSV(ctx, sector, sector.ToFileName())
+	}
+}
+
+func writeSectorCSV(ctx *util.TASContext, sector *model.Sector, subtree ...string) {
+	log := ctx.Logger()
+
+	//handle optional creation of deeper output dirs
+	var dirpath string
+	switch len(subtree) {
+	case 0:
+		dirpath = filepath.Join(".", h.OutputDirectoryName)
+	case 1:
+		dirpath = filepath.Join(".", h.OutputDirectoryName, subtree[0])
+	default:
+		err := fmt.Errorf("nested directories deeper than 1 level are not supported")
+		log.Error().Err(err).Msg("unable to create requested output file path")
+		return
+	}
+
+	err := os.MkdirAll(dirpath, os.ModePerm)
+	if err != nil {
+		log.Error().Err(err).Msg("unable to make directory")
+		return
+	}
+
+	//using this approach prevents a file from being created that will overwrite an existing file
+	filename := sector.Name + ".csv"
+	filePath := filepath.Join(dirpath, filename)
+	f, err := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, h.EasyAccessFileMode)
+	if err != nil {
+		log.Error().Err(err).Str("filename", filename).Msg("unable to open file")
+		return
+	}
+
+	// organize the data. Must be a [][]string
+	allRows := make([][]string, 0)
+	var header = []string{"Loc", "Name", "UWP", "Gas Giant?", "Bases", "Travel Code", "Trade Codes"}
+	allRows = append(allRows, header)
+	for _, w := range sector.Worlds {
+
+		// convert non-string data to string
+		hasGiant := ""
+		if w.HasGasGiant {
+			hasGiant = "x"
+		}
+		bases := strings.Join(w.WorldSummaryData.Bases, " ")
+		travelZone := ""
+		if w.WorldSummaryData.TravelZone != "G" {
+			travelZone = w.WorldSummaryData.TravelZone
+		}
+		tradeCodes := strings.Join(w.WorldSummaryData.TradeCodes, " ")
+
+		//create the row and add it
+		var d = []string{w.WorldSummaryData.HexLocation, w.WorldSummaryData.Name, w.WorldSummaryData.ToBareUWP(), hasGiant, bases, travelZone, tradeCodes}
+		allRows = append(allRows, d)
+	}
+
+	// create a CSV writer
+	writer := csv.NewWriter(f)
+	writer.Flush()
+
+	// write the file and flush it
+	if err := writer.WriteAll(allRows); err != nil { // Use WriteAll for a 2D slice
+		log.Error().Err(err).Str("filename", filename).Msg("unable to write CSV file")
+	}
+	writer.Flush()
+
+	// final error check - usually on flush
+	if err := writer.Error(); err != nil {
+		log.Error().Err(err).Str("filename", filename).Msg("unable to flush CSV file")
 	}
 }
 
