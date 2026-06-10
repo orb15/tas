@@ -22,7 +22,7 @@ Population 2D-2						5		100,000's
 Government 2D-7 + Pop				5		Feudal Technocracy
 Law Level 2D-7 + Gov				5		Military weapons, machine guns and concealables prohibited. Only Jack + laser armor allowed
 Starport 2D + Pop mods				7		Class C
-Tech Level 1D + mods (round up)		6		Industrial: Fission power, early rocketry (1960's-ish)
+Tech Level 1D + mods (round up)		8		Pre-stellar (7.5ish): Solar-system travel, no colonies, permanent space habitats. Earth-like
 
 The UWP is thus C55655557-6 AG LT NI (ignoring bases)
 */
@@ -133,12 +133,6 @@ func calcStatsForAttribute(attrib string, defs []*model.WorldDefinition) (float3
 			min = h.MinInt(min, d.Atmosphere)
 			max = h.MaxInt(max, d.Atmosphere)
 			sum += d.Atmosphere
-		}
-	case "Te":
-		for _, d := range defs {
-			min = h.MinInt(min, d.Temperature)
-			max = h.MaxInt(max, d.Temperature)
-			sum += d.Temperature
 		}
 	case "Hy":
 		for _, d := range defs {

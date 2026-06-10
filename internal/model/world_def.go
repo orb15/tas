@@ -1,10 +1,5 @@
 package model
 
-type WorldFaction struct {
-	GovernmentStyle  int `json:"government-style"`
-	RelativeStrength int `json:"relative-strength"`
-}
-
 type WorldStarportInfo struct {
 	Value        int  `json:"value"`
 	HasHighport  bool `json:"has-highport"`
@@ -23,13 +18,6 @@ type WorldDefinition struct {
 	LawLevel      int `json:"law-level"`
 	TechLevel     int `json:"tech-level"`
 
-	Bases      []string `json:"bases"`
 	TradeCodes []string `json:"trade-codes"`
 	TravelZone string   `json:"zone"`
-
-	//these are not part of the official planetary code
-	Temperature      int             `json:"temperature"`
-	HabitabilityZone string          `json:"habitability-zone"`
-	Factions         []*WorldFaction `json:"factions"`
-	Culture          int             `json:"culture"`
 }

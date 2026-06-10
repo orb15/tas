@@ -175,9 +175,13 @@ type ExtendedTechLevelSummary struct {
 	Description string `json:"description"`
 }
 
-type ExtendedBaseSummary struct {
-	Type        string `json:"type"`
-	Description string `json:"description"`
+type ExtendedCustomDetails struct {
+	IsGeothermallyActive      bool
+	HasOwnMagneticField       bool
+	HasPlateTectonics         bool
+	DistanceFromSunAU         float32
+	RotationalPeriodEarthDays float32
+	OrbitalPeriodEarthYears   float32
 }
 
 type ExtendedWorldSummary struct {
@@ -189,6 +193,6 @@ type ExtendedWorldSummary struct {
 	GovernmentDetails    ExtendedGovernmentSummary    `json:"government"`
 	LawDetails           ExtendedLawSummary           `json:"law-level"`
 	TechDetails          ExtendedTechLevelSummary     `json:"tech-level"`
-	BaseDetails          []ExtendedBaseSummary        `json:"bases"`
+	CustomDetails        ExtendedCustomDetails        `json:"custom-details"`
 	LongDescription      string                       `json:"long-description"`
 }
