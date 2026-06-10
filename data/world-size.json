@@ -4,43 +4,43 @@
       "value": 0,
       "example": "asteroid, orbital complex",
       "diameter": "less than 1000km",
-      "gravity": "negligible"
+      "gravity": "negligible - see pg 80"
     },
     {
       "value": 1,
       "example": "Triton",
       "diameter": "1600km",
-      "gravity": "0.05"
+      "gravity": "0.05 - Low Gravity see pg 80"
     },
     {
       "value": 2,
       "example": "Luna, Europa",
       "diameter": "3200km",
-      "gravity": "0.15" 
+      "gravity": "0.15 - Low Gravity see pg 80" 
     },
     {
       "value": 3,
       "example": "Mercury, Ganymede",
       "diameter": "4800km",
-      "gravity": "0.25"
+      "gravity": "0.25 - Low Gravity see pg 80"
     },
     {
       "value": 4,
       "example": "Mars",
       "diameter": "6400km",
-      "gravity": "0.35" 
+      "gravity": "0.35 - Low Gravity see pg 80" 
     },
     {
       "value": 5,
       "example": "n/a",
       "diameter": "8000km",
-      "gravity": ".45" 
+      "gravity": ".45 - Low Gravity see pg 80" 
     },
     {
       "value": 6,
       "example": "n/a",
       "diameter": "9600km",
-      "gravity": "0.7" 
+      "gravity": "0.7 - Low Gravity see pg 80" 
     },
     {
       "value": 7,
@@ -64,7 +64,7 @@
       "value": 10,
       "example": "n/a",
       "diameter": "16000km",
-      "gravity": "1.4" 
+      "gravity": "1.4 - High Gravity see pg 80" 
     }
   ]
 }
