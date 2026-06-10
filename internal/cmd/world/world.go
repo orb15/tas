@@ -14,9 +14,6 @@ import (
 )
 
 const (
-
-	//name of flag that holds worldgen info
-	WorldGenSchemeFlagName = "worldscheme"
 	LongformOutputFlagName = "long"
 
 	maxNumberOfWorldsToGenerate = 1000
@@ -40,8 +37,7 @@ const (
 	defaultHexLocation = "0000"
 
 	//special one-off temp values to indicate special circumstances on a table
-	specialTempCodeForNoAtmo   = -1 //indicates that temperature is boiling/freezing at day/night
-	specialCultureCodeForNoPop = 0  //there is no population, so there is no culture
+	specialCultureCodeForNoPop = 0 //there is no population, so there is no culture
 
 	//table min/max bounds
 	sizeMin  = 0
@@ -166,6 +162,8 @@ func GenerateWorld(ctx *util.TASContext) *model.WorldDefinition {
 	rawGenerateTradeCodes(ctx, def)
 	rawGenerateTravelCode(ctx, def)
 
+	calcCustomDetails(ctx, def)
+
 	log.Info().Msg("world generation complete")
 	return def
 }
@@ -271,6 +269,9 @@ func GenerateWorldSummary(ctx *util.TASContext, def *model.WorldDefinition, src 
 		Description: src.TechLevel[def.TechLevel].Description,
 	}
 	summary.ExtendedData.TechDetails = ets
+
+	//custom details
+	summary.CustomDetails = def.CustomDetails
 
 	log.Info().Msg("world summary complete")
 
@@ -449,8 +450,14 @@ func BuildLongDescription(ctx *util.TASContext, summary *model.WorldSummary) {
 		sb.WriteString(h.NL + "Trade Codes:" + h.SP + codes)
 	}
 
-	summary.UWP = summary.ToUWP()
-	summary.ExtendedData.LongDescription = sb.String()
+	fmt.Fprintf(&sb, "\nIs Geothermally Active: %t", summary.CustomDetails.IsGeothermallyActive)
+	fmt.Fprintf(&sb, "\nHas Plate Tectonics: %t", summary.CustomDetails.HasPlateTectonics)
+	fmt.Fprintf(&sb, "\nDistance From Star: %1.2f", summary.CustomDetails.DistanceFromSunAU)
+	fmt.Fprintf(&sb, "\nHabitability Zone Temperature Profile: %s", summary.CustomDetails.HabitabiltyZoneTempProfile)
+	fmt.Fprintf(&sb, "\nOrbital period (Earth Years): %1.2f", summary.CustomDetails.OrbitalPeriodEarthYears)
+	fmt.Fprintf(&sb, "\nRotational period (Earth Days): %1.2f", summary.CustomDetails.RotationalPeriodEarthDays)
+
+	summary.LongDescription = sb.String()
 }
 
 func writeOutput(ctx *util.TASContext, summary *model.WorldSummary) {
@@ -460,7 +467,7 @@ func writeOutput(ctx *util.TASContext, summary *model.WorldSummary) {
 	writeToFile, _ := ctx.Config().Flags.GetBool(util.ToFileFlagName)
 
 	if useLongform {
-		fmt.Println(summary.ExtendedData.LongDescription)
+		fmt.Println(summary.LongDescription)
 		return
 	} else {
 		fmt.Println(summary.ToUWP())

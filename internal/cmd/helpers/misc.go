@@ -18,15 +18,6 @@ const (
 	SP                              = " "
 )
 
-type SchemeType string
-
-const (
-	StandardGeneratorScheme SchemeType = "standard"
-	UpTechmGeneratorScheme  SchemeType = "uptech"
-	RimGeneratorScheme      SchemeType = "rim"
-	PristineGeneratorScheme SchemeType = "pristine"
-)
-
 func MaxInt(i int, j int) int {
 	if i >= j {
 		return i
@@ -98,28 +89,4 @@ func WrappedJSONFileWriter(ctx *util.TASContext, s any, filename string, subtree
 		return
 	}
 
-}
-
-func DetermineWorldGenerationSchemeFromFlagValue(fv string) (string, SchemeType, error) {
-	var schemeName string
-	var schemeType SchemeType
-	switch fv {
-	case "", "standard":
-		schemeName = "standard" //allows for nice logging below
-		schemeType = StandardGeneratorScheme
-	case "uptech":
-		schemeName = "uptech"
-		schemeType = UpTechmGeneratorScheme
-	case "rim":
-		schemeName = "rim"
-		schemeType = RimGeneratorScheme
-	case "pristine":
-		schemeName = "pristine"
-		schemeType = PristineGeneratorScheme
-	default:
-		err := fmt.Errorf("world generation scheme: %s is invalid", fv)
-		return "", "", err
-	}
-
-	return schemeName, schemeType, nil
 }

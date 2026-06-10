@@ -49,7 +49,10 @@ type WorldSummary struct {
 	TradeCodes    []string `json:"trade-codes"`
 	TravelZone    string   `json:"travel-zone"`
 
-	ExtendedData ExtendedWorldSummary `json:"extended-data"`
+	ExtendedData  ExtendedWorldSummary `json:"extended-data"`
+	CustomDetails CustomDetailsInfo    `json:"custom-details"`
+
+	LongDescription string `json:"-"`
 }
 
 func (w WorldSummary) ToBareUWP() string {
@@ -175,15 +178,6 @@ type ExtendedTechLevelSummary struct {
 	Description string `json:"description"`
 }
 
-type ExtendedCustomDetails struct {
-	IsGeothermallyActive      bool
-	HasOwnMagneticField       bool
-	HasPlateTectonics         bool
-	DistanceFromSunAU         float32
-	RotationalPeriodEarthDays float32
-	OrbitalPeriodEarthYears   float32
-}
-
 type ExtendedWorldSummary struct {
 	StarportDetails      ExtendedStarportSummary      `json:"starport"`
 	SizeDetails          ExtendedSizeSummary          `json:"size"`
@@ -193,6 +187,4 @@ type ExtendedWorldSummary struct {
 	GovernmentDetails    ExtendedGovernmentSummary    `json:"government"`
 	LawDetails           ExtendedLawSummary           `json:"law-level"`
 	TechDetails          ExtendedTechLevelSummary     `json:"tech-level"`
-	CustomDetails        ExtendedCustomDetails        `json:"custom-details"`
-	LongDescription      string                       `json:"long-description"`
 }
