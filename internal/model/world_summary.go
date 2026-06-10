@@ -46,7 +46,6 @@ type WorldSummary struct {
 	Government    string   `json:"government"`
 	LawLevel      string   `json:"law-level"`
 	TechLevel     string   `json:"tech-level"`
-	Bases         []string `json:"bases"`
 	TradeCodes    []string `json:"trade-codes"`
 	TravelZone    string   `json:"travel-zone"`
 
@@ -80,13 +79,6 @@ func (w WorldSummary) ToUWP() string {
 	uwp.WriteString(w.Government)
 	uwp.WriteString(w.LawLevel)
 	uwp.WriteString(ds + w.TechLevel)
-
-	if len(w.Bases) > 0 {
-		uwp.WriteString(sp)
-		for _, b := range w.Bases {
-			uwp.WriteString(b)
-		}
-	}
 
 	for _, c := range w.TradeCodes {
 		uwp.WriteString(sp + c)
@@ -152,13 +144,9 @@ type ExtendedSizeSummary struct {
 }
 
 type ExetendedAtmosphereSummary struct {
-	Composition               string `json:"composition"`
-	Pressure                  string `json:"pressure"`
-	GearRequired              string `json:"gear-required"`
-	TemperatureClassification string `json:"temp-classification"`
-	AverageTemperature        string `json:"avg-temperature"`
-	TemperatureDescription    string `json:"temp-description"`
-	HabitabilityZone          string `json:"habitability-zone"`
+	Composition  string `json:"composition"`
+	Pressure     string `json:"pressure"`
+	GearRequired string `json:"gear-required"`
 }
 
 type ExtendedHydrographicsSummary struct {
@@ -175,17 +163,6 @@ type ExtendedGovernmentSummary struct {
 	Description string `json:"description"`
 	Example     string `json:"example"`
 	Contraband  string `json:"contraband"`
-}
-
-type ExtendedFactionsSummary struct {
-	Government        string                    `json:"government"`
-	RelativeStrength  string                    `json:"relative-strength"`
-	GovernmentDetails ExtendedGovernmentSummary `json:"gov-details"`
-}
-
-type ExtendedCultureSummary struct {
-	Type        string `json:"type"`
-	Description string `json:"description"`
 }
 
 type ExtendedLawSummary struct {
@@ -210,8 +187,6 @@ type ExtendedWorldSummary struct {
 	HydrographicsDetails ExtendedHydrographicsSummary `json:"hydrographics"`
 	PopulationDetails    ExtendedPopulationSummary    `json:"population"`
 	GovernmentDetails    ExtendedGovernmentSummary    `json:"government"`
-	FactionDetails       []ExtendedFactionsSummary    `json:"factions"`
-	CulturDetails        ExtendedCultureSummary       `json:"culture"`
 	LawDetails           ExtendedLawSummary           `json:"law-level"`
 	TechDetails          ExtendedTechLevelSummary     `json:"tech-level"`
 	BaseDetails          []ExtendedBaseSummary        `json:"bases"`

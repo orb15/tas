@@ -57,15 +57,6 @@ func sectorCmd(cmd *cobra.Command, args []string) {
 		WithDice().
 		WithConfig(cfg)
 
-	//determine if we want standard (as written) worldgen or want to use the custom generator
-	flagVal, _ := cfg.Flags.GetString(world.WorldGenSchemeFlagName)
-	schemeAsString, schemeType, err := h.DetermineWorldGenerationSchemeFromFlagValue(flagVal)
-	if err != nil {
-		log.Error().Err(err).Msg("invalid flag value for world generation scheme")
-		return
-	}
-	log.Info().Str("scheme", schemeAsString).Msg("scheme used for world generation")
-
 	//load the data we need to interpret & output a world
 	src, err := world.LoadWorldSourceData(ctx)
 	if err != nil {
@@ -80,7 +71,7 @@ func sectorCmd(cmd *cobra.Command, args []string) {
 	}
 
 	//build the subsector
-	sector, err := buildSubSector(ctx, schemeType, src, worldNameMgr)
+	sector, err := buildSubSector(ctx, src, worldNameMgr)
 	if err != nil {
 		log.Error().Err(err).Msg("Sector creation failed")
 		return
@@ -93,7 +84,7 @@ func sectorCmd(cmd *cobra.Command, args []string) {
 	writeSector(ctx, sector)
 }
 
-func buildSubSector(ctx *util.TASContext, worldGenScheme h.SchemeType, worldSourceData *model.WorldSource, nameMgr *worldNameMgr) (*model.Sector, error) {
+func buildSubSector(ctx *util.TASContext, worldSourceData *model.WorldSource, nameMgr *worldNameMgr) (*model.Sector, error) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
@@ -101,7 +92,7 @@ func buildSubSector(ctx *util.TASContext, worldGenScheme h.SchemeType, worldSour
 
 	sector := &model.Sector{
 		Name:   "unknown",
-		Worlds: make([]*model.SectorWorld, 0, 40), //40 is approx number of worlds in a subsector using the standard universe creation algorithm
+		Worlds: make([]*model.SectorSystem, 0, 40), //40 is approx number of worlds in a subsector using the standard universe creation algorithm
 	}
 
 	//i: vertical cols on hex sector map
@@ -120,7 +111,7 @@ func buildSubSector(ctx *util.TASContext, worldGenScheme h.SchemeType, worldSour
 				continue
 			}
 
-			def := world.GenerateWorld(ctx, worldGenScheme)
+			def := world.GenerateWorld(ctx)
 			worldSummary, err := world.GenerateWorldSummary(ctx, def, worldSourceData)
 			if err != nil {
 				log.Error().Err(err).Msg("unable to generate world")
@@ -133,7 +124,7 @@ func buildSubSector(ctx *util.TASContext, worldGenScheme h.SchemeType, worldSour
 			worldSummary.UWP = worldSummary.ToUWP()
 			world.BuildLongDescription(ctx, worldSummary)
 
-			sw := &model.SectorWorld{
+			sw := &model.SectorSystem{
 				WorldSummaryData: worldSummary,
 				HasGasGiant:      dice.Sum(2) < gasGiantThreshold,
 			}
@@ -206,7 +197,7 @@ func writeSectorCSV(ctx *util.TASContext, sector *model.Sector, subtree ...strin
 
 	// organize the data. Must be a [][]string
 	allRows := make([][]string, 0)
-	var header = []string{"Loc", "Name", "UWP", "Gas Giant?", "Bases", "Travel Code", "Trade Codes"}
+	var header = []string{"Loc", "Name", "UWP", "Gas Giant?", "Travel Code", "Trade Codes"}
 	allRows = append(allRows, header)
 	for _, w := range sector.Worlds {
 
@@ -215,7 +206,6 @@ func writeSectorCSV(ctx *util.TASContext, sector *model.Sector, subtree ...strin
 		if w.HasGasGiant {
 			hasGiant = "x"
 		}
-		bases := strings.Join(w.WorldSummaryData.Bases, " ")
 		travelZone := ""
 		if w.WorldSummaryData.TravelZone != "G" {
 			travelZone = w.WorldSummaryData.TravelZone
@@ -223,7 +213,7 @@ func writeSectorCSV(ctx *util.TASContext, sector *model.Sector, subtree ...strin
 		tradeCodes := strings.Join(w.WorldSummaryData.TradeCodes, " ")
 
 		//create the row and add it
-		var d = []string{w.WorldSummaryData.HexLocation, w.WorldSummaryData.Name, w.WorldSummaryData.ToBareUWP(), hasGiant, bases, travelZone, tradeCodes}
+		var d = []string{w.WorldSummaryData.HexLocation, w.WorldSummaryData.Name, w.WorldSummaryData.ToBareUWP(), hasGiant, travelZone, tradeCodes}
 		allRows = append(allRows, d)
 	}
 

@@ -9,7 +9,7 @@ import (
 // ---------------------------------------
 // Size is 2D-2 pg 249
 // ---------------------------------------
-func generateSize(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateSize(ctx *util.TASContext, def *model.WorldDefinition) {
 	log := ctx.Logger()
 	dice := ctx.Dice()
 
@@ -22,7 +22,7 @@ func generateSize(ctx *util.TASContext, def *model.WorldDefinition) {
 // ---------------------------------------
 // Atmosphere is 2D-7 + size pg 250 but is nil for small worlds
 // ---------------------------------------
-func generateAtmosphere(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateAtmosphere(ctx *util.TASContext, def *model.WorldDefinition) {
 	log := ctx.Logger()
 	dice := ctx.Dice()
 
@@ -36,58 +36,9 @@ func generateAtmosphere(ctx *util.TASContext, def *model.WorldDefinition) {
 }
 
 // ---------------------------------------
-// Temperature - needed to do hydrographics. There are several rules at play, see pg 251
-// Also, I am using a special value here to represent "roasting in day, freezing at night"
-// ---------------------------------------
-func generateTemperature(ctx *util.TASContext, def *model.WorldDefinition) {
-
-	log := ctx.Logger()
-	dice := ctx.Dice()
-
-	if def.Atmosphere <= 1 {
-		def.Temperature = specialTempCodeForNoAtmo
-		def.HabitabilityZone = "standard"
-	} else {
-		atmoMod := 0
-		atmoMod = h.AdjustDM(ctx, atmoMod, -2, def.Atmosphere, h.INR, 2, 3)
-		atmoMod = h.AdjustDM(ctx, atmoMod, -1, def.Atmosphere, h.IS, 4, 5, 14)
-		atmoMod = h.AdjustDM(ctx, atmoMod, 1, def.Atmosphere, h.INR, 8, 9)
-		atmoMod = h.AdjustDM(ctx, atmoMod, 6, def.Atmosphere, h.INR, 11, 12)
-		atmoMod = h.AdjustDM(ctx, atmoMod, 2, def.Atmosphere, h.IS, 10, 13, 15)
-
-		//this is optional, but I am adding a random location within the "habital zone"
-		//in a star system. This is optional per pg 251
-		zoneMod := 0
-		habZone := "standard"
-		zone := dice.Sum(2)
-		switch zone {
-		case 2:
-			zoneMod = -4
-			habZone = "extreme cold"
-		case 3:
-			zoneMod = -2
-			habZone = "cold"
-		case 11:
-			zoneMod = 2
-			habZone = "hot"
-		case 12:
-			zoneMod = 4
-			habZone = "extreme hot"
-		}
-
-		temp := dice.Sum(2, atmoMod, zoneMod)
-		temp = util.BoundTo(temp, tempMin, tempMax)
-		def.Temperature = temp
-		def.HabitabilityZone = habZone
-
-	}
-	log.Debug().Str("habitability-zone", def.HabitabilityZone).Int("temp", def.Temperature).Send()
-}
-
-// ---------------------------------------
 // Hydrographics 2D-7 + Atmosphere. see pg 251 for various conditions
 // ---------------------------------------
-func generateHydrographics(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateHydrographics(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
@@ -115,7 +66,7 @@ func generateHydrographics(ctx *util.TASContext, def *model.WorldDefinition) {
 // ---------------------------------------
 // Population is 2D-2 pg 252
 // ---------------------------------------
-func generatePopulation(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGeneratePopulation(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
@@ -129,7 +80,7 @@ func generatePopulation(ctx *util.TASContext, def *model.WorldDefinition) {
 // ---------------------------------------
 // Government 2D-7 + Pop + special see 252
 // ---------------------------------------
-func generateGovernment(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateGovernment(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
@@ -145,58 +96,9 @@ func generateGovernment(ctx *util.TASContext, def *model.WorldDefinition) {
 }
 
 // ---------------------------------------
-// Factions D3, special see pg 254
-// ---------------------------------------
-func generateFactions(ctx *util.TASContext, def *model.WorldDefinition) {
-
-	log := ctx.Logger()
-	dice := ctx.Dice()
-
-	var factionsList []*model.WorldFaction
-	if def.Population > 0 {
-		fmod := 0
-		fmod = h.AdjustDM(ctx, fmod, 1, def.Government, h.IS, 0, 7)
-		fmod = h.AdjustDM(ctx, fmod, -1, def.Government, h.GE, 10)
-
-		numberOfFactions := dice.D3(fmod)
-		factionsList = make([]*model.WorldFaction, 0, numberOfFactions)
-		for i := 0; i < numberOfFactions; i++ {
-			gov := dice.Sum(2, -7, def.Population)
-			gov = util.BoundTo(gov, govMin, govMax)
-			strength := dice.Sum(2)
-			f := &model.WorldFaction{
-				GovernmentStyle:  gov,
-				RelativeStrength: strength,
-			}
-			factionsList = append(factionsList, f)
-		}
-	}
-	def.Factions = factionsList
-	log.Debug().Int("number of factions", len(factionsList)).Send()
-}
-
-// ---------------------------------------
-// Culture D66 see pg 254.
-// Using a special code for "no culture because of no government"
-// ---------------------------------------
-func generateCulture(ctx *util.TASContext, def *model.WorldDefinition) {
-
-	log := ctx.Logger()
-	dice := ctx.Dice()
-
-	//TODO:  handle culture roll 26 - fusion / reroll twice
-
-	def.Culture = specialCultureCodeForNoPop
-	if def.Population > 0 {
-		def.Culture = dice.D66()
-	}
-	log.Debug().Int("culture", def.Culture).Send()
-}
-
-// ---------------------------------------
 // Law Level 2D-7 + Gov see pg 256
 // ---------------------------------------
-func generateLawLevel(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateLawLevel(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
@@ -214,7 +116,7 @@ func generateLawLevel(ctx *util.TASContext, def *model.WorldDefinition) {
 // ---------------------------------------
 // Starport 2D + special, see pg 257
 // ---------------------------------------
-func generateStarport(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateStarport(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
@@ -244,91 +146,85 @@ func generateStarport(ctx *util.TASContext, def *model.WorldDefinition) {
 		starport.BerthingCost = dice.Roll(1) * 1000
 	}
 	def.Starport = starport
+
 	log.Debug().Int("starport", def.Starport.Value).Send()
 }
 
 // ---------------------------------------
 // Tech Level 1D + special see pg 258
 // ---------------------------------------
-func generateTechLevel(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateTechLevel(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 	dice := ctx.Dice()
 
-	//this is not a game rule per se, but I saw asteroids with no people generating a tech level of 5
-	//and I dont think tech level matters if there is no one to establish one or buy/sell to
-	if def.Population == 0 {
-		def.TechLevel = 0
-	} else {
+	//starport modifier
+	starMod := 0
+	starMod = h.AdjustDM(ctx, starMod, 6, def.Starport.Value, h.EQ, 11)     //Class A
+	starMod = h.AdjustDM(ctx, starMod, 4, def.Starport.Value, h.INR, 9, 10) //Class B
+	starMod = h.AdjustDM(ctx, starMod, 2, def.Starport.Value, h.INR, 7, 8)  // Class C
+	starMod = h.AdjustDM(ctx, starMod, -4, def.Starport.Value, h.EQ, 2)     // Class X
 
-		//starport modifier
-		starMod := 0
-		starMod = h.AdjustDM(ctx, starMod, -4, def.Starport.Value, h.EQ, 2)
-		starMod = h.AdjustDM(ctx, starMod, 2, def.Starport.Value, h.INR, 7, 8)
-		starMod = h.AdjustDM(ctx, starMod, 4, def.Starport.Value, h.INR, 9, 10)
-		starMod = h.AdjustDM(ctx, starMod, 6, def.Starport.Value, h.EQ, 11)
+	//size modifier
+	sizeMod := 0
+	sizeMod = h.AdjustDM(ctx, sizeMod, 2, def.Size, h.LE, 1)
+	sizeMod = h.AdjustDM(ctx, sizeMod, 1, def.Size, h.INR, 2, 4)
 
-		//size modifier
-		sizeMod := 0
-		sizeMod = h.AdjustDM(ctx, sizeMod, 2, def.Size, h.LE, 1)
-		sizeMod = h.AdjustDM(ctx, sizeMod, 1, def.Size, h.INR, 2, 4)
+	//atmosphere mod
+	atmoMod := 0
+	atmoMod = h.AdjustDM(ctx, atmoMod, 1, def.Atmosphere, h.LE, 3)
+	atmoMod = h.AdjustDM(ctx, atmoMod, 1, def.Atmosphere, h.GE, 10)
 
-		//atmosphere mod
-		atmoMod := 0
-		atmoMod = h.AdjustDM(ctx, atmoMod, 1, def.Atmosphere, h.LE, 3)
-		atmoMod = h.AdjustDM(ctx, atmoMod, 1, def.Atmosphere, h.GE, 10)
+	//hydrographics mod
+	hydroMod := 0
+	hydroMod = h.AdjustDM(ctx, hydroMod, 1, def.Hydrographics, h.IS, 0, 9)
+	hydroMod = h.AdjustDM(ctx, hydroMod, 2, def.Hydrographics, h.EQ, 10)
 
-		//hydrographics mod
-		hydroMod := 0
-		hydroMod = h.AdjustDM(ctx, hydroMod, 1, def.Hydrographics, h.IS, 0, 9)
-		hydroMod = h.AdjustDM(ctx, hydroMod, 2, def.Hydrographics, h.EQ, 10)
+	//population modifier
+	popMod := 0
+	popMod = h.AdjustDM(ctx, popMod, 1, def.Population, h.IS, 1, 2, 3, 4, 5, 8)
+	popMod = h.AdjustDM(ctx, popMod, 2, def.Population, h.EQ, 9)
+	popMod = h.AdjustDM(ctx, popMod, 4, def.Population, h.EQ, 10)
 
-		//population modifier
-		popMod := 0
-		popMod = h.AdjustDM(ctx, popMod, 1, def.Population, h.IS, 1, 2, 3, 4, 5, 8)
-		popMod = h.AdjustDM(ctx, popMod, 2, def.Population, h.EQ, 9)
-		popMod = h.AdjustDM(ctx, popMod, 4, def.Population, h.EQ, 10)
+	//government
+	govMod := 0
+	govMod = h.AdjustDM(ctx, govMod, 1, def.Government, h.IS, 0, 5)
+	govMod = h.AdjustDM(ctx, govMod, 2, def.Government, h.EQ, 7)
+	govMod = h.AdjustDM(ctx, govMod, -2, def.Government, h.INR, 13, 14)
 
-		//government
-		govMod := 0
-		govMod = h.AdjustDM(ctx, govMod, 1, def.Government, h.IS, 0, 4)
-		govMod = h.AdjustDM(ctx, govMod, 2, def.Government, h.EQ, 7)
-		govMod = h.AdjustDM(ctx, govMod, -2, def.Government, h.INR, 13, 14)
+	techMods := starMod + sizeMod + atmoMod + hydroMod + popMod + govMod
 
-		techMods := starMod + sizeMod + atmoMod + hydroMod + popMod + govMod
+	tech := dice.Roll(starMod, sizeMod, atmoMod, hydroMod, popMod, govMod)
 
-		tech := dice.Roll(starMod, sizeMod, atmoMod, hydroMod, popMod, govMod)
-
-		if tech < 1+techMods || tech > 6+techMods {
-			log.Warn().Int("starMod", starMod).Int("sizeMod", sizeMod).Int("atmoMod", atmoMod).Int("hydroMod", hydroMod).Int("popMod", popMod).Int("govMod", govMod).
-				Int("totalTech", tech).Msg("suspicious tech calculation")
-		}
-
-		tech = util.BoundTo(tech, techMin, techMax)
-
-		//adjust tech level for atmospheric limits
-		switch def.Atmosphere {
-		case 0, 1, 10, 15:
-			tech = util.BoundTo(tech, 8, techMax)
-		case 2, 3, 13, 14:
-			tech = util.BoundTo(tech, 5, techMax)
-		case 4, 7, 9:
-			tech = util.BoundTo(tech, 3, techMax)
-		case 11:
-			tech = util.BoundTo(tech, 9, techMax)
-		case 12:
-			tech = util.BoundTo(tech, 10, techMax)
-		}
-
-		def.TechLevel = tech
+	if tech < 1+techMods || tech > 6+techMods {
+		log.Warn().Int("starMod", starMod).Int("sizeMod", sizeMod).Int("atmoMod", atmoMod).Int("hydroMod", hydroMod).Int("popMod", popMod).Int("govMod", govMod).
+			Int("totalTech", tech).Msg("suspicious tech calculation")
 	}
+
+	tech = util.BoundTo(tech, techMin, techMax)
+
+	//adjust tech level for atmospheric limits
+	switch def.Atmosphere {
+	case 0, 1, 10, 15:
+		tech = util.BoundTo(tech, 8, techMax)
+	case 2, 3, 13, 14:
+		tech = util.BoundTo(tech, 5, techMax)
+	case 4, 7, 9:
+		tech = util.BoundTo(tech, 3, techMax)
+	case 11:
+		tech = util.BoundTo(tech, 9, techMax)
+	case 12:
+		tech = util.BoundTo(tech, 10, techMax)
+	}
+
+	def.TechLevel = tech
 	log.Debug().Int("tech level", def.TechLevel).Send()
 }
 
 // ---------------------------------------
 // Highport see pg 257
 // ---------------------------------------
-func generateHighport(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateHighport(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	dice := ctx.Dice()
 
@@ -365,7 +261,7 @@ func generateHighport(ctx *util.TASContext, def *model.WorldDefinition) {
 // ---------------------------------------
 // Bases see pg 257
 // ---------------------------------------
-func generateBases(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateBases(ctx *util.TASContext, def *model.WorldDefinition) {
 	baseList := make([]string, 0)
 
 	log := ctx.Logger()
@@ -423,7 +319,7 @@ func generateBases(ctx *util.TASContext, def *model.WorldDefinition) {
 // ---------------------------------------
 // Travel Zone see pg 260
 // ---------------------------------------
-func generateTravelCode(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateTravelCode(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 
@@ -448,7 +344,7 @@ func generateTravelCode(ctx *util.TASContext, def *model.WorldDefinition) {
 // ---------------------------------------
 // Trade Codes pg 260
 // ---------------------------------------
-func generateTradeCodes(ctx *util.TASContext, def *model.WorldDefinition) {
+func rawGenerateTradeCodes(ctx *util.TASContext, def *model.WorldDefinition) {
 
 	log := ctx.Logger()
 

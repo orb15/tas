@@ -17,7 +17,6 @@ What is an "average" UWP when doing RAW?
 
 Size is 2D-2 						5		8000km, gravity .45 (bigger than mars, much smaller than earth)
 Atmosphere 2D-7 + Size				5		Thin
-Temperature	2D + Atmo mods			6		Temperate
 Hydrographics 2D-7 + Atmo			5		Roughly 50% water
 Population 2D-2						5		100,000's
 Government 2D-7 + Pop				5		Feudal Technocracy
@@ -64,15 +63,6 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 		WithDice().
 		WithConfig(cfg)
 
-	//determine which worldgen scheme to use
-	flagVal, _ := cfg.Flags.GetString(WorldGenSchemeFlagName)
-	schemeAsString, schemeType, err := h.DetermineWorldGenerationSchemeFromFlagValue(flagVal)
-	if err != nil {
-		log.Error().Err(err).Msg("invalid flag value for world generation scheme")
-		return
-	}
-	log.Info().Str("scheme", schemeAsString).Msg("scheme used for world generation")
-
 	//prep data store to hold the randomized worlds
 	numberOfWorldsToGenerate := subsectorLoopsToRun
 	useMax, err := cfg.Flags.GetBool(MaxLoopSizeFlagName)
@@ -90,14 +80,13 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 
 	//generate the planets
 	for i := 0; i < numberOfWorldsToGenerate; i++ {
-		def := GenerateWorld(ctx, schemeType)
+		def := GenerateWorld(ctx)
 		dataStore = append(dataStore, def)
 	}
 
 	//get averages
 	sizeAvg, sizeMin, sizeMax := calcStatsForAttribute("Si", dataStore)
 	atmoAvg, atmoMin, atmoMax := calcStatsForAttribute("At", dataStore)
-	tempAvg, tempMin, tempMax := calcStatsForAttribute("Te", dataStore)
 	hydroAvg, hydroMin, hydroMax := calcStatsForAttribute("Hy", dataStore)
 	popAvg, popMin, popMax := calcStatsForAttribute("Po", dataStore)
 	govAvg, govMin, govMax := calcStatsForAttribute("Go", dataStore)
@@ -108,11 +97,10 @@ func debugWorldGeneration(cmd *cobra.Command, args []string) {
 	var sb strings.Builder
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL)
-	sb.WriteString("Average, Min and Max Stats for" + h.SP + fmt.Sprintf("%d debug runs", numberOfWorldsToGenerate) + h.SP + "using scheme:" + h.SP + schemeAsString)
+	sb.WriteString("Average, Min and Max Stats for" + h.SP + fmt.Sprintf("%d debug runs", numberOfWorldsToGenerate) + h.SP)
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL + "Size" + h.TAB + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", sizeAvg, sizeMin, sizeMax))
 	sb.WriteString(h.NL + "Atmosphere" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", atmoAvg, atmoMin, atmoMax))
-	sb.WriteString(h.NL + "Temperature" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", tempAvg, tempMin, tempMax))
 	sb.WriteString(h.NL + "Hydrographics" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", hydroAvg, hydroMin, hydroMax))
 	sb.WriteString(h.NL + "Population" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", popAvg, popMin, popMax))
 	sb.WriteString(h.NL + "Government" + h.TAB + h.TAB + fmt.Sprintf("%f\t%d\t%d", govAvg, govMin, govMax))

@@ -34,7 +34,6 @@ const (
 	worldSizeFile      = "world-size.json"
 	worldStarportFile  = "world-starport.json"
 	worldTradeCodeFile = "world-trade-codes.json"
-	worldTempFile      = "world-temp.json"
 
 	//default world generation data
 	defaultWorldName   = "UNK"
@@ -49,8 +48,6 @@ const (
 	sizeMax  = 10
 	atmoMin  = 0
 	atmoMax  = 15
-	tempMin  = 2
-	tempMax  = 12
 	hydroMin = 0
 	hydroMax = 10
 	popMin   = 0
@@ -109,15 +106,6 @@ func worldCmd(cmd *cobra.Command, args []string) {
 		WithDice().
 		WithConfig(cfg)
 
-	//determine if we want standard (as written) worldgen or want to use the custom generator
-	flagVal, _ := cfg.Flags.GetString(WorldGenSchemeFlagName)
-	schemeAsString, schemeType, err := h.DetermineWorldGenerationSchemeFromFlagValue(flagVal)
-	if err != nil {
-		log.Error().Err(err).Msg("invalid flag value for world generation scheme")
-		return
-	}
-	log.Info().Str("scheme", schemeAsString).Msg("scheme used for world generation")
-
 	//load the data we need to interpret & output a world
 	src, err := LoadWorldSourceData(ctx)
 	if err != nil {
@@ -139,7 +127,7 @@ func worldCmd(cmd *cobra.Command, args []string) {
 	for i := 0; uint64(i) < numberOfWorldsToGenerate; i++ {
 
 		//generate the world
-		def := GenerateWorld(ctx, schemeType)
+		def := GenerateWorld(ctx)
 
 		//summarize the world in a JSON-ready object
 		summary, err := GenerateWorldSummary(ctx, def, src)
@@ -157,30 +145,26 @@ func worldCmd(cmd *cobra.Command, args []string) {
 
 }
 
-func GenerateWorld(ctx *util.TASContext, schemeName h.SchemeType) *model.WorldDefinition {
+func GenerateWorld(ctx *util.TASContext) *model.WorldDefinition {
 	def := &model.WorldDefinition{}
 
 	log := ctx.Logger()
 
 	log.Info().Msg("generating world...")
 
-	genScheme := generatorSchemeForName(schemeName)
+	//generate a world using the raw functions
+	rawGenerateSize(ctx, def)
+	rawGenerateAtmosphere(ctx, def)
+	rawGenerateHydrographics(ctx, def)
+	rawGeneratePopulation(ctx, def)
+	rawGenerateGovernment(ctx, def)
+	rawGenerateLawLevel(ctx, def)
+	rawGenerateStarport(ctx, def)
+	rawGenerateTechLevel(ctx, def)
 
-	genScheme[sizeFunc](ctx, def)
-	genScheme[atmosphereFunc](ctx, def)
-	genScheme[temperatureFunc](ctx, def)
-	genScheme[hydrographicsFunc](ctx, def)
-	genScheme[populationFunc](ctx, def)
-	genScheme[governmentFunc](ctx, def)
-	genScheme[factionsFunc](ctx, def)
-	genScheme[cultureFunc](ctx, def)
-	genScheme[lawFunc](ctx, def)
-	genScheme[starportFunc](ctx, def)
-	genScheme[techLevelFunc](ctx, def)
-	genScheme[highportFunc](ctx, def)
-	genScheme[basesFunc](ctx, def)
-	genScheme[travelFunc](ctx, def)
-	genScheme[tradeFunc](ctx, def)
+	rawGenerateHighport(ctx, def)
+	rawGenerateTradeCodes(ctx, def)
+	rawGenerateTravelCode(ctx, def)
 
 	log.Info().Msg("world generation complete")
 	return def
@@ -208,14 +192,6 @@ func GenerateWorldSummary(ctx *util.TASContext, def *model.WorldDefinition, src 
 	summary.Government = toHex(ctx, def.Government)
 	summary.LawLevel = toHex(ctx, def.LawLevel)
 	summary.TechLevel = toHex(ctx, def.TechLevel)
-
-	//bases - use the first letter of the base type, captialized
-	bases := make([]string, 0, len(def.Bases))
-	for _, b := range def.Bases {
-		firstAsCaps := strings.ToUpper(b[0:1])
-		bases = append(bases, firstAsCaps)
-	}
-	summary.Bases = bases
 
 	//trade codes use abbreviation from lookup as all caps
 	codes := make([]string, 0, len(def.TradeCodes))
@@ -254,13 +230,9 @@ func GenerateWorldSummary(ctx *util.TASContext, def *model.WorldDefinition, src 
 
 	//extended atmosphere
 	eas := model.ExetendedAtmosphereSummary{
-		Composition:               src.WorldAtmo[def.Atmosphere].Composition,
-		Pressure:                  src.WorldAtmo[def.Atmosphere].Pressure,
-		GearRequired:              src.WorldAtmo[def.Atmosphere].GearRequired,
-		TemperatureClassification: src.WorldTemperatures[def.Temperature].Type,
-		AverageTemperature:        src.WorldTemperatures[def.Temperature].AverageTemperature,
-		TemperatureDescription:    src.WorldTemperatures[def.Temperature].Description,
-		HabitabilityZone:          def.HabitabilityZone,
+		Composition:  src.WorldAtmo[def.Atmosphere].Composition,
+		Pressure:     src.WorldAtmo[def.Atmosphere].Pressure,
+		GearRequired: src.WorldAtmo[def.Atmosphere].GearRequired,
 	}
 	summary.ExtendedData.AtmosphereDetails = eas
 
@@ -271,7 +243,7 @@ func GenerateWorldSummary(ctx *util.TASContext, def *model.WorldDefinition, src 
 	}
 	summary.ExtendedData.HydrographicsDetails = ehs
 
-	//estended population
+	//extended population
 	eps := model.ExtendedPopulationSummary{
 		Inhabitants: src.WorldPop[def.Population].Inhabitants,
 	}
@@ -286,34 +258,6 @@ func GenerateWorldSummary(ctx *util.TASContext, def *model.WorldDefinition, src 
 	}
 	summary.ExtendedData.GovernmentDetails = egs
 
-	//extended factions summary
-	if len(def.Factions) > 0 {
-		factionList := make([]model.ExtendedFactionsSummary, 0, len(def.Factions))
-		for _, f := range def.Factions {
-			fctn := model.ExtendedFactionsSummary{
-				Government:       toHex(ctx, src.WorldGov[f.GovernmentStyle].Value),
-				RelativeStrength: src.WorldFactions[f.RelativeStrength].RelativeStrength,
-			}
-
-			fegv := model.ExtendedGovernmentSummary{
-				Type:        src.WorldGov[f.GovernmentStyle].Type,
-				Description: src.WorldGov[f.GovernmentStyle].Description,
-				Example:     src.WorldGov[f.GovernmentStyle].Example,
-				Contraband:  src.WorldGov[f.GovernmentStyle].Contraband,
-			}
-			fctn.GovernmentDetails = fegv
-			factionList = append(factionList, fctn)
-		}
-		summary.ExtendedData.FactionDetails = factionList
-	}
-
-	//extended culture
-	ecs := model.ExtendedCultureSummary{
-		Type:        src.WorldCulture[def.Culture].Type,
-		Description: src.WorldCulture[def.Culture].Culture,
-	}
-	summary.ExtendedData.CulturDetails = ecs
-
 	//extended law level
 	els := model.ExtendedLawSummary{
 		BannedWeapons: src.WorldLaw[def.LawLevel].BannedWeapons,
@@ -327,18 +271,6 @@ func GenerateWorldSummary(ctx *util.TASContext, def *model.WorldDefinition, src 
 		Description: src.TechLevel[def.TechLevel].Description,
 	}
 	summary.ExtendedData.TechDetails = ets
-
-	//extended base
-	baseDetails := make([]model.ExtendedBaseSummary, 0, len(def.Bases))
-	for i := 0; i < len(def.Bases); i++ {
-		baseType := def.Bases[i]
-		base := model.ExtendedBaseSummary{
-			Type:        baseType,
-			Description: src.WorldBases[baseType].Description,
-		}
-		baseDetails = append(baseDetails, base)
-	}
-	summary.ExtendedData.BaseDetails = baseDetails
 
 	log.Info().Msg("world summary complete")
 
@@ -355,16 +287,12 @@ func LoadWorldSourceData(ctx *util.TASContext) (*model.WorldSource, error) {
 	var sourceFiles = []string{
 		techLevelFile,
 		worldAtmoFile,
-		worldBasesFile,
-		worldCultureFile,
-		worldFactionsFile,
 		worldGovFile,
 		worldHydroFile,
 		worldLawFile,
 		worldPopFile,
 		worldSizeFile,
 		worldStarportFile,
-		worldTempFile,
 		worldTradeCodeFile}
 
 	fileData := util.IngestFiles("data/", sourceFiles)
@@ -400,27 +328,6 @@ func LoadWorldSourceData(ctx *util.TASContext) (*model.WorldSource, error) {
 				return nil, err
 			}
 			source.WorldAtmo = w
-
-		case worldBasesFile:
-			w, err := model.WorldBasesFromFile(fd.Data)
-			if err != nil {
-				return nil, err
-			}
-			source.WorldBases = w
-
-		case worldCultureFile:
-			w, err := model.WorldCulturesFromFile(fd.Data)
-			if err != nil {
-				return nil, err
-			}
-			source.WorldCulture = w
-
-		case worldFactionsFile:
-			w, err := model.WorldFactionsFromFile(fd.Data)
-			if err != nil {
-				return nil, err
-			}
-			source.WorldFactions = w
 
 		case worldGovFile:
 			w, err := model.WorldGovsFromFile(fd.Data)
@@ -464,13 +371,6 @@ func LoadWorldSourceData(ctx *util.TASContext) (*model.WorldSource, error) {
 			}
 			source.WorldStarport = w
 
-		case worldTempFile:
-			w, err := model.WorldTemperaturesFromFile(fd.Data)
-			if err != nil {
-				return nil, err
-			}
-			source.WorldTemperatures = w
-
 		case worldTradeCodeFile:
 			w, err := model.WorldTradeCodesFromFile(fd.Data)
 			if err != nil {
@@ -505,14 +405,6 @@ func BuildLongDescription(ctx *util.TASContext, summary *model.WorldSummary) {
 	sb.WriteString(h.NL + h.TAB + "Facilities Available:" + h.SP + summary.ExtendedData.StarportDetails.Facilities)
 	sb.WriteString(h.NL + h.TAB + "Has Highport:" + h.SP + summary.ExtendedData.StarportDetails.HasHighport)
 	sb.WriteString(h.NL + h.TAB + "Travel Zone:" + h.SP + tzone)
-	if len(summary.Bases) > 0 {
-		sb.WriteString(h.NL + h.TAB + "There are" + h.SP + toHex(ctx, len(summary.Bases)) + h.SP + "military bases in addition to the starport")
-		for i, b := range summary.ExtendedData.BaseDetails {
-			sb.WriteString(h.NL + h.TAB + h.TAB + "Base" + h.SP + toHex(ctx, i+1))
-			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Type:" + h.SP + b.Type)
-			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Description:" + h.SP + b.Description)
-		}
-	}
 
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL + "Size:" + h.SP + summary.Size)
@@ -524,10 +416,6 @@ func BuildLongDescription(ctx *util.TASContext, summary *model.WorldSummary) {
 	sb.WriteString(h.NL + h.TAB + "Details:" + h.SP + summary.ExtendedData.AtmosphereDetails.Composition)
 	sb.WriteString(h.NL + h.TAB + "Pressure Range (PSI):" + h.SP + summary.ExtendedData.AtmosphereDetails.Pressure)
 	sb.WriteString(h.NL + h.TAB + "Required Gear:" + h.SP + summary.ExtendedData.AtmosphereDetails.GearRequired)
-	sb.WriteString(h.NL + h.TAB + "Temperature Zone:" + h.SP + summary.ExtendedData.AtmosphereDetails.TemperatureClassification)
-	sb.WriteString(h.NL + h.TAB + "Temperature Descrpition:" + h.SP + summary.ExtendedData.AtmosphereDetails.TemperatureDescription)
-	sb.WriteString(h.NL + h.TAB + "Average Temperature:" + h.SP + summary.ExtendedData.AtmosphereDetails.AverageTemperature)
-	sb.WriteString(h.NL + h.TAB + "Position within star's habitability zone:" + h.SP + summary.ExtendedData.AtmosphereDetails.HabitabilityZone)
 
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL + "Hydrographics:" + h.SP + summary.Hydrographics)
@@ -537,8 +425,6 @@ func BuildLongDescription(ctx *util.TASContext, summary *model.WorldSummary) {
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL + "Population:" + h.SP + summary.Population)
 	sb.WriteString(h.NL + h.TAB + "Population is in the:" + h.SP + summary.ExtendedData.PopulationDetails.Inhabitants)
-	sb.WriteString(h.NL + h.TAB + "Cultural aspect influencing society:" + h.SP + summary.ExtendedData.CulturDetails.Type)
-	sb.WriteString(h.NL + h.TAB + "How this cultural aspect influences day-to-day or business life:" + h.SP + summary.ExtendedData.CulturDetails.Description)
 
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL + "Government:" + h.SP + summary.Government)
@@ -546,19 +432,6 @@ func BuildLongDescription(ctx *util.TASContext, summary *model.WorldSummary) {
 	sb.WriteString(h.NL + h.TAB + "Description:" + h.SP + summary.ExtendedData.GovernmentDetails.Description)
 	sb.WriteString(h.NL + h.TAB + "Examples of this form of government:" + h.SP + summary.ExtendedData.GovernmentDetails.Example)
 	sb.WriteString(h.NL + h.TAB + "Items usually considered contraband by this government:" + h.SP + summary.ExtendedData.GovernmentDetails.Contraband)
-	if len(summary.ExtendedData.FactionDetails) > 0 {
-		sb.WriteString(h.NL + h.TAB + "There are" + h.SP + toHex(ctx, len(summary.ExtendedData.FactionDetails)) + h.SP + "Factions opposing the Government")
-
-		for i := range summary.ExtendedData.FactionDetails {
-			sb.WriteString(h.NL + h.TAB + h.TAB + "Faction" + h.SP + toHex(ctx, i+1))
-			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Desired Government:" + h.SP + summary.ExtendedData.FactionDetails[i].Government)
-			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Type:" + h.SP + summary.ExtendedData.FactionDetails[i].GovernmentDetails.Type)
-			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Description:" + h.SP + summary.ExtendedData.FactionDetails[i].GovernmentDetails.Description)
-			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Examples of this form of government:" + h.SP + summary.ExtendedData.FactionDetails[i].GovernmentDetails.Example)
-			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Items usually considered contraband by this government:" + h.SP + summary.ExtendedData.FactionDetails[i].GovernmentDetails.Contraband)
-			sb.WriteString(h.NL + h.TAB + h.TAB + h.TAB + "Influence or power relative to primary government:" + h.SP + summary.ExtendedData.FactionDetails[i].RelativeStrength)
-		}
-	}
 
 	sb.WriteString(h.NL)
 	sb.WriteString(h.NL + "Law Level:" + h.SP + summary.LawLevel)
