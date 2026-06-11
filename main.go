@@ -3,6 +3,7 @@ package main
 import (
 	"tas/internal/cmd/polish"
 	"tas/internal/cmd/sector"
+	"tas/internal/cmd/system"
 	"tas/internal/cmd/world"
 	"tas/internal/util"
 
@@ -33,6 +34,9 @@ func main() {
 
 	//polish command
 	rootCmd.AddCommand(polish.PolishCmdConfig)
+
+	// system command
+	rootCmd.AddCommand(system.SystemCmdConfig)
 
 	rootCmd.Execute()
 }
