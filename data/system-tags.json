@@ -8,17 +8,25 @@
 { "tag": "Ring-Shepherding", "description": "Caught inside a planetary ring; bombarded by house-sized ice/rock." },
 { "tag": "Supercritical Atmosphere", "description": "Gas is compressed so tightly it acts like a dissolving liquid." },
 { "tag": "Tidal Breccia", "description": "Constant gravitational tugging grinds underground rock into shifting gravel." },
-{ "tag": "Tidal Breccia", "description": "Constant gravitational tugging grinds underground rock into shifting gravel." },
 { "tag": "Tidal Squeezing", "description": "Gravitational flexing liquefies the planet’s mantle continuously." },
 { "tag": "Tidal Whipping", "description": "Proximity to a gas giant pulls oceans/crust up by tens of meters daily." },
 { "tag": "Trojan Swarm", "description": "Co-orbiting with thousands of lethal asteroids." },
-{ "tag": "Van Allen Nightmare", "description": "Trapped inside a gas giant’s lethal radiation belt." }
+{ "tag": "Van Allen Nightmare", "description": "Trapped inside a gas giant’s lethal radiation belt." },
+{ "tag": "Asymmetric Magnetopause", "description": "The moon constantly drops in and out of the giant's magnetic tail; triggering massive surface voltage arcs and grid failures."},
+{ "tag": "Cryovolcanic Plume Shearing", "description": "Tidal forces tear open supersonic vents; shooting toxic ice crystals into orbit that rain back down as ballistic shrapnel."},
+{ "tag": "Eccentricity Heating Spike", "description": "Orbital resonance periodicities cause dramatic surges in tidal friction; melting the lower crust and driving sudden global volcanic upheaval."},
+{ "tag": "Eclipsed Solar Starvation", "description": "The gas giant frequently blots out the sun for days; plunging the moon into deep cryogenic freezes that exhaust power reserves."},
+{ "tag": "Flux Tube Coupling", "description": "A multi-million ampere electrical current connects the moon to the giant; vaporizing machinery caught in the moving footprint."},
+{ "tag": "Gravitational Differentiation Collapse", "description": "Extreme tidal pulling prevents internal layers from settling cleanly; causing sudden, catastrophic mass shifts deep within the mantle."},
+{ "tag": "Magnetospheric Dust Focus", "description": "The giant's magnetic field acts as a funnel; steering hyper-velocity ring dust directly into the moon's forward-facing hemisphere."},
+{ "tag": "Methanogenic Photochemical Smog", "description": "Solar radiation interacting with captured planetary gases creates a thick, opaque haze; blinding sensors and coating solar arrays in soot."},
+{ "tag": "Orbital Decay Drag", "description": "Proximity to the gas giant's upper atmosphere creates subtle drag; slowly warping structures and causing persistent orbital decay for satellites."},
+{ "tag": "Tidal Lithospheric Unlocking", "description": "The rigid crust violently slips against the tidal bulge of the fluid mantle beneath; triggering planet-wide, magnitude-10 faults."}
 ],
 
 "hot": [
 { "tag": "Adiabatic Inferno", "description": "Descending air currents compress and superheat low-lying valleys." },
 { "tag": "Cinder Desolation", "description": "Surface is covered deep in unstable, highly abrasive volcanic ash." },
-{ "tag": "Crustal Overturn", "description": "Entire planet crust periodically sinks into the mantle and melts." },
 { "tag": "Crustal Overturn", "description": "Entire planet crust periodically sinks into the mantle and melts." },
 { "tag": "Iron Rain", "description": "High temperatures cause iron vapor to condense and fall as molten liquid." },
 { "tag": "Magma Oceans", "description": "Surface features seas of molten basalt and granite." },
@@ -28,7 +36,17 @@
 { "tag": "Silicate Volcanism", "description": "Standard magma eruptions but on a hyper-frequent, planetary scale." },
 { "tag": "Supercritical Vaporization", "description": "Surface heat turns most fluids instantly into a bursting gas." },
 { "tag": "Thermal Microbursts", "description": "Sudden downdrafts of superheated air that crush structures." },
-{ "tag": "Unstable Calderas", "description": "Volcanic craters prone to massive, explosive collapse." }
+{ "tag": "Unstable Calderas", "description": "Volcanic craters prone to massive, explosive collapse." },
+{ "tag": "Calcination Crust", "description": "Extreme ambient heat bakes surface limestone and carbonates; continuously outgassing toxic carbon dioxide directly from the bedrock."},
+{ "tag": "Hyper-Convective Squall Lines", "description": "Massive thermal differentials drive permanent, towering storm walls that unleash supersonic winds and continuous, high-voltage lightning grids."},
+{ "tag": "Lithospheric Thermal Buckling", "description": "Intense solar heating expands the upper crust faster than the deep interior; causing the ground to violently warp, fracture, and heave upward."},
+{ "tag": "Moist Greenhouse Escape", "description": "The upper atmosphere is so hot that water vapor rises unchecked to the exosphere; where solar radiation permanently splits and strips away the hydrogen."},
+{ "tag": "Runaway Hydration Swelling", "description": "Any liquid water introduced by industry or habitats triggers an explosive exothermic reaction with superheated, unweathered basalt minerals."},
+{ "tag": "Saline Desert Deflation", "description": "Dried-up ancient seas leave vast plains of caustic, superheated sodium and potassium salts; whipped by winds into skin-stripping chemical storms."},
+{ "tag": "Dtratified Thermal Inversion", "description": "A dense layer of superheated gas locks near the surface; trapping toxic industrial pollutants and heat with zero vertical atmospheric mixing."},
+{ "tag": "Super-Rotating Jet Streams", "description": "Atmospheric heat dynamics cause the entire sky to rotate much faster than the planet itself; driving ceaseless, crushing high-altitude wind shear."},
+{ "tag": "Thermal Creep Deformation", "description": "Persistent, high ambient temperatures cause structural metals and engineering foundations to slowly stretch and warp under their own weight."},
+{ "tag": "Zeolite Outgassing", "description": "The sun-baked crust reaches the threshold where subsurface volcanic minerals dehydrate; violently releasing trapped pockets of scalding steam."}
 ],
 
 "star-near": [
@@ -40,7 +58,17 @@
 { "tag": "Substellar Furnace", "description": "Extreme proximity to star melts the dayside crust." },
 { "tag": "Tidal Squeezing", "description": "Gravitational flexing liquefies the planet’s mantle continuously." },
 { "tag": "Ultraviolet Desert", "description": "Star puts out extreme UV-C; organics instantly mutate or shatter." },
-{ "tag": "Volatile Sublimation", "description": "Whole continents melt into gas when the orbital path nears the star." }
+{ "tag": "Volatile Sublimation", "description": "Whole continents melt into gas when the orbital path nears the star." },
+{ "tag": "Dayside Silicate Rain", "description": "Vaporized rock in the atmosphere condenses and falls back to the surface as searing, molten glass droplets."},
+{ "tag": "Electrostatic Dust Levitation", "description": "Intense photoionization charges the desert surface; lifting clouds of microscopic, jagged regolith that foil solar arrays and mechanical joints."},
+{ "tag": "Induction-Heated Crust", "description": "The planet's movement through the star's immense magnetic field induces massive electrical currents in the iron-rich bedrock; superheating the terrain."},
+{ "tag": "Libration Zone Scouring", "description": "On tidally locked worlds, the border between day and night shifts back and forth; creating persistent, supersonic thermal winds that shred surface structures."},
+{ "tag": "Photolytic Desiccation", "description": "Extreme stellar radiation splits underground water or hydroxyl molecules at the atomic level; leaving the planet completely dry and stripped of hydrogen."},
+{ "tag": "Refractory Lag Deposit", "description": "All lighter elements have evaporated into space; leaving behind a dense, ultra-hard surface of titanium and aluminum oxides that defies industrial mining."},
+{ "tag": "Solar Wind Spallation", "description": "High-energy proton bombardment mechanically chips away at atomic nuclei in the surface rock; creating a highly radioactive, chemically volatile topsoil."},
+{ "tag": "Stellar Coronal Mass Injection", "description": "The world frequently passes directly through coronal loops; temporarily embedding the entire crust in a multi-million-degree plasma bath."},
+{ "tag": "Thermal Fatigue Spalling", "description": "Extreme temperature swings from orbital eccentricity cause rocks to expand and contract violently; loudly fracturing mountains into explosive shrapnel."},
+{ "tag": "Tidally Locked Magma Plume", "description": "The constant gravitational bulge toward the star locks a massive, permanent mantle plume in place; anchoring a perpetual super-volcano directly under the substellar point."}
 ],
 
 "cold": [
@@ -61,7 +89,26 @@
 { "tag": "Subglacial Pressure", "description": "Hidden oceans pressurized beneath miles of shifting, crushing ice." },
 { "tag": "Sublimation Frost", "description": "Gasses freeze directly onto equipment surfaces, fouling radiator fins." },
 { "tag": "Sublimation Hollows", "description": "Ice evaporates directly into gas, leaving unstable, sharp spires (penitentes)." },
-{ "tag": "Supersonic Blizzards", "description": "Frozen gases driven horizontally at mach speeds." }
+{ "tag": "Supersonic Blizzards", "description": "Frozen gases driven horizontally at mach speeds." },
+{ "tag": "Brittle-fracture Regime", "description": "Extreme cold alters structural properties; metals and plastics shatter like glass under ordinary stress."},
+{ "tag": "Carbon Dioxide Blizzard", "description": "Atmosphere condenses directly into dry ice snowfall; burying equipment in suffocating, toxic drifts."},
+{ "tag": "Permafrost Sublimation", "description": "Weak solar heating triggers structural collapse as underground ice turns instantly to gas, swallowing surface structures."},
+{ "tag": "Photolytic Ozone Lack", "description": "No atmospheric protection from solar UV; cosmic radiation sterilizes the frozen, unshielded crust."},
+{ "tag": "Radiogenic Heat Starvation", "description": "Dead planetary core offers zero geothermal energy; forcing absolute reliance on dwindling external power."},
+{ "tag": "Regolith Sintering", "description": "Electrostatic forces and cosmic rays fuse frozen dust into abrasive, razor-sharp crusts that destroy seals."},
+{ "tag": "Sub-Glacial Brines", "description": "Deep underground pockets of hyper-saline, toxic water under immense pressure that corrode drilling equipment."},
+{ "tag": "Vacuum-Desiccated Crust", "description": "Thin, freezing atmosphere causes exposed water ice to vanish via sublimation; leaving a unstable, hollowed-out surface bedrock."},
+{ "tag": "Xenon-Argon Pooling", "description": "Heavy, unbreathable noble gases collect in low valleys; silently displacing oxygen and asphyxiating ground teams."},
+{ "tag": "Zero-Viscosity Ice Slick", "description": "Exotic ice phases provide near-zero friction; making vehicular traction and structural anchoring impossible."},
+{ "tag": "Abrasive Ice-Silicate Matrix", "description": "Hard rock is thoroughly bonded with crystalline ice; creating a composite material that destroys standard diamond-tipped drill bits."},
+{ "tag": "Cryo-Hydrated Swelling Clays", "description": "Deep subsurface minerals rapidly absorb any introduction of industrial heat; expanding violently and crushing tunnels or foundations."},
+{ "tag": "Exotic Ice Polymorphs", "description": "High-pressure underground zones harbor Ice-II or Ice-V; which destabilize into massive volume changes when drilled or exposed to surface pressure."},
+{ "tag": "Heavy-Metal Frost Coatings", "description": "Sublimating gases leave behind thin, ubiquitous layers of toxic lead, arsenic, or cadmium dust across all rocky surfaces."},
+{ "tag": "Iron-Sulfide Embrittlement", "description": "Frozen pyrrhotite and pyrite deposits react with moisture from human habitats; releasing sulfuric acid that rots habitats from the bedrock up."},
+{ "tag": "Methane Hydrate Cavitation", "description": "Excavating rock faces releases pockets of unstable gas hydrates; causing sudden, explosive decompression of the rock wall."},
+{ "tag": "Pyrophoric Reduced Dusts", "description": "Unoxidized metallic dusts kept stable by the deep cold will instantly ignite or explode when exposed to warm, oxygenated habitat air."},
+{ "tag": "Serpentinizing Micro-Quakes", "description": "Slow chemical hydration of olivine deep in the crust causes steady volumetric swelling; triggering constant, unpredictable micro-tremors."},
+{ "tag": "Sulfur Dioxide Permafrost", "description": "Frozen volcanic gases are locked solidly into the rock strata; releasing highly toxic and highly corrosive fumes whenever mined."}
 ],
 
 "general": [

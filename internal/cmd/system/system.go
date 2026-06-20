@@ -1,7 +1,6 @@
 package system
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"regexp"
@@ -114,13 +113,8 @@ func systemCmd(cmd *cobra.Command, args []string) {
 	// create the solar system
 	solarsys := generateSolarSystem(ctx, uwp, primaryAU, hasGasGiants, systemTags)
 
-	//dump the solar system for now
-	bytes, err := json.MarshalIndent(*solarsys, "", " ")
-	if err != nil {
-
-	}
-	fmt.Println(string(bytes))
-
+	//handle output
+	writeSystem(ctx, solarsys)
 }
 
 // top-level generator function
@@ -232,11 +226,11 @@ func generateSolarSystemInsideOut(ctx *util.TASContext, sys *model.SolarSystem, 
 	sys.GasGiantCount = gas
 	sys.RockyCount = rocky
 
-	//general idea and constraints
+	// general idea and constraints - all assume a Sol-like Class G star (rules change otherwise!!)
 	// - we know where the primary is located (typically habitable zone but not required)
-	// - fill in the inner systems first (rocky or asteroid) working from the primary inward
+	// - fill in the inner systems first (rocky or asteroid, no 'hot jupiters') working from the primary inward
 	// - fill in the outer systems (rocky  or asteroid) working from the primary outward
-	// - add gias giants and their moons outside the last rocky planet or belt
+	// - add gas giants and their moons outside the last rocky planet or belt
 	// - respect the 'dead bands' to prevent planets from being too close to one another
 
 	// do we have anything to place inside the primary habitable zone?
@@ -254,7 +248,7 @@ func generateSolarSystemInsideOut(ctx *util.TASContext, sys *model.SolarSystem, 
 	//fill the inner area, working from primary inward
 	for !innerIsFull {
 
-		// crash prevent
+		// infinite loop prevention
 		loopCount++
 		if loopCount == 100 {
 			ctx.Logger().Fatal().
@@ -329,7 +323,7 @@ func generateSolarSystemInsideOut(ctx *util.TASContext, sys *model.SolarSystem, 
 	nextAU = 0
 	for placeablesRemain > 0 {
 
-		// crash prevent
+		// infinite loop prevention
 		loopCount++
 		if loopCount == 100 {
 			ctx.Logger().Fatal().
@@ -416,7 +410,7 @@ func generateSolarSystemInsideOut(ctx *util.TASContext, sys *model.SolarSystem, 
 				placeablesRemain = beltsRemain + rockyRemain + gasRemain
 				continue
 
-			// we are out of rocky, must place belts - which is good b/c we didnt place one last time
+			//we are out of rocky, must place belts - which is good b/c we didnt place one last time
 			case rockyRemain == 0 && beltsRemain > 0 && !beltPlaceLastIteration:
 				belt := &model.SystemOrbital{}
 				belt.IsAsteroid = true
@@ -761,8 +755,30 @@ func calcRockyPlanetSize(ctx *util.TASContext) int {
 }
 
 func calcGasGiantSizeSize(ctx *util.TASContext) int {
+	// like everything else in a solar system, there ar eno hard and fast rules
+	// I based this simple code on general size limits, exluding gas dwarfs and
+	// hot jupiters and used our solar system as a baseline
+	// jupiter is about 142000km at its equator
+	// neptune is about 49000km. This also excludes 'hot jupiters'
+	// this code generates sizes 45k km to 155k km
 	dice := ctx.Dice()
-	return dice.Sum(2) + 10
+	theDiam := 100000 // (150k + 50k ) / 2, so start at average
+
+	roll := dice.Roll() - 1 // value is 0-5
+	roll = roll * 10000
+
+	if dice.Dx(2) == 1 {
+		theDiam -= roll
+	}
+	theDiam += roll
+
+	roll = dice.Roll() - 1
+	roll = roll * 1000
+
+	if dice.Dx(2) == 1 {
+		return theDiam - roll
+	}
+	return theDiam + roll
 }
 
 func calcColdAU(ctx *util.TASContext, baselineAU float32) float32 {
@@ -809,4 +825,68 @@ func loadSystemTags(ctx *util.TASContext) (*model.SystemTags, error) {
 		return nil, err
 	}
 	return systemTags, nil
+}
+
+func writeSystem(ctx *util.TASContext, sys *model.SolarSystem) {
+
+	var sb strings.Builder
+
+	sb.WriteString(h.NL)
+	sb.WriteString(h.NL + fmt.Sprintf("Solar System for %s", sys.Name))
+	sb.WriteString(h.NL + "=====================================")
+	sb.WriteString(h.NL + fmt.Sprintf("Rocky planet count: %d", sys.RockyCount))
+	sb.WriteString(h.NL + fmt.Sprintf("Asteroid belt planet count: %d", sys.AsteroidCount))
+	sb.WriteString(h.NL + fmt.Sprintf("Gas giant count: %d", sys.GasGiantCount))
+	sb.WriteString(h.NL + "Note: counts exclude the primary planet / UWP!")
+	for _, orb := range sys.Orbitals {
+
+		sb.WriteString(h.NL)
+
+		prefix := ""
+		if orb.IsPrimary {
+			prefix = "  "
+			sb.WriteString(h.NL + prefix + fmt.Sprintf("Orbital %d at %2.2f AU [%s]", orb.OrbitalNumber, orb.OrbitalDistanceAU, orb.UWP))
+		} else {
+			sb.WriteString(h.NL + prefix + fmt.Sprintf("Orbital %d at %2.2f AU", orb.OrbitalNumber, orb.OrbitalDistanceAU))
+		}
+
+		orbType := "Rocky planet"
+		switch {
+		case orb.IsAsteroid:
+			orbType = "Asteroid belt"
+		case orb.IsGasGiant:
+			orbType = "Gas giant"
+		}
+		sb.WriteString(h.NL + prefix + fmt.Sprintf("Orbital type: %s", orbType))
+
+		sizeMult := 1600
+		if orb.IsGasGiant {
+			sizeMult = 1
+		}
+		sb.WriteString(h.NL + prefix + fmt.Sprintf("Size: %dkm", orb.Size*sizeMult))
+
+		for _, t := range orb.Tags {
+			sb.WriteString(h.NL + prefix + fmt.Sprintf("Tag %s: %s", t.TagName, t.Description))
+		}
+
+		moonCount := len(orb.Moons)
+		if moonCount > 0 {
+			sizeMult = 1600
+			sb.WriteString(h.NL + prefix + fmt.Sprintf("Number of moons: %d", moonCount))
+			for i, m := range orb.Moons {
+				sb.WriteString(h.NL + prefix + fmt.Sprintf("Moon %d Size: %dkm", i+1, m.Size*sizeMult))
+				for _, t := range m.Tags {
+					sb.WriteString(h.NL + prefix + fmt.Sprintf("Tag %s: %s", t.TagName, t.Description))
+				}
+			}
+		}
+
+	}
+	fmt.Println(sb.String())
+
+	//also write to file if requested
+	writeToFile, _ := ctx.Config().Flags.GetBool(util.ToFileFlagName)
+	if writeToFile {
+		h.WrappedJSONFileWriter(ctx, sys, sys.ToFilename(), "")
+	}
 }

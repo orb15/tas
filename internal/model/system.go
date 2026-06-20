@@ -2,6 +2,7 @@ package model
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 type SystemOrbital struct {
@@ -29,6 +30,10 @@ type SolarSystem struct {
 	RockyCount        int              `json:"rocky-planet-count"`
 	Orbitals          []*SystemOrbital `json:"orbitals"`
 	HasGasGiants      bool             `json:"has-gas-giants"`
+}
+
+func (s *SolarSystem) ToFilename() string {
+	return fmt.Sprintf("solar_system_%s.json", s.Name)
 }
 
 type SystemTags struct {
