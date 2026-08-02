@@ -22,7 +22,7 @@ const (
 	uwpIsIcecap    = `\-[0-9A-F].* IC.*`
 
 	minAUBandRockyWorldsInner = .37 // 37 an ugly prime - looks jittery
-	minAUBandRockyWorldsOuter = .63 // 63 an ugly prime - looks jittery
+	minAUBandRockyWorldsOuter = .67 // 67 an ugly prime - looks jittery
 	minAUBandGasGiants        = 4.3 // 43 is also ugly - looks jittery
 
 	minHabitableAU  = 0.95
@@ -38,6 +38,8 @@ const (
 	coldAUOffset = 2.63
 
 	systemTagsFile = "system-tags.json"
+
+	ProduceImageFlagName = "image"
 )
 
 var (
@@ -113,8 +115,14 @@ func systemCmd(cmd *cobra.Command, args []string) {
 	// create the solar system
 	solarsys := generateSolarSystem(ctx, uwp, primaryAU, hasGasGiants, systemTags)
 
-	//handle output
+	//handle text output
 	writeSystem(ctx, solarsys)
+
+	//conditionally handle image output
+	createImg, _ := ctx.Config().Flags.GetBool(ProduceImageFlagName)
+	if createImg {
+		produceImage(ctx, solarsys)
+	}
 }
 
 // top-level generator function
@@ -755,11 +763,11 @@ func calcRockyPlanetSize(ctx *util.TASContext) int {
 }
 
 func calcGasGiantSizeSize(ctx *util.TASContext) int {
-	// like everything else in a solar system, there ar eno hard and fast rules
+	// like everything else in a solar system, there are no hard and fast rules
 	// I based this simple code on general size limits, exluding gas dwarfs and
 	// hot jupiters and used our solar system as a baseline
 	// jupiter is about 142000km at its equator
-	// neptune is about 49000km. This also excludes 'hot jupiters'
+	// neptune is about 49000km.
 	// this code generates sizes 45k km to 155k km
 	dice := ctx.Dice()
 	theDiam := 100000 // (150k + 50k ) / 2, so start at average

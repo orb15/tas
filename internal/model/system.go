@@ -35,6 +35,9 @@ type SolarSystem struct {
 func (s *SolarSystem) ToFilename() string {
 	return fmt.Sprintf("solar_system_%s.json", s.Name)
 }
+func (s *SolarSystem) ToImageFilename() string {
+	return fmt.Sprintf("solar_system_%s.png", s.Name)
+}
 
 type SystemTags struct {
 	GasMoonTags      []SystemTag `json:"gas-moon"`

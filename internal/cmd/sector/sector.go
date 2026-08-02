@@ -241,7 +241,7 @@ type worldNameMgr struct {
 func newWorldNames(ctx *util.TASContext) (*worldNameMgr, error) {
 
 	defaultWorldNamesPath := "./data-local/"
-	defaultWorldNamesFile := "world-names.txt"
+	defaultWorldNamesFile := "default-world-names.txt"
 	fname := fmt.Sprintf("%s%s", defaultWorldNamesPath, defaultWorldNamesFile)
 
 	rawNames, err := util.ReadWorldNamesFromFile(fname)

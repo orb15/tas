@@ -13,7 +13,7 @@ import (
 
 const (
 	defaultWorldNamesPath = "./data-local/"
-	defaultWorldNamesFile = "world-names.txt"
+	defaultWorldNamesFile = "default-world-names.txt"
 )
 
 var PolishCmdConfig = &cobra.Command{

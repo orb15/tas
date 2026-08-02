@@ -36,6 +36,8 @@ func main() {
 	rootCmd.AddCommand(polish.PolishCmdConfig)
 
 	// system command
+	var ProduceImage bool
+	system.SystemCmdConfig.PersistentFlags().BoolVar(&ProduceImage, system.ProduceImageFlagName, false, "set to produce a PNG image of the solar system)")
 	rootCmd.AddCommand(system.SystemCmdConfig)
 
 	rootCmd.Execute()
