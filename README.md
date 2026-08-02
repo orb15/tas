@@ -82,7 +82,7 @@ This was a neccessary assumption because things change radically as sun type / m
 * Traveller UWPs describe _size_ (e.g. planetary diameter) and conflates that with _mass_. This is a fair simplification for a game. This code does the same thing
 * Whenever possible, this code uses what is known about solar system formation, exo-planets or our solar system to create these models.
 Given this, all solar systems generated are both likely typical of Class G2V-based solar systems and somewhat like our own solar system at first pass but also aligned with general, current thinking on the makeup of solar systems.
-As a concrete example of this, planet spacing (in AU) is roughly based on a Sol-like system (with variability) but gas giants never have bright rings (Saturn, as it turns out, is excpetionally rare!)
+As a concrete example of this, planet spacing (in AU) is roughly based on a Sol-like system (with variability) but gas giants never have bright rings (Saturn, as it turns out, is exceptionally rare!)
 * No distinction is made between gas giants (Jupiter, Saturn) and ice giants (Neptune and Uranus); all such planets are "gas giants" as generated.
 This is because RAW does not make a distinction, and both provide ample free hydrogen in their upper atmospheres for refueling purposes
 * Gas giant and other moons count only orbital objects large enough to be spherical and to be considered at least dwarf planets.
