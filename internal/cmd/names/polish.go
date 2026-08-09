@@ -1,4 +1,4 @@
-package polish
+package names
 
 import (
 	"fmt"
@@ -9,11 +9,6 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
-)
-
-const (
-	defaultWorldNamesPath = "./data-local/"
-	defaultWorldNamesFile = "default-world-names.txt"
 )
 
 var PolishCmdConfig = &cobra.Command{

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"tas/internal/cmd/polish"
+	"tas/internal/cmd/names"
 	"tas/internal/cmd/sector"
 	"tas/internal/cmd/system"
 	"tas/internal/cmd/world"
@@ -32,8 +32,19 @@ func main() {
 	//sector command
 	rootCmd.AddCommand(sector.SectorCmdConfig)
 
-	//polish command
-	rootCmd.AddCommand(polish.PolishCmdConfig)
+	//names command
+	rootCmd.AddCommand(names.NamesCmdConfig)
+
+	//analyze command (names subcommand)
+	names.NamesCmdConfig.AddCommand(names.AnalyzeCmdConfig)
+
+	//generate command (names subcommand)
+	var Count uint
+	names.GenerateCmdConfig.PersistentFlags().UintVar(&Count, names.GenerateCountFlagName, 10, "a positive number representing the total number of names to generate")
+	names.NamesCmdConfig.AddCommand(names.GenerateCmdConfig)
+
+	//polish command (names subcommand)
+	names.NamesCmdConfig.AddCommand(names.PolishCmdConfig)
 
 	// system command
 	var ProduceImage bool

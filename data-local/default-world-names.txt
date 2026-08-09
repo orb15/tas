@@ -128,6 +128,8 @@ Eospun
 Esiri
 Etera
 Evitis
+Fanicol
+Filich
 Flejelas
 Fosillica
 Foy
@@ -340,6 +342,8 @@ Poyye
 Proth
 Pusiuq
 Qax
+Qestril
+Qilop
 Qudro
 Qytok
 Rathore
